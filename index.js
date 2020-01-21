@@ -15,8 +15,8 @@ app.use(express.static('public'));
 // Chatroom
 io.on('connection', function (socket) {
 setInterval( function() {
-  var msg = Math.random();
+  var msg = new Date().toLocaleTimeString();
   io.emit('message', msg);
   console.log (msg);
-}, 1000);
+}, 3000);
 });
