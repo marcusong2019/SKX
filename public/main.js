@@ -239,6 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const squaresRemoved = squares.splice(i, width);
         squares = squaresRemoved.concat(squares);
         squares.forEach(cell => grid.appendChild(cell));
+        socket.emit("score", { score: score });
       }
     }
   }
@@ -260,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Got announcement:", data.message);
   });
 
-  socket.emit("event", { message: "Hey, I have an important message!" });
+  
 
   socket.on("stats", function(data) {
     console.log("Connected clients:", data.numClients);

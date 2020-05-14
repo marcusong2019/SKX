@@ -18,8 +18,11 @@ io.on("connection", function(socket) {
   numClients++;
   io.emit("stats", { numClients: numClients });
 
-  console.log("Connected clients:", numClients);
+ socket.on("score", function(data) {
 
+    console.log("Score", data.score);
+  });
+  
   socket.on("disconnect", function() {
     numClients--;
     io.emit("stats", { numClients: numClients });
