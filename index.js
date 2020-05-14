@@ -13,15 +13,22 @@ server.listen(port, function() {
 app.use(express.static("public"));
 
 var numClients = 0;
-
+var users = [];
 io.on("connection", function(socket) {
   numClients++;
-  io.emit("stats", { numClients: numClients });
+  
 
  socket.on("score", function(data) {
-
+   const = users
+   
+    io.emit("stats", { data: users });
     console.log("Score", data.score);
   });
+  
+  socket.on('adduser', function (name) {
+       users.push({id: socket.id, name: name, score: 0});
+       io.emit("stats", { data: users });
+    });
   
   socket.on("disconnect", function() {
     numClients--;
