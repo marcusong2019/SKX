@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let squares = Array.from(document.querySelectorAll(".grid div"));
   const scoreDisplay = document.querySelector("#score");
   const startBtn = document.querySelector("#start-button");
+  var div = document.getElementById('list');
   const width = 10;
   let nextRandom = 0;
   let timerId;
@@ -266,6 +267,10 @@ document.addEventListener("DOMContentLoaded", () => {
  
   socket.on("stats", function(data) {
     console.log("Stats", data);
+    let elements = data.map(i =>{
+      return('<span>Marla</span>')
+    })
+    div.innerHTML = elements;
   });
   
    socket.on('users', function(users){
@@ -275,8 +280,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   
 function addUser(){
- // var nick = prompt('What is your desired username?') || "User1";
- // socket.emit('newuser', nick);
+  var nick = prompt('What is your desired username?') || "User1";
+  socket.emit('newuser', nick);
 }  
   
   addUser();
