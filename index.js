@@ -25,10 +25,10 @@ io.on("connection", function(socket) {
     console.log("Score", users);
   });
   
-  socket.on('adduser', function (name) {
+ /* socket.on('adduser', function (name) {
        users.push({id: socket.id, name: name, score: 0});
        io.emit("stats", { data: users });
-    });
+    });*/
   
   socket.on("disconnect", function() {
     numClients--;
@@ -36,4 +36,12 @@ io.on("connection", function(socket) {
 
     console.log("Connected clients:", numClients);
   });
+ 
+  socket.on('newuser', function(nick){
+   var newUser = nick;
+   users.push(nick)
+   io.emit('users', users);
+   
+  });
+  
 });

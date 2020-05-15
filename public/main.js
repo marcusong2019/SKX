@@ -2,6 +2,7 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   var socket = io();
+  
   const grid = document.querySelector(".grid");
   let squares = Array.from(document.querySelectorAll(".grid div"));
   const scoreDisplay = document.querySelector("#score");
@@ -59,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentPosition = 4;
   let currentRotation = 0;
 
-  console.log(theTetrominoes[0][0]);
+
 
   //randomly select a Tetromino and its first rotation
   let random = Math.floor(Math.random() * theTetrominoes.length);
@@ -266,4 +267,17 @@ document.addEventListener("DOMContentLoaded", () => {
   socket.on("stats", function(data) {
     console.log("Connected clients:", data.data);
   });
+  
+   socket.on('users', function(users){
+
+   console.log('users',users);
+ 
+  });
+  
+function addUser(){
+  var nick = prompt('What is your desired username?');
+  socket.emit('newuser', nick);
+}  
+  
+  addUser();
 });
