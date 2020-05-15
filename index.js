@@ -15,7 +15,6 @@ app.use(express.static("public"));
 var numClients = 0;
 var users = [];
 io.on("connection", function(socket) {
-  numClients++;
 
   socket.on("score", function(data) {
     const index = users
@@ -23,7 +22,7 @@ io.on("connection", function(socket) {
         return e.id;
       })
       .indexOf(socket.id);
-    //users[index]['score'] = data;
+    users[index]['score'] = data;
     io.emit("stats",users);
   });
 

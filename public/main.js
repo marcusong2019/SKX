@@ -285,8 +285,8 @@ function addUser(){
   socket.emit('newuser', nick);
 }  
   
-  startBtn.addEventListener("click", () => {
-    addUser
+  entrar.addEventListener("click", () => {
+    addUser();
   });
   
 
