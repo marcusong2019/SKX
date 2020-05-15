@@ -16,32 +16,27 @@ var numClients = 0;
 var users = [];
 io.on("connection", function(socket) {
   numClients++;
-  
 
- socket.on("score", function(data) {
-   const index = users.map(function(e) { return e.id; }).indexOf(socket.id);
+  socket.on("score", function(data) {
+    const index = users
+      .map(function(e) {
+        return e.id;
+      })
+      .indexOf(socket.id);
     //users[index]['score'] = data;
     io.emit("stats", { data: users });
     console.log("Score", users);
   });
-  
- /* socket.on('adduser', function (name) {
+
+  /* socket.on('adduser', function (name) {
        users.push({id: socket.id, name: name, score: 0});
        io.emit("stats", { data: users });
     });*/
-  
-  socket.on("disconnect", function() {
-    numClients--;
-    io.emit("stats", { numClients: numClients });
 
-    console.log("Connected clients:", numClients);
-  });
- 
-  socket.on('newuser', function(nick){
-   var newUser = nick;
-   users.push(nick)
-   io.emit('users', users);
+  socket.on("newuser", function(nick) {
+    var newUser = {id: socket.id, name: nick, score: 0};
+    users.push(newUser);
+    io.emit("users", users);
    
   });
-  
 });
