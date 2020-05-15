@@ -262,8 +262,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   
-
+ 
   socket.on("stats", function(data) {
-    console.log("Connected clients:", data.numClients);
+    console.log("Connected clients:", data.data);
   });
 });

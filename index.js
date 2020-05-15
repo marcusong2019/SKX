@@ -19,10 +19,10 @@ io.on("connection", function(socket) {
   
 
  socket.on("score", function(data) {
-   const = users
-   
+   const index = users.map(function(e) { return e.id; }).indexOf(socket.id);
+    //users[index]['score'] = data;
     io.emit("stats", { data: users });
-    console.log("Score", data.score);
+    console.log("Score", users);
   });
   
   socket.on('adduser', function (name) {
