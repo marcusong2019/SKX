@@ -24,8 +24,7 @@ io.on("connection", function(socket) {
       })
       .indexOf(socket.id);
     //users[index]['score'] = data;
-    io.emit("stats", { data: users });
-    console.log("Score", users);
+    io.emit("stats",users);
   });
 
   /* socket.on('adduser', function (name) {
@@ -37,6 +36,5 @@ io.on("connection", function(socket) {
     var newUser = {id: socket.id, name: nick, score: 0};
     users.push(newUser);
     io.emit("users", users);
-   
   });
 });

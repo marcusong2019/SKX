@@ -265,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
  
   socket.on("stats", function(data) {
-    console.log("Connected clients:", data.data);
+    console.log("Stats", data);
   });
   
    socket.on('users', function(users){
@@ -275,8 +275,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   
 function addUser(){
-  var nick = prompt('What is your desired username?');
-  socket.emit('newuser', nick);
+ // var nick = prompt('What is your desired username?') || "User1";
+ // socket.emit('newuser', nick);
 }  
   
   addUser();
