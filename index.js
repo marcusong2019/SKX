@@ -22,7 +22,7 @@ io.on("connection", function(socket) {
         return e.id;
       })
       .indexOf(socket.id);
-    users[index]['score'] = data;
+    users[index]['score'] = data.score;
     io.emit("stats",users);
   });
 
