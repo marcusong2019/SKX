@@ -1,293 +1,130 @@
-/* global io */
+const BG_COLOUR = '#231f20';
+const SNAKE_COLOUR = '#c2c2c2';
+const FOOD_COLOUR = '#e66916';
 
-document.addEventListener("DOMContentLoaded", () => {
-  var socket = io();
+var socket = io('https://goldenrod-abiding-airplane.glitch.me/');
   
-  const grid = document.querySelector(".grid");
-  let squares = Array.from(document.querySelectorAll(".grid div"));
-  const scoreDisplay = document.querySelector("#score");
-  const startBtn = document.querySelector("#start-button");
-  const entrar = document.querySelector("#entrar");
-  var div = document.getElementById('list');
-  const width = 10;
-  let nextRandom = 0;
-  let timerId;
-  let score = 0;
-  const colors = ["orange", "red", "purple", "green", "blue"];
+socket.on('init', handleInit);
+socket.on('gameState', handleGameState);
+socket.on('gameOver', handleGameOver);
+socket.on('gameCode', handleGameCode);
+socket.on('unknownCode', handleUnknownCode);
+socket.on('tooManyPlayers', handleTooManyPlayers);
 
-  //The Tetrominoes
-  const lTetromino = [
-    [1, width + 1, width * 2 + 1, 2],
-    [width, width + 1, width + 2, width * 2 + 2],
-    [1, width + 1, width * 2 + 1, width * 2],
-    [width, width * 2, width * 2 + 1, width * 2 + 2]
-  ];
+const gameScreen = document.getElementById('gameScreen');
+const initialScreen = document.getElementById('initialScreen');
+const newGameBtn = document.getElementById('newGameButton');
+const joinGameBtn = document.getElementById('joinGameButton');
+const gameCodeInput = document.getElementById('gameCodeInput');
+const gameCodeDisplay = document.getElementById('gameCodeDisplay');
 
-  const zTetromino = [
-    [0, width, width + 1, width * 2 + 1],
-    [width + 1, width + 2, width * 2, width * 2 + 1],
-    [0, width, width + 1, width * 2 + 1],
-    [width + 1, width + 2, width * 2, width * 2 + 1]
-  ];
-
-  const tTetromino = [
-    [1, width, width + 1, width + 2],
-    [1, width + 1, width + 2, width * 2 + 1],
-    [width, width + 1, width + 2, width * 2 + 1],
-    [1, width, width + 1, width * 2 + 1]
-  ];
-
-  const oTetromino = [
-    [0, 1, width, width + 1],
-    [0, 1, width, width + 1],
-    [0, 1, width, width + 1],
-    [0, 1, width, width + 1]
-  ];
-
-  const iTetromino = [
-    [1, width + 1, width * 2 + 1, width * 3 + 1],
-    [width, width + 1, width + 2, width + 3],
-    [1, width + 1, width * 2 + 1, width * 3 + 1],
-    [width, width + 1, width + 2, width + 3]
-  ];
-
-  const theTetrominoes = [
-    lTetromino,
-    zTetromino,
-    tTetromino,
-    oTetromino,
-    iTetromino
-  ];
-
-  let currentPosition = 4;
-  let currentRotation = 0;
+newGameBtn.addEventListener('click', newGame);
+joinGameBtn.addEventListener('click', joinGame);
 
 
+function newGame() {
+  socket.emit('newGame');
+  init();
+}
 
-  //randomly select a Tetromino and its first rotation
-  let random = Math.floor(Math.random() * theTetrominoes.length);
-  let current = theTetrominoes[random][currentRotation];
+function joinGame() {
+  const code = gameCodeInput.value;
+  socket.emit('joinGame', code);
+  init();
+}
 
-  //draw the Tetromino
-  function draw() {
-    current.forEach(index => {
-      squares[currentPosition + index].classList.add("tetromino");
-      squares[currentPosition + index].style.backgroundColor = colors[random];
-    });
+let canvas, ctx;
+let playerNumber;
+let gameActive = false;
+
+function init() {
+  initialScreen.style.display = "none";
+  gameScreen.style.display = "block";
+
+  canvas = document.getElementById('canvas');
+  ctx = canvas.getContext('2d');
+
+  canvas.width = canvas.height = 600;
+
+  ctx.fillStyle = BG_COLOUR;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  document.addEventListener('keydown', keydown);
+  gameActive = true;
+}
+
+function keydown(e) {
+  socket.emit('keydown', e.keyCode);
+}
+
+function paintGame(state) {
+  ctx.fillStyle = BG_COLOUR;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const food = state.food;
+  const gridsize = state.gridsize;
+  const size = canvas.width / gridsize;
+
+  ctx.fillStyle = FOOD_COLOUR;
+  ctx.fillRect(food.x * size, food.y * size, size, size);
+
+  paintPlayer(state.players[0], size, SNAKE_COLOUR);
+  paintPlayer(state.players[1], size, 'red');
+}
+
+function paintPlayer(playerState, size, colour) {
+  const snake = playerState.snake;
+
+  ctx.fillStyle = colour;
+  for (let cell of snake) {
+    ctx.fillRect(cell.x * size, cell.y * size, size, size);
   }
+}
 
-  //undraw the Tetromino
-  function undraw() {
-    current.forEach(index => {
-      squares[currentPosition + index].classList.remove("tetromino");
-      squares[currentPosition + index].style.backgroundColor = "";
-    });
+function handleInit(number) {
+  playerNumber = number;
+}
+
+function handleGameState(gameState) {
+  if (!gameActive) {
+    return;
   }
+  gameState = JSON.parse(gameState);
+  requestAnimationFrame(() => paintGame(gameState));
+}
 
-  //assign functions to keyCodes
-  function control(e) {
-    if (e.keyCode === 37) {
-      moveLeft();
-    } else if (e.keyCode === 32) {
-      rotate();
-    } else if (e.keyCode === 39) {
-      moveRight();
-    } else if (e.keyCode === 40) {
-      moveDown();
-    }
+function handleGameOver(data) {
+  if (!gameActive) {
+    return;
   }
-  document.addEventListener("keyup", control);
+  data = JSON.parse(data);
 
-  //move down function
-  function moveDown() {
-    undraw();
-    currentPosition += width;
-    draw();
-    freeze();
+  gameActive = false;
+
+  if (data.winner === playerNumber) {
+    alert('You Win!');
+  } else {
+    alert('You Lose :(');
   }
+}
 
-  //freeze function
-  function freeze() {
-    if (
-      current.some(index =>
-        squares[currentPosition + index + width].classList.contains("taken")
-      )
-    ) {
-      current.forEach(index =>
-        squares[currentPosition + index].classList.add("taken")
-      );
-      //start a new tetromino falling
-      random = nextRandom;
-      nextRandom = Math.floor(Math.random() * theTetrominoes.length);
-      current = theTetrominoes[random][currentRotation];
-      currentPosition = 4;
-      draw();
-      displayShape();
-      addScore();
-      gameOver();
-    }
-  }
+function handleGameCode(gameCode) {
+  gameCodeDisplay.innerText = gameCode;
+}
 
-  //move the tetromino left, unless is at the edge or there is a blockage
-  function moveLeft() {
-    undraw();
-    const isAtLeftEdge = current.some(
-      index => (currentPosition + index) % width === 0
-    );
-    if (!isAtLeftEdge) currentPosition -= 1;
-    if (
-      current.some(index =>
-        squares[currentPosition + index].classList.contains("taken")
-      )
-    ) {
-      currentPosition += 1;
-    }
-    draw();
-  }
+function handleUnknownCode() {
+  reset();
+  alert('Unknown Game Code')
+}
 
-  //move the tetromino right, unless is at the edge or there is a blockage
-  function moveRight() {
-    undraw();
-    const isAtRightEdge = current.some(
-      index => (currentPosition + index) % width === width - 1
-    );
-    if (!isAtRightEdge) currentPosition += 1;
-    if (
-      current.some(index =>
-        squares[currentPosition + index].classList.contains("taken")
-      )
-    ) {
-      currentPosition -= 1;
-    }
-    draw();
-  }
+function handleTooManyPlayers() {
+  reset();
+  alert('This game is already in progress');
+}
 
-  //rotate the tetromino
-  function rotate() {
-    undraw();
-    currentRotation++;
-    if (currentRotation === current.length) {
-      //if the current roation gets to 4, make it go back to 0
-      currentRotation = 0;
-    }
-    current = theTetrominoes[random][currentRotation];
-    draw();
-  }
-
-  //show up-next tetromino in mini-grid display
-  const displaySquares = document.querySelectorAll(".mini-grid div");
-  const displayWidth = 4;
-  const displayIndex = 0;
-
-  //the Tetrominos without rotations
-  const upNextTetrominoes = [
-    [1, displayWidth + 1, displayWidth * 2 + 1, 2], //lTetromino
-    [0, displayWidth, displayWidth + 1, displayWidth * 2 + 1], //zTetromino
-    [1, displayWidth, displayWidth + 1, displayWidth + 2], //tTetromino
-    [0, 1, displayWidth, displayWidth + 1], //oTetromino
-    [1, displayWidth + 1, displayWidth * 2 + 1, displayWidth * 3 + 1] //iTetromino
-  ];
-
-  //display the shape in the mini-grid display
-  function displayShape() {
-    //remove any trace of a tetromino form the entire grid
-    displaySquares.forEach(square => {
-      square.classList.remove("tetromino");
-      square.style.backgroundColor = "";
-    });
-    upNextTetrominoes[nextRandom].forEach(index => {
-      displaySquares[displayIndex + index].classList.add("tetromino");
-      displaySquares[displayIndex + index].style.backgroundColor =
-        colors[nextRandom];
-    });
-  }
-
-  //add functionality to the button
-  startBtn.addEventListener("click", () => {
-    if (timerId) {
-      clearInterval(timerId);
-      timerId = null;
-    } else {
-      draw();
-      timerId = setInterval(moveDown, 1000);
-      nextRandom = Math.floor(Math.random() * theTetrominoes.length);
-      displayShape();
-    }
-  });
-
-  //add score
-  function addScore() {
-    for (let i = 0; i < 199; i += width) {
-      const row = [
-        i,
-        i + 1,
-        i + 2,
-        i + 3,
-        i + 4,
-        i + 5,
-        i + 6,
-        i + 7,
-        i + 8,
-        i + 9
-      ];
-
-      if (row.every(index => squares[index].classList.contains("taken"))) {
-        score += 10;
-        scoreDisplay.innerHTML = score;
-        row.forEach(index => {
-          squares[index].classList.remove("taken");
-          squares[index].classList.remove("tetromino");
-          squares[index].style.backgroundColor = "";
-        });
-        const squaresRemoved = squares.splice(i, width);
-        squares = squaresRemoved.concat(squares);
-        squares.forEach(cell => grid.appendChild(cell));
-        socket.emit("score", { score: score });
-      }
-    }
-  }
-
-  //game over
-  function gameOver() {
-    if (
-      current.some(index =>
-        squares[currentPosition + index].classList.contains("taken")
-      )
-    ) {
-      scoreDisplay.innerHTML = "end";
-      clearInterval(timerId);
-    }
-  }
-
-  // Whenever the server emits 'stop typing', kill the typing message
-  socket.on("announcements", function(data) {
-    console.log("Got announcement:", data.message);
-  });
-
-  
- 
-  socket.on("stats", function(data) {
-    console.log("Stats", data);
-    let elements = data.map(i =>{
-      return(`<span>${i.name}: ${i.score}</span>`)
-    })
-    div.innerHTML = elements;
-  });
-  
-   socket.on('users', function(users){
-
-   console.log('users',users);
- 
-  });
-  
-function addUser(){
-  var nick = prompt('What is your desired username?') || "User1";
-  socket.emit('newuser', nick);
-}  
-  
-  entrar.addEventListener("click", () => {
-    addUser();
-  });
-  
-
-});
+function reset() {
+  playerNumber = null;
+  gameCodeInput.value = '';
+  initialScreen.style.display = "block";
+  gameScreen.style.display = "none";
+}
