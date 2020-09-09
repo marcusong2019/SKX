@@ -2,7 +2,7 @@ const BG_COLOUR = '#231f20';
 const SNAKE_COLOUR = '#c2c2c2';
 const FOOD_COLOUR = '#e66916';
 
-var socket = io('https://goldenrod-abiding-airplane.glitch.me/');
+var socket = io('https://snake-twoplayer-socketo.glitch.me/');
   
 socket.on('init', handleInit);
 socket.on('gameState', handleGameState);
