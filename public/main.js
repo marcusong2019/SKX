@@ -41,18 +41,18 @@ function init() {
   initialScreen.style.display = "none";
   gameScreen.style.display = "block";
 
-  canvas = document.getElementById('canvas');
-  ctx = canvas.getContext('2d');
+//  canvas = document.getElementById('canvas');
+// ctx = canvas.getContext('2d');
 
-  canvas.width = canvas.height = 600;
+//  canvas.width = canvas.height = 600;
 
-  ctx.fillStyle = BG_COLOUR;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+//  ctx.fillStyle = BG_COLOUR;
+//  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  document.addEventListener('keydown', keydown);
+//  document.addEventListener('keydown', keydown);
   gameActive = true;
 }
-
+/*
 function keydown(e) {
   socket.emit('keydown', e.keyCode);
 }
@@ -80,11 +80,11 @@ function paintPlayer(playerState, size, colour) {
     ctx.fillRect(cell.x * size, cell.y * size, size, size);
   }
 }
-
+*/
 function handleInit(number) {
   playerNumber = number;
 }
-
+/*
 function handleGameState(gameState) {
   if (!gameActive) {
     return;
@@ -107,7 +107,7 @@ function handleGameOver(data) {
     alert('You Lose :(');
   }
 }
-
+*/
 function handleGameCode(gameCode) {
   gameCodeDisplay.innerText = gameCode;
 }
