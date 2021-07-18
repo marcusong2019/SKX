@@ -1,15 +1,15 @@
-const BG_COLOUR = '#231f20';
-const SNAKE_COLOUR = '#c2c2c2';
-const FOOD_COLOUR = '#e66916';
+//const BG_COLOUR = '#231f20';
+//const SNAKE_COLOUR = '#c2c2c2';
+//const FOOD_COLOUR = '#e66916';
 
-var socket = io('https://snake-twoplayer-socketo.glitch.me/');
+var socket = io('https://observed-fire-simulator.glitch.me/');
   
-socket.on('init', handleInit);
-socket.on('gameState', handleGameState);
-socket.on('gameOver', handleGameOver);
+//socket.on('init', handleInit);
+//socket.on('gameState', handleGameState);
+//socket.on('gameOver', handleGameOver);
 socket.on('gameCode', handleGameCode);
 socket.on('unknownCode', handleUnknownCode);
-socket.on('tooManyPlayers', handleTooManyPlayers);
+//socket.on('tooManyPlayers', handleTooManyPlayers);
 
 const gameScreen = document.getElementById('gameScreen');
 const initialScreen = document.getElementById('initialScreen');
