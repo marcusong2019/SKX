@@ -25,7 +25,7 @@ joinGameBtn.addEventListener('click', joinGame);
 
 function newGame() {
   socket.emit('newGame');
-  init();
+  scenarioPicker();
 }
 
 function joinGame() {
@@ -38,10 +38,22 @@ let canvas, ctx;
 let playerNumber;
 let gameActive = false;
 
-function init() {
+function scenarioPicker() {
   initialScreen.style.display = "none";
   scenarioScreen.style.display = "block";
-  gameScreen.style.display = "none";//"block";
+  gameScreen.style.display = "none";
+}
+
+function setScenario(scenarioName) {
+  gameScenarioDisplay
+  
+  init();
+}
+
+function init() {
+  initialScreen.style.display = "none";
+  scenarioScreen.style.display = "none";
+  gameScreen.style.display = "block";
 
 //  canvas = document.getElementById('canvas');
 // ctx = canvas.getContext('2d');

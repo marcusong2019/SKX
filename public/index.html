@@ -49,7 +49,7 @@
               <div class="card-body">
                 <h5 class="card-title">West Point Plain</h5>
                 <p class="card-text">Example scenario on West Point plain.</p>
-                <button 
+                <button onclick="setScenario()">Select</button>
               </div>
             </div>
           </div>
@@ -83,6 +83,7 @@
         <div class="d-flex flex-column align-items-center justify-content-center h-100">
 
           <h1>Your game code is: <span id="gameCodeDisplay"></span></h1>
+          <h2>Scenario: <span id="gameScenarioDisplay"></span></h2>
           
           <div class="form-group">
               WL <input type="number" min="0" max="99999" placeholder="Easting" id="gridEasting"/>
