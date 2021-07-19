@@ -12,6 +12,7 @@ socket.on('unknownCode', handleUnknownCode);
 //socket.on('tooManyPlayers', handleTooManyPlayers);
 
 const gameScreen = document.getElementById('gameScreen');
+const scenarioScreen = document.getElementById('scenarioScreen');
 const initialScreen = document.getElementById('initialScreen');
 const newGameBtn = document.getElementById('newGameButton');
 const joinGameBtn = document.getElementById('joinGameButton');
@@ -39,7 +40,8 @@ let gameActive = false;
 
 function init() {
   initialScreen.style.display = "none";
-  gameScreen.style.display = "block";
+  scenarioScreen.style.display = "block";
+  gameScreen.style.display = "none";//"block";
 
 //  canvas = document.getElementById('canvas');
 // ctx = canvas.getContext('2d');
