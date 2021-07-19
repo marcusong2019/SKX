@@ -45,8 +45,7 @@ function scenarioPicker() {
 }
 
 function setScenario(scenarioName) {
-  gameScenarioDisplay
-  
+  gameScenarioDisplay.innerText = scenarioName;
   init();
 }
 
