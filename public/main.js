@@ -31,7 +31,7 @@ function newGame() {
 function joinGame() {
   const code = gameCodeInput.value;
   socket.emit('joinGame', code);
-  init();
+  window.location.href = 'https://observed-fire-simulator.glitch.me/FO.html?game=' + code;
 }
 
 let canvas, ctx;
