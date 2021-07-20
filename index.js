@@ -49,7 +49,7 @@ io.on('connection', client => {
 
     client.join(roomName);
     client.number = 2;
-    client.emit('init', 2);
+    client.emit('initFO', 2);
     
     startGameInterval(roomName);
   }

@@ -5,6 +5,7 @@
 var socket = io('https://observed-fire-simulator.glitch.me/');
   
 //socket.on('init', handleInit);
+socket.on('initFO', handleInitFO);
 //socket.on('gameState', handleGameState);
 //socket.on('gameOver', handleGameOver);
 socket.on('gameCode', handleGameCode);
@@ -31,7 +32,6 @@ function newGame() {
 function joinGame() {
   const code = gameCodeInput.value;
   socket.emit('joinGame', code);
-  window.location.href = 'https://observed-fire-simulator.glitch.me/FO.html?game=' + code;
 }
 
 let canvas, ctx;
@@ -96,6 +96,11 @@ function paintPlayer(playerState, size, colour) {
 */
 function handleInit(number) {
   playerNumber = number;
+}
+function handleInitFO(number) {
+  playerNumber = number;
+  const code = gameCodeInput.value;
+  window.location.href = 'https://observed-fire-simulator.glitch.me/FO.html?game=' + code;
 }
 /*
 function handleGameState(gameState) {
