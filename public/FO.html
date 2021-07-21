@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>echo"$_GET['game']""</title>
     <script src="https://aframe.io/releases/1.0.4/aframe.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/main.js"></script>
     <script>
-    const code = $_GET["game"];
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('game'); //$_GET["game"];
     socket.emit('joinGame', code);
+      console.log(code);
     </script>
   </head>
   <body>
