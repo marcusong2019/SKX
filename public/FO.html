@@ -9,8 +9,12 @@
       const code = urlParams.get('game'); //get the variable we want
       console.log("Attempt join game:",code);
       var socket = io('https://observed-fire-simulator.glitch.me/');
-      var test = socket.emit('joinGame', code); 
-      console.log("join result:",test);
+        console.log(socket.id);
+      socket.emit('joinGame', code, (response) => {
+  console.log(response)
+  console.log('ack')
+}); 
+      //console.log("join result:",test);
     </script>
   </head>
   <body>
