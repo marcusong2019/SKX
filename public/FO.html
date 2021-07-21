@@ -6,10 +6,10 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="/main.js"></script>
     <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('game'); //$_GET["game"];
-    socket.emit('joinGame', code);
-      console.log(code);
+    const urlParams = new URLSearchParams(window.location.search); // get all parameters from the url
+    const code = urlParams.get('game'); //get the variable we want
+      console.log("Attempt join game:",code);
+    socket.emit('joinGame', code);      
     </script>
   </head>
   <body>
