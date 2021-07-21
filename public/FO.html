@@ -4,6 +4,10 @@
     <script src="https://aframe.io/releases/1.0.4/aframe.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/main.js"></script>
+    <script>
+    const code = $_GET["game"];
+    socket.emit('joinGame', code);
+    </script>
   </head>
   <body>
     <a-scene>     
