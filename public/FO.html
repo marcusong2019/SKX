@@ -4,12 +4,13 @@
     <title>echo"$_GET['game']""</title>
     <script src="https://aframe.io/releases/1.0.4/aframe.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/main.js"></script>
     <script>
-    const urlParams = new URLSearchParams(window.location.search); // get all parameters from the url
-    const code = urlParams.get('game'); //get the variable we want
+      const urlParams = new URLSearchParams(window.location.search); // get all parameters from the url
+      const code = urlParams.get('game'); //get the variable we want
       console.log("Attempt join game:",code);
-    socket.emit('joinGame', code);      
+      var socket = io('https://observed-fire-simulator.glitch.me/');
+      var test = socket.emit('joinGame', code); 
+      console.log("join result:",test);
     </script>
   </head>
   <body>
