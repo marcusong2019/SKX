@@ -29,6 +29,11 @@
       //socket.on("target", (data) => {console.log(data)});
       socket.on("target", (data) => {handleNewTarget(data)});//{handleNewTarget(data)});
       
+      createTarget1()
+      createTarget2()
+      createTarget3()
+      createTarget4()
+      
       function handleNewTarget(tgtNum) {
         console.log(tgtNum);
         if (tgtNum == 1) {
@@ -55,9 +60,9 @@
         // Do `.setAttribute()`s to initialize the entity.   
         entityEl.setAttribute('id', 'target1');
         entityEl.setAttribute('gltf-model', '#M2Bradley');
-        entityEl.setAttribute('scale', '5 5 5');
+        entityEl.setAttribute('scale', '1 1 1');
         entityEl.setAttribute('rotation', '0 120 0');
-        entityEl.setAttribute('position', '-350 10 350');
+        entityEl.setAttribute('position', '100 1.917 100');
         sceneEl.appendChild(entityEl);
         console.log('createTarget');
       }
@@ -68,9 +73,9 @@
         // Do `.setAttribute()`s to initialize the entity.   
         entityEl.setAttribute('id', 'target2');
         entityEl.setAttribute('gltf-model', '#M2Bradley');
-        entityEl.setAttribute('scale', '5 5 5');
+        entityEl.setAttribute('scale', '1 1 1');
         entityEl.setAttribute('rotation', '0 120 0');
-        entityEl.setAttribute('position', '-380 10 290');
+        entityEl.setAttribute('position', '0 1.917 100');
         sceneEl.appendChild(entityEl);
         console.log('createTarget');
       }
@@ -81,9 +86,9 @@
         // Do `.setAttribute()`s to initialize the entity.   
         entityEl.setAttribute('id', 'target3');
         entityEl.setAttribute('gltf-model', '#T90Tank');
-        entityEl.setAttribute('scale', '5 5 5');
+        entityEl.setAttribute('scale', '1 1 1');
         entityEl.setAttribute('rotation', '0 90 0');
-        entityEl.setAttribute('position', '-250 0 150');
+        entityEl.setAttribute('position', '-100 0 100');
         sceneEl.appendChild(entityEl);
         console.log('createTarget');
       }
@@ -96,7 +101,7 @@
         entityEl.setAttribute('gltf-model', '#T90Tank');
         entityEl.setAttribute('scale', '1 1 1');
         entityEl.setAttribute('rotation', '0 120 0');
-        entityEl.setAttribute('position', '-380 0 290');
+        entityEl.setAttribute('position', '-100 0 0');
         sceneEl.appendChild(entityEl);
         console.log('createTarget');
       }   
