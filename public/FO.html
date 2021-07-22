@@ -25,11 +25,15 @@
       //socket.emit('test', code);   
       socket.on("reply", (data) => {console.log(data)});
       
+      socket.on("target", createTarget);
+      
       function createTarget() {
         var sceneEl = document.querySelector('a-scene');
         var entityEl = document.createElement('a-entity');
         // Do `.setAttribute()`s to initialize the entity.     
         entityEl.setAttribute('gltf-model', '#M2Bradley');
+        entityEl.setAttribute('scale', '5 5 5');
+        entityEl.setAttribute('rotation', '0 120 0');
         sceneEl.appendChild(entityEl);
       }      
       

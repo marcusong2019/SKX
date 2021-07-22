@@ -19,10 +19,16 @@ const newGameBtn = document.getElementById('newGameButton');
 const joinGameBtn = document.getElementById('joinGameButton');
 const gameCodeInput = document.getElementById('gameCodeInput');
 const gameCodeDisplay = document.getElementById('gameCodeDisplay');
+const sendFireMissionBtn = document.getElementById('sendFireMission');
 
 newGameBtn.addEventListener('click', newGame);
 joinGameBtn.addEventListener('click', joinGame);
+sendFireMissionBtn.addEventListener('click', startTarget1);
 
+
+function startTarget1() {
+  socket.emit('target');
+}
 
 function newGame() {
   socket.emit('newGame');
