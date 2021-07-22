@@ -57,7 +57,7 @@ io.on('connection', client => {
     client.emit('initFO', 2);
     
     startGameInterval(roomName);
-    client.emit('reply',{'Room Joined',roomName});
+    client.emit('reply','Room Joined '+roomName);
   }
 
   function handleNewGame() {

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Forward Obsever</title>
+    <title>Forward Observer</title>
     <script src="https://aframe.io/releases/1.0.4/aframe.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -10,7 +10,7 @@
       console.log("Attempt join game:",code);
       var socket = io('https://observed-fire-simulator.glitch.me/');
       console.log(socket);
-      socket.on("connect", () => {console.log(socket.id)});
+      socket.on("connect", () => {console.log("Connected "+socket.id)});
       socket.emit('joinGame', code);   
       //socket.emit('test', code);   
       socket.on("reply", (data) => {console.log(data)});
