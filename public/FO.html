@@ -25,11 +25,13 @@
       //socket.emit('test', code);   
       socket.on("reply", (data) => {console.log(data)});
       
-      function
-      var sceneEl = document.querySelector('a-scene');
-var entityEl = document.createElement('a-entity');
-// Do `.setAttribute()`s to initialize the entity.
-sceneEl.appendChild(entityEl);
+      function createTarget() {
+        var sceneEl = document.querySelector('a-scene');
+        var entityEl = document.createElement('a-entity');
+        // Do `.setAttribute()`s to initialize the entity.     
+        entityEl.setAttribute('gltf-model', '#M2Bradley');
+        sceneEl.appendChild(entityEl);
+      }      
       
     </script>
   </head>
