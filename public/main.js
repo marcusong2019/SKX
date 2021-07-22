@@ -28,9 +28,9 @@ const target4UpBtn = document.getElementById('target4UpButton');
 newGameBtn.addEventListener('click', newGame);
 joinGameBtn.addEventListener('click', joinGame);
 sendFireMissionBtn.addEventListener('click', sendFireMission);
-target1UpBtn.addEventListener('click', startTarget(1));
-target2UpBtn.addEventListener('click', startTarget(2));
-target3UpBtn.addEventListener('click', startTarget(3));
+target1UpBtn.addEventListener('click', requestTarget)
+//target2UpBtn.addEventListener('click', requestTarget(2));
+//target3UpBtn.addEventListener('click', requestTarget(3));
 //target4UpBtn.addEventListener('click', startTarget(4));
 
 function sendFireMission() {
@@ -38,8 +38,8 @@ function sendFireMission() {
   console.log("FIRE MISSION!")
 }
 
-function startTarget(tgtNum) {
-  socket.emit('target',tgtNum);
+function requestTarget(tgtNum) {
+  socket.emit('target',1);
   console.log("send target"+tgtNum);
 }
 
