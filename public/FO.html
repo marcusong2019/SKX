@@ -5,6 +5,16 @@
     <script src="https://aframe.io/releases/1.0.4/aframe.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
+      AFRAME.registerComponent('log', {
+        schema: {type: 'string'},
+
+        init: function () {
+          var stringToLog = this.data;
+          console.log(stringToLog);
+        }
+      });
+    </script>
+    <script>
       const urlParams = new URLSearchParams(window.location.search); // get all parameters from the url
       const code = urlParams.get('game'); //get the variable we want
       console.log("Attempt join game:",code);
@@ -48,6 +58,7 @@
       </a-entity>
       <a-entity position="-380 0 290">
         <a-entity
+          log="Create Bradley"
           gltf-model="#M2Bradley"
           scale="5  5  5"
           rotation="0 120 0"      
