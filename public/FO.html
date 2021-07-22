@@ -56,7 +56,43 @@
         entityEl.setAttribute('position', '-350 0 350');
         sceneEl.appendChild(entityEl);
         console.log('createTarget');
-      }      
+      }
+      function createTarget2() {
+        var sceneEl = document.querySelector('a-scene');
+        var entityEl = document.createElement('a-entity');
+        // Do `.setAttribute()`s to initialize the entity.   
+        entityEl.setAttribute('id', 'target1');
+        entityEl.setAttribute('gltf-model', '#M2Bradley');
+        entityEl.setAttribute('scale', '5 5 5');
+        entityEl.setAttribute('rotation', '0 120 0');
+        entityEl.setAttribute('position', '-380 0 290');
+        sceneEl.appendChild(entityEl);
+        console.log('createTarget');
+      }
+      function createTarget3() {
+        var sceneEl = document.querySelector('a-scene');
+        var entityEl = document.createElement('a-entity');
+        // Do `.setAttribute()`s to initialize the entity.   
+        entityEl.setAttribute('id', 'target1');
+        entityEl.setAttribute('gltf-model', '#T90Tank');
+        entityEl.setAttribute('scale', '5 5 5');
+        entityEl.setAttribute('rotation', '0 120 0');
+        entityEl.setAttribute('position', '-350 0 350');
+        sceneEl.appendChild(entityEl);
+        console.log('createTarget');
+      }
+      function createTarget4() {
+        var sceneEl = document.querySelector('a-scene');
+        var entityEl = document.createElement('a-entity');
+        // Do `.setAttribute()`s to initialize the entity.   
+        entityEl.setAttribute('id', 'target1');
+        entityEl.setAttribute('gltf-model', '#T90Tank');
+        entityEl.setAttribute('scale', '5 5 5');
+        entityEl.setAttribute('rotation', '0 120 0');
+        entityEl.setAttribute('position', '-380 0 290');
+        sceneEl.appendChild(entityEl);
+        console.log('createTarget');
+      }   
       
     </script>
   </head>
@@ -67,6 +103,12 @@
         <a-asset-item
           id="M2Bradley"
           src="https://cdn.glitch.com/43148ef6-d50d-4e2d-9f92-9cdadde2d68a%2FM2Bradley.glb"
+          response-type="arraybuffer"
+        ></a-asset-item>
+        
+        <a-asset-item
+          id="T90Tank"
+          src="https://cdn.glitch.com/43148ef6-d50d-4e2d-9f92-9cdadde2d68a%2FT90a.glb"
           response-type="arraybuffer"
         ></a-asset-item>
         

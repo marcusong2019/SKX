@@ -24,19 +24,19 @@ io.on('connection', client => {
   client.on('newGame', handleNewGame);
   client.on('joinGame', handleJoinGame);
   client.on('test', handleTest);
-  client.on('target', handleNewTarget);
+  client.on('target', (data) => {handleNewTarget(data)});
   
   function handleTest() {
     client.emit('reply','hello');
   }
 
-    function handleNewTarget() {
+    function handleNewTarget(tgtNum) {
       const roomName = clientRooms[client.id];
     if (!roomName) {
       return;
     }
       io.sockets.in(roomName)
-    .emit('target');
+    .emit('target',tgtNum);
   }
   
   
