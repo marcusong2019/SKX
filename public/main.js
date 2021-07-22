@@ -20,14 +20,19 @@ const joinGameBtn = document.getElementById('joinGameButton');
 const gameCodeInput = document.getElementById('gameCodeInput');
 const gameCodeDisplay = document.getElementById('gameCodeDisplay');
 const sendFireMissionBtn = document.getElementById('sendFireMission');
+const target1UpBtn = document.getElementById('target1UpButton');
+const target2UpBtn = document.getElementById('target2UpButton');
+const target3UpBtn = document.getElementById('target3UpButton');
+const target4UpBtn = document.getElementById('target4UpButton');
 
 newGameBtn.addEventListener('click', newGame);
 joinGameBtn.addEventListener('click', joinGame);
 sendFireMissionBtn.addEventListener('click', startTarget1);
+target1UpBtn.addEventListener('click', startTarget(1));
 
 
-function startTarget1() {
-  socket.emit('target');
+function startTarget(tgtNum) {
+  socket.emit('target',tgtNum);
 }
 
 function newGame() {
