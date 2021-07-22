@@ -11,7 +11,9 @@
       var socket = io('https://observed-fire-simulator.glitch.me/');
       console.log(socket);
       socket.on("connect", () => {console.log(socket.id)});
-      socket.emit('joinGame', code);        
+      socket.emit('joinGame', code);   
+      //socket.emit('test', code);   
+      socket.on("reply", (data) => {console.log(data)});
     </script>
   </head>
   <body>

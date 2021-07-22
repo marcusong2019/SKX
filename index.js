@@ -26,7 +26,7 @@ io.on('connection', client => {
   client.on('test', handleTest);
   
   function handleTest() {
-    
+    client.emit('reply','hello');
   }
 
   function handleJoinGame(roomName) {
@@ -57,6 +57,7 @@ io.on('connection', client => {
     client.emit('initFO', 2);
     
     startGameInterval(roomName);
+    client.emit('reply','hello');
   }
 
   function handleNewGame() {
