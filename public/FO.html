@@ -24,6 +24,13 @@
       socket.emit('joinGame', code);   
       //socket.emit('test', code);   
       socket.on("reply", (data) => {console.log(data)});
+      
+      function
+      var sceneEl = document.querySelector('a-scene');
+var entityEl = document.createElement('a-entity');
+// Do `.setAttribute()`s to initialize the entity.
+sceneEl.appendChild(entityEl);
+      
     </script>
   </head>
   <body>
@@ -47,7 +54,9 @@
       
       <!--a-sky color="#6EBAA7"></a-sky> -->
       <a-sky src="#sky1"></a-sky>
+      <a-entity light="color: #BBB; type: ambient; intensity: 3" data-aframe-default-light="" aframe-injected=""></a-entity>
         
+      <!--
       <a-entity position="-350 0 350">
         <a-entity
           gltf-model="#M2Bradley"
@@ -65,7 +74,8 @@
         >
         </a-entity>      
       </a-entity>
-      <a-entity light="color: #BBB; type: ambient; intensity: 3" data-aframe-default-light="" aframe-injected=""></a-entity>
+-->
+      
     
     
       <a-image src="#fire" 
