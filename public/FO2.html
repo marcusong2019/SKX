@@ -27,12 +27,7 @@
       socket.on("reply", (data) => {console.log(data)});
       
       //socket.on("target", (data) => {console.log(data)});
-      socket.on("target", (data) => {handleNewTarget(data)});//{handleNewTarget(data)});
-      
-      createTarget1()
-      createTarget2()
-      createTarget3()
-      createTarget4()
+      socket.on("target", (data) => {handleNewTarget(data)});
       
       function handleNewTarget(tgtNum) {
         console.log(tgtNum);
@@ -136,8 +131,8 @@
         <img id="fire" crossorigin="anonymous" src="https://cdn.glitch.com/43148ef6-d50d-4e2d-9f92-9cdadde2d68a%2FDaco_4214507.png">
       </a-assets>
       
-      <a-entity camera look-controls position="0 20 0">
-        <a-image src="#crosshair" position="0 0 -1" material="alphaTest: 0.5"></a-image>
+      <a-entity camera="zoom: 7" look-controls position="0 20 0">
+        <a-image src="#crosshair" position="0 0 -7" material="alphaTest: 0.5" scale="1 1 1"></a-image> <!-- scale 0.14 is 1/7th -->
       </a-entity>
       
       <!-- <a-entity environment="preset: forest; dressingAmount: 500"></a-entity> -->
