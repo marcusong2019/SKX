@@ -24,11 +24,17 @@ io.on('connection', client => {
   client.on('newGame', handleNewGame);
   client.on('joinGame', handleJoinGame);
   client.on('test', handleTest);
+  client.on('target', handleNewTarget);
   
   function handleTest() {
     client.emit('reply','hello');
   }
 
+    function handleNewTarget() {
+    client.emit('target');
+  }
+  
+  
   function handleJoinGame(roomName) {
     const room = io.sockets.adapter.rooms[roomName];
 
