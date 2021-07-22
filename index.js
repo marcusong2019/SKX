@@ -31,7 +31,12 @@ io.on('connection', client => {
   }
 
     function handleNewTarget() {
-    client.emit('target');
+      const roomName = clientRooms[client.id];
+    if (!roomName) {
+      return;
+    }
+      io.sockets.in(roomName)
+    .emit('target');
   }
   
   
