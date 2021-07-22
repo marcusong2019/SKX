@@ -10,13 +10,11 @@
       console.log("Attempt join game:",code);
       var socket = io('https://observed-fire-simulator.glitch.me/');
       console.log(socket);
-      console.log(socket.connected);
-      console.log(socket.id);
       socket.emit('joinGame', code, (response) => {
   console.log(response)
   console.log('ack')
-}); 
-      //console.log("join result:",test);
+});
+        socket.on("connect", () => {console.log(socket.id)});
     </script>
   </head>
   <body>
