@@ -31,7 +31,7 @@ sendFireMissionBtn.addEventListener('click', sendFireMission);
 target1UpBtn.addEventListener('click', startTarget(1));
 target2UpBtn.addEventListener('click', startTarget(2));
 target3UpBtn.addEventListener('click', startTarget(3));
-target4UpBtn.addEventListener('click', startTarget(4));
+//target4UpBtn.addEventListener('click', startTarget(4));
 
 function sendFireMission() {
   //socket.emit('target',tgtNum);
@@ -40,6 +40,7 @@ function sendFireMission() {
 
 function startTarget(tgtNum) {
   socket.emit('target',tgtNum);
+  console.log("send target"+tgtNum);
 }
 
 function newGame() {

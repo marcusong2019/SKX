@@ -25,9 +25,10 @@
       //socket.emit('test', code);   
       socket.on("reply", (data) => {console.log(data)});
       
-      socket.on("target", (data) => {handleNewTarget(data)});
+      socket.on("target", (data) => {console.log(data)});//{handleNewTarget(data)});
       
-      function handleNewTarget(tgtNum) {
+      /*function handleNewTarget(tgtNum) {
+        console.log(tgtNum);
         if tgtNum == 1 {
           createTarget1;
           console.log("Creating Target 1");
@@ -44,6 +45,7 @@
           console.log("request for target failed");
         }
       }
+      */
       
       function createTarget1() {
         var sceneEl = document.querySelector('a-scene');
