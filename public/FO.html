@@ -25,27 +25,28 @@
       //socket.emit('test', code);   
       socket.on("reply", (data) => {console.log(data)});
       
-      socket.on("target", (data) => {console.log(data)});//{handleNewTarget(data)});
+      //socket.on("target", (data) => {console.log(data)});
+      socket.on("target", (data) => {handleNewTarget(data)});//{handleNewTarget(data)});
       
-      /*function handleNewTarget(tgtNum) {
+      function handleNewTarget(tgtNum) {
         console.log(tgtNum);
-        if tgtNum == 1 {
+        if (tgtNum == 1) {
           createTarget1;
           console.log("Creating Target 1");
-        } else if tgtNum == 2 {
+        } else if (tgtNum == 2) {
           createTarget2;
           console.log("Creating Target 2");
-        } else if tgtNum == 3 {
+        } else if (tgtNum == 3) {
           createTarget3;
           console.log("Creating Target 3");
-        } else if tgtNum == 4 {
+        } else if (tgtNum == 4) {
           createTarget4;
           console.log("Creating Target 4");
         } else {
           console.log("request for target failed");
         }
       }
-      */
+      
       
       function createTarget1() {
         var sceneEl = document.querySelector('a-scene');
@@ -108,11 +109,11 @@
           response-type="arraybuffer"
         ></a-asset-item>
         
-        <a-asset-item
+        <!-- <a-asset-item
           id="T90Tank"
           src="https://cdn.glitch.com/43148ef6-d50d-4e2d-9f92-9cdadde2d68a%2FT90a.glb"
           response-type="arraybuffer"
-        ></a-asset-item>
+        ></a-asset-item> -->
         
         <img id="sky1" crossorigin="anonymous" src="https://cdn.glitch.com/43148ef6-d50d-4e2d-9f92-9cdadde2d68a%2F100_3FLY_FLY08001_spherical_0.jpg">
         <img id="crosshair" crossorigin="anonymous" src="https://cdn.glitch.com/43148ef6-d50d-4e2d-9f92-9cdadde2d68a%2FCrosshair3.png">
