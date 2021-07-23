@@ -59,6 +59,8 @@ function handleFireMission(gridE, gridN, round) {
 }
 
 function createHE(X, Y) {
+  console.log("createHE at ", X, Y, entityEl);
+  
   var sceneEl = document.querySelector("a-scene");
   var entityEl = document.createElement("a-image");
   // Do `.setAttribute()`s to initialize the entity.
@@ -69,12 +71,10 @@ function createHE(X, Y) {
   entityEl.setAttribute("side", "double");
   entityEl.setAttribute(
     "animation",
-    "property: scale; from: 1 1 1; to: 10 20 10; dur: 1500; loop: 2; dir: alternate"
+    "property: scale; from: 1 1 1; to: 10 20 10; dur: 700; loop: 2; dir: alternate"
   );
   entityEl.setAttribute("position", X + " 0 " + Y);
-  sceneEl.appendChild(entityEl);
-  console.log("createHE at ", X, Y, entityEl);
-
+  
   /*
   var entityE2 = document.createElement("a-image");
   // Do `.setAttribute()`s to initialize the entity.
@@ -101,13 +101,14 @@ function createHE(X, Y) {
   entityE2.setAttribute("side", "double");
   entityE2.setAttribute(
     "animation",
-    "property: scale; from: 1 1 1; to: 10 10 1; dur: 5000; loop: 1"
+    "property: scale; from: 10 10 1; to: 30 30 1; dur: 5000; loop: 1"
   );
   //entityE2.setAttribute('animation',"property: height; from: 1; to: 50; dur: 10000");
   //entityE2.setAttribute('animation',"property: width; from: 10; to: 4; dur: 7000");
   //entityE2.setAttribute('animation',"property: position; from: 10; to: 4; dur: 7000");
-  entityE2.setAttribute("position", X + " 2 " + Y);
+  entityE2.setAttribute("position", X + " 0 " + Y);
   sceneEl.appendChild(entityE2);
+  sceneEl.appendChild(entityEl);
 }
 
 function createTarget1() {
