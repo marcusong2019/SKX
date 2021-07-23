@@ -24,6 +24,9 @@ const target1UpBtn = document.getElementById('target1UpButton');
 const target2UpBtn = document.getElementById('target2UpButton');
 const target3UpBtn = document.getElementById('target3UpButton');
 const target4UpBtn = document.getElementById('target4UpButton');
+const gridEasting = document.getElementById('gridEastingInput');
+const gridNorthing = document.getElementById('gridNorthingInput');
+const roundType = document.getElementById('roundTypeInput');
 
 newGameBtn.addEventListener('click', newGame);
 joinGameBtn.addEventListener('click', joinGame);
@@ -33,6 +36,7 @@ sendFireMissionBtn.addEventListener('click', sendFireMission);
 function sendFireMission() {
   //socket.emit('target',tgtNum);
   console.log("FIRE MISSION!")
+  const grid
 }
 
 function requestTarget(tgtNum){
