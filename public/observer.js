@@ -75,6 +75,7 @@ function createHE(X, Y) {
   sceneEl.appendChild(entityEl);
   console.log("createHE at ", X, Y, entityEl);
 
+  /*
   var entityE2 = document.createElement("a-image");
   // Do `.setAttribute()`s to initialize the entity.
   //entityEl.setAttribute('id', 'target1');
@@ -85,6 +86,22 @@ function createHE(X, Y) {
   entityE2.setAttribute(
     "animation",
     "property: scale; from: 8 1 1; to: 40 50 1; dur: 5000; loop: 1"
+  );
+  //entityE2.setAttribute('animation',"property: height; from: 1; to: 50; dur: 10000");
+  //entityE2.setAttribute('animation',"property: width; from: 10; to: 4; dur: 7000");
+  //entityE2.setAttribute('animation',"property: position; from: 10; to: 4; dur: 7000");
+  entityE2.setAttribute("position", X + " 2 " + Y);
+  sceneEl.appendChild(entityE2);
+*/
+  
+  var entityE2 = document.createElement("a-image");
+  entityE2.setAttribute("src", "#cloud");
+  entityE2.setAttribute("material", "alphaTest: 0.5");
+  entityE2.setAttribute("geometry", "");
+  entityE2.setAttribute("side", "double");
+  entityE2.setAttribute(
+    "animation",
+    "property: scale; from: 1 1 1; to: 10 10 1; dur: 5000; loop: 1"
   );
   //entityE2.setAttribute('animation',"property: height; from: 1; to: 50; dur: 10000");
   //entityE2.setAttribute('animation',"property: width; from: 10; to: 4; dur: 7000");
