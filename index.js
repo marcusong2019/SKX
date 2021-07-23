@@ -25,6 +25,7 @@ io.on('connection', client => {
   client.on('joinGame', handleJoinGame);
   client.on('test', handleTest);
   client.on('target', (data) => {handleNewTarget(data)});
+  client.on('firemissionG', (data1, data2, data3) => {handleFireMission(data1, data2, data3)});
   
   function handleTest() {
     client.emit('reply','hello');
@@ -37,6 +38,15 @@ io.on('connection', client => {
     }
       io.sockets.in(roomName)
     .emit('target',tgtNum);
+  }
+  
+      function handleFireMission(gridE, grindN, round) {
+      const roomName = clientRooms[client.id];
+    if (!roomName) {
+      return;
+    }
+      io.sockets.in(roomName)
+    .emit('firemissionG',gridE, gridN, round);
   }
   
   
