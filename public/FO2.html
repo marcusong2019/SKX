@@ -77,8 +77,10 @@
         entityE2.setAttribute('material', "alphaTest: 0.5");
         entityE2.setAttribute('geometry', '');
         entityE2.setAttribute('side', 'double');
-        entityE2.setAttribute('animation',"property: height; from: 1; to: 25; dur: 10000");
-        entityE2.setAttribute('animation',"property: width; from: 10; to: 4; dur: 7000");
+        entityE2.setAttribute('animation',"property: scale; from: 10 10 10; to: 20 10 100; dur: 10000; loop: 1");
+        //entityE2.setAttribute('animation',"property: height; from: 1; to: 50; dur: 10000");
+        //entityE2.setAttribute('animation',"property: width; from: 10; to: 4; dur: 7000");
+        //entityE2.setAttribute('animation',"property: position; from: 10; to: 4; dur: 7000");
         entityE2.setAttribute('position', X+" 0 "+Y);
         sceneEl.appendChild(entityE2);
       }
