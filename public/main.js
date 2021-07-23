@@ -36,9 +36,10 @@ sendFireMissionBtn.addEventListener('click', sendFireMission);
 function sendFireMission() {
   console.log("FIRE MISSION!")
   const gridE = gridEasting.value;
-  const girdN = gridNorthing.value;
+  const gridN = gridNorthing.value;
   const round = roundType.value;
-  socket.emit('firemissionG',gridE, gridN, round);
+  console.log(gridE, gridN, round);
+  //socket.emit('firemissionG',gridE, gridN, round);
 }
 
 function requestTarget(tgtNum){

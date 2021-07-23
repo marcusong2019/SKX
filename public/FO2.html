@@ -50,6 +50,9 @@
       }
       
       function handleFireMission(gridE, grindN, round) {
+        console.log(gridE, gridN, round);
+        const X = gridE;
+        const Y = gridN;
         createHE(X,Y);
       }
       
@@ -65,7 +68,7 @@
         entityEl.setAttribute('side', 'double');
         entityEl.setAttribute('position', 'X 0 Y');
         sceneEl.appendChild(entityEl);
-        console.log('createHE);
+        console.log('createHE');
       }
       
       function createTarget1() {
@@ -154,9 +157,9 @@
         <a-image src="#crosshair" position="0 0 -1" material="alphaTest: 0.5" scale="0.17 0.15 1"></a-image> <!-- scale 0.14 is 1/7th -->
       </a-entity>
       
-      <!-- <a-entity environment="preset: forest; dressingAmount: 500"></a-entity>
-       <a-sky color="#0FF" radius="2000"></a-sky>-->
-      <a-sky src="#sky1" radius="2000"></a-sky>
+      <!-- <a-entity environment="preset: forest; dressingAmount: 500"></a-entity>-->
+       <a-sky color="#0FF" radius="2000"></a-sky>
+      <!-- <a-sky src="#sky1" radius="2000"></a-sky> -->
     <a-plane rotation="-90 0 0" width="2000" height="2000" color="#DAF7A6"></a-plane>
       <a-light type="ambient" color="#999999"></a-light>
   <a-light type="point" intensity="2" position="2 4 4"></a-light>

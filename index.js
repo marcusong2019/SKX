@@ -25,7 +25,7 @@ io.on('connection', client => {
   client.on('joinGame', handleJoinGame);
   client.on('test', handleTest);
   client.on('target', (data) => {handleNewTarget(data)});
-  client.on('firemissionG', (data1, data2, data3) => {handleFireMission(data1, data2, data3)});
+  client.on('firemissionG', (dataA, dataB, dataC) => {handleFireMission(dataA, dataB, dataC)});
   
   function handleTest() {
     client.emit('reply','hello');
