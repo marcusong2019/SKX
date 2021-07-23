@@ -96,10 +96,37 @@ function createHE(X, Y) {
   
   var entityE2 = document.createElement("a-image");
   entityE2.setAttribute("src", "#cloud");
-  entityE2.setAttribute("material", "alphaTest: 0.5");
+  entityE2.setAttribute("material", "alphaTest: 0.2");
   entityE2.setAttribute("geometry", "");
   entityE2.setAttribute("side", "double");
+  entityE2.setAttribute("rotation", "0 45 0");
+  entityE2.setAttribute("opacity", "0.8");
   entityE2.setAttribute(
+    "animation",
+    "property: scale; from: 10 10 1; to: 30 30 1; dur: 5000; loop: 1"
+  );
+  entityE2.setAttribute(
+    "animation",
+    "property: opacity; from: 0.8; to: 1.0; dur: 2000; loop: 1"
+  );
+  entityE2.setAttribute(
+    "animation",
+    "property: opacity; from: 1.0; to: 0.5; delay: 2000; dur: 90000; loop: 1"
+  );
+  
+  //entityE2.setAttribute('animation',"property: height; from: 1; to: 50; dur: 10000");
+  //entityE2.setAttribute('animation',"property: width; from: 10; to: 4; dur: 7000");
+  //entityE2.setAttribute('animation',"property: position; from: 10; to: 4; dur: 7000");
+  entityE2.setAttribute("position", X + " 0 " + Y);
+  
+  var entityE3 = document.createElement("a-image");
+  entityE3.setAttribute("src", "#cloud");
+  entityE3.setAttribute("material", "alphaTest: 0.5");
+  entityE3.setAttribute("geometry", "");
+  entityE3.setAttribute("side", "double");
+  entityE3.setAttribute("rotation", "0 -45 0");
+  entityE3.setAttribute("opacity", "0.8");
+  entityE3.setAttribute(
     "animation",
     "property: scale; from: 10 10 1; to: 30 30 1; dur: 5000; loop: 1"
   );
@@ -107,8 +134,11 @@ function createHE(X, Y) {
   //entityE2.setAttribute('animation',"property: width; from: 10; to: 4; dur: 7000");
   //entityE2.setAttribute('animation',"property: position; from: 10; to: 4; dur: 7000");
   entityE2.setAttribute("position", X + " 0 " + Y);
+  
   sceneEl.appendChild(entityE2);
+  sceneEl.appendChild(entityE3);
   sceneEl.appendChild(entityEl);
+  
   // delete the fire element from impact after it's animation ends
   setTimeout(function(){ 
         entityEl.parentNode.removeChild(entityEl);
