@@ -109,6 +109,11 @@ function createHE(X, Y) {
   entityE2.setAttribute("position", X + " 0 " + Y);
   sceneEl.appendChild(entityE2);
   sceneEl.appendChild(entityEl);
+  // delete the fire element from impact after it's animation ends
+  setTimeout(function(){ 
+        entityEl.parentNode.removeChild(entityEl);
+   },1400); //delay is in milliseconds 
+  // delete the 
 }
 
 function createTarget1() {
