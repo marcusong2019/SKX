@@ -96,7 +96,7 @@ function createHE(X, Y) {
   
   var entityE2 = document.createElement("a-image");
   entityE2.setAttribute("src", "#cloud");
-  entityE2.setAttribute("material", "alphaTest: 0.2");
+  entityE2.setAttribute("material", "alphaTest: 0.1");
   entityE2.setAttribute("geometry", "");
   entityE2.setAttribute("side", "double");
   entityE2.setAttribute("rotation", "0 45 0");
@@ -106,22 +106,18 @@ function createHE(X, Y) {
     "property: scale; from: 10 10 1; to: 30 30 1; dur: 5000; loop: 1"
   );
   entityE2.setAttribute(
-    "animation",
+    "animation__2",
     "property: opacity; from: 0.8; to: 1.0; dur: 2000; loop: 1"
   );
   entityE2.setAttribute(
-    "animation",
-    "property: opacity; from: 1.0; to: 0.5; delay: 2000; dur: 90000; loop: 1"
-  );
-  
-  //entityE2.setAttribute('animation',"property: height; from: 1; to: 50; dur: 10000");
-  //entityE2.setAttribute('animation',"property: width; from: 10; to: 4; dur: 7000");
-  //entityE2.setAttribute('animation',"property: position; from: 10; to: 4; dur: 7000");
+    "animation__3",
+    "property: opacity; from: 1.0; to: 0.2; delay: 2000; dur: 120000; loop: 1"
+  );  
   entityE2.setAttribute("position", X + " 0 " + Y);
   
   var entityE3 = document.createElement("a-image");
   entityE3.setAttribute("src", "#cloud");
-  entityE3.setAttribute("material", "alphaTest: 0.5");
+  entityE3.setAttribute("material", "alphaTest: 0.1");
   entityE3.setAttribute("geometry", "");
   entityE3.setAttribute("side", "double");
   entityE3.setAttribute("rotation", "0 -45 0");
@@ -130,10 +126,15 @@ function createHE(X, Y) {
     "animation",
     "property: scale; from: 10 10 1; to: 30 30 1; dur: 5000; loop: 1"
   );
-  //entityE2.setAttribute('animation',"property: height; from: 1; to: 50; dur: 10000");
-  //entityE2.setAttribute('animation',"property: width; from: 10; to: 4; dur: 7000");
-  //entityE2.setAttribute('animation',"property: position; from: 10; to: 4; dur: 7000");
-  entityE2.setAttribute("position", X + " 0 " + Y);
+    entityE3.setAttribute(
+    "animation__2",
+    "property: opacity; from: 0.8; to: 1.0; dur: 2000; loop: 1"
+  );
+  entityE3.setAttribute(
+    "animation__3",
+    "property: opacity; from: 1.0; to: 0.2; delay: 2000; dur: 120000; loop: 1"
+  );  
+  entityE3.setAttribute("position", X + " 0 " + Y);
   
   sceneEl.appendChild(entityE2);
   sceneEl.appendChild(entityE3);
@@ -143,7 +144,12 @@ function createHE(X, Y) {
   setTimeout(function(){ 
         entityEl.parentNode.removeChild(entityEl);
    },1400); //delay is in milliseconds 
-  // delete the 
+  // delete the dirt cloud after 5 min (300 sec)
+  setTimeout(function(){ 
+        entityE2.parentNode.removeChild(entityE2);
+        entityE3.parentNode.removeChild(entityE3);
+   },300000); //delay is in milliseconds 
+  
 }
 
 function createTarget1() {
