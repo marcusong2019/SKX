@@ -69,6 +69,18 @@
         entityEl.setAttribute('position', X+" 0 "+Y);
         sceneEl.appendChild(entityEl);
         console.log('createHE at ',X,Y,entityEl);
+        
+        var entityE2 = document.createElement('a-image');
+        // Do `.setAttribute()`s to initialize the entity.   
+        //entityEl.setAttribute('id', 'target1');
+        entityE2.setAttribute('src', '#cloud');
+        entityE2.setAttribute('material', "alphaTest: 0.5");
+        entityE2.setAttribute('geometry', '');
+        entityE2.setAttribute('side', 'double');
+        entityE2.setAttribute('animation',"property: height; from: 1; to: 25; dur: 10000");
+        entityE2.setAttribute('animation',"property: width; from: 10; to: 4; dur: 7000");
+        entityE2.setAttribute('position', X+" 0 "+Y);
+        sceneEl.appendChild(entityE2);
       }
       
       function createTarget1() {
@@ -151,6 +163,7 @@
         <img id="sky1" crossorigin="anonymous" src="https://cdn.glitch.com/43148ef6-d50d-4e2d-9f92-9cdadde2d68a%2F100_3FLY_FLY08001_spherical_0.jpg">
         <img id="crosshair" crossorigin="anonymous" src="https://cdn.glitch.com/43148ef6-d50d-4e2d-9f92-9cdadde2d68a%2FCrosshair3.png">
         <img id="fire" crossorigin="anonymous" src="https://cdn.glitch.com/43148ef6-d50d-4e2d-9f92-9cdadde2d68a%2FDaco_4214507.png">
+        <img id="cloud" crossorigin="anonymous" src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FHEimpact.png">
       </a-assets>
       
       <a-entity camera="zoom: 7" look-controls position="0 20 0">
