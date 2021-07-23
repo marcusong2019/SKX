@@ -39,7 +39,7 @@ function sendFireMission() {
   const gridN = gridNorthing.value;
   const round = roundType.value;
   console.log(gridE, gridN, round);
-  //socket.emit('firemissionG',gridE, gridN, round);
+  socket.emit('firemissionG',gridE, gridN, round);
 }
 
 function requestTarget(tgtNum){

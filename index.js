@@ -40,7 +40,7 @@ io.on('connection', client => {
     .emit('target',tgtNum);
   }
   
-      function handleFireMission(gridE, grindN, round) {
+      function handleFireMission(gridE, gridN, round) {
       const roomName = clientRooms[client.id];
     if (!roomName) {
       return;

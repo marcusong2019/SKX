@@ -49,7 +49,7 @@
         }
       }
       
-      function handleFireMission(gridE, grindN, round) {
+      function handleFireMission(gridE, gridN, round) {
         console.log(gridE, gridN, round);
         const X = gridE;
         const Y = gridN;
@@ -68,7 +68,7 @@
         entityEl.setAttribute('side', 'double');
         entityEl.setAttribute('position', 'X 0 Y');
         sceneEl.appendChild(entityEl);
-        console.log('createHE');
+        console.log('createHE at ',X,Y);
       }
       
       function createTarget1() {
