@@ -32,6 +32,8 @@ newGameBtn.addEventListener('click', newGame);
 joinGameBtn.addEventListener('click', joinGame);
 sendFireMissionBtn.addEventListener('click', sendFireMission);
 
+gameCodeInput .addEventListener("keypress", forceKeyPressUppercase, false);
+
 
 function sendFireMission() {
   console.log("FIRE MISSION!")
@@ -184,3 +186,18 @@ function makeCode (code) {
 	
 	qrcode.makeCode(elText);
 }
+
+function forceKeyPressUppercase(e)
+  {
+    var charInput = e.keyCode;
+    if((charInput >= 97) && (charInput <= 122)) { // lowercase
+      if(!e.ctrlKey && !e.metaKey && !e.altKey) { // no modifier key
+        var newChar = charInput - 32;
+        var start = e.target.selectionStart;
+        var end = e.target.selectionEnd;
+        e.target.value = e.target.value.substring(0, start) + String.fromCharCode(newChar) + e.target.value.substring(end);
+        e.target.setSelectionRange(start+1, start+1);
+        e.preventDefault();
+      }
+    }
+  }
