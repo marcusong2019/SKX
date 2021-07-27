@@ -1,13 +1,64 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Forward Observer</title>
     <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
-    <script src="./js/aframe-orbit-controls-component.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webpack-cesium/1.37.0/webpack.cesium.js"></script>
-    <script src="./js/aframe-aterrain-component.js"></script>
-  </head>
-  <body>
+    <script src="/js/Cesium.js"></script>
+    <script src="/js/aframe-aterrain-component.js"></script>
+    <script src="https://fernandojsg.github.io/aframe-camera-transform-controls-component/dist/aframe-camera-transform-controls-component.min.js"></script>
+
+    <style>
+      body {
+        background: #87CEEB;
+        overflow: hidden;
+      }
+    </style>
+
+    <a-scene camera-transform-controls cursor="rayOrigin: mouse">
+      <a-entity id="target"></a-entity>
+
+      <a-entity
+        a-terrain="fovpad:1;
+                     latitude:37.7983222;
+                     longitude:-122.3972797;
+                     elevation:100;
+                     lod:14;
+                  "
+      >
+      </a-entity>
+
+      <!-- actually the coast near here is 20+ meters or so under ellipsoid sea level according to the data sources -->
+
+      <a-entity id="cameraRig" position="0 0 0">
+        <a-entity
+          id="camera"
+          camera="near:1;far:100000"
+          wasd-controls="fly:true"
+          look-controls
+        ></a-entity>
+        <a-entity
+          id="lefthand"
+          camera-transform-controls-hand="hand:left"
+          vive-controls="hand: left"
+          oculus-touch-controls="hand: left"
+          windows-motion-controls="hand: left"
+        ></a-entity>
+        <a-entity
+          id="righthand"
+          camera-transform-controls-hand="hand:right"
+          vive-controls="hand: right"
+          oculus-touch-controls="hand: right"
+          windows-motion-controls="hand: right"
+        ></a-entity>
+      </a-entity>
+
+      <a-light
+        type="directional"
+        color="#ffffff"
+        intensity="1"
+        position="-1 1 1"
+      ></a-light>
+      <a-light type="ambient" color="#444444"></a-light>
+      <a-light type="point" intensity="1" position="2 4 4"></a-light>
+    </a-scene>
+
+    <!--
     <a-scene>
       <a-entity
         a-terrain="follow:0; fovpad:2; latitude:37; longitude:-122; radius:1000; elevation:580000"
@@ -19,5 +70,4 @@
         position="0 0 5000"
       ></a-entity>
     </a-scene>
-  </body>
-</html>
+-->
