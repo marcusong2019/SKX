@@ -151,6 +151,7 @@ function handleGameOver(data) {
 */
 function handleGameCode(gameCode) {
   gameCodeDisplay.innerText = gameCode;
+  makeCode(gameCode);
 }
 
 function handleUnknownCode() {
@@ -168,4 +169,18 @@ function reset() {
   gameCodeInput.value = '';
   initialScreen.style.display = "block";
   gameScreen.style.display = "none";
+}
+
+//from:   https://davidshimjs.github.io/qrcodejs/ 
+//MIT license
+function makeCode (code) {
+  var qrcode = new QRCode("qrcodeDisplay");
+	var elText = 'https://terrain-visualization.glitch.me/viewer.html?room=' + code;
+	
+	if (!elText) {
+		alert("no room code");
+		return;
+	}
+	
+	qrcode.makeCode(elText);
 }

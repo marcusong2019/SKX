@@ -86,6 +86,7 @@
       <div id="gameScreen" class="h-100">
         <div class="d-flex flex-column align-items-center justify-content-center h-100">
 
+          <div id="qrcodeDisplay"></div>
           <h1>Your game code is: <span id="gameCodeDisplay"></span></h1>
           <h2>Scenario: <span id="gameScenarioDisplay"></span></h2>
           
@@ -153,6 +154,7 @@
     </div>
 </section>
   <script src="/socket.io/socket.io.js"></script>
+  <script src="/qrcode.min.js"></script>
   <script src="/main.js"></script>
 </body>
 </html>
