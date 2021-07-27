@@ -29,11 +29,9 @@ const gridNorthing = document.getElementById('gridNorthingInput');
 const roundType = document.getElementById('roundTypeInput');
 
 newGameBtn.addEventListener('click', newGame);
+gameCodeInput .addEventListener("keypress", forceKeyPressUppercase, false);
 joinGameBtn.addEventListener('click', joinGame);
 sendFireMissionBtn.addEventListener('click', sendFireMission);
-
-gameCodeInput .addEventListener("keypress", forceKeyPressUppercase, false);
-
 
 function sendFireMission() {
   console.log("FIRE MISSION!")
