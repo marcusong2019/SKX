@@ -98,7 +98,7 @@ console.log("join game");
     clientRooms[client.id] = roomName;
     client.emit('gameCode', roomName);
 
-    state[roomName] = initGame();
+    //state[roomName] = initGame();
 
     client.join(roomName);
     client.number = 1;

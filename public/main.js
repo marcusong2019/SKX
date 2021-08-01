@@ -127,7 +127,7 @@ function handleInit(number) {
 function handleInitFO(number) {
   playerNumber = number;
   const code = gameCodeInput.value;
-  window.location.href = 'https://observed-fire-test.glitch.me/FO.html?game=' + code;
+  window.location.href = 'https://observed-fire-simulator.glitch.me/FO.html?game=' + code;
 }
 /*
 function handleGameState(gameState) {
@@ -184,7 +184,7 @@ function handleNewClient(numClients) {
 //MIT license
 function makeCode (code) {
   var qrcode = new QRCode("qrcodeDisplay");
-	var elText = 'https://observed-fire-test.glitch.me/FO.html?game=' + code;
+	var elText = 'https://observed-fire-simulator.glitch.me/FO.html?game=' + code;
 	
 	if (!elText) {
 		alert("no room code");
