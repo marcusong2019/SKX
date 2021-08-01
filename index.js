@@ -30,13 +30,6 @@ io.on('connection', client => {
       
   function handleDisconnect() {
     console.log('A user disconnected');
-    const roomName = clientRooms[client.id];
-    if (!roomName) {
-      return;
-    }
-    numClients = Object.keys(allUsers).length;
-    io.sockets.in(roomName)
-    .emit('newClient',numClients);
   }
   
   function handleTest() {
