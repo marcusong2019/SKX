@@ -45,15 +45,30 @@
       </div>
       
       <div id="scenarioScreen" class="h-100">
+        <div class="form-group">
+            <input type="text" placeholder="18TWL81647945" id="gridInput"/> 
+            
+          </div>
+          <div>
+            <button
+              type="submit"
+              class="btn btn-success"
+              id="sendMgrsGrid"
+            >
+              Submit
+            </button>
+          </div>
+        
+        
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
           
           <div class="col">        
             <div class="card" style="width: 18rem;">
               <img src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FU.S._Military_Academy_Coat_of_Arms.svg.png?v=1626658887348" class="card-img-top" alt="West Point Thumbnail" height="200" width="200">
               <div class="card-body">
-                <h5 class="card-title">West Point Plain</h5>
-                <p class="card-text">Example scenario on West Point plain.</p>
-                <button class="btn btn-primary" onclick="setScenario('West Point Plain')">Select</button>
+                <h5 class="card-title">West Point OP McNair</h5>
+                <p class="card-text">Example scenario on West Point terrain.</p>
+                <button class="btn btn-primary" onclick="setScenario('West Point OP McNair')">Select</button>
               </div>
             </div>
           </div>
@@ -89,6 +104,7 @@
           <div id="qrcodeDisplay"></div>
           <h1>Your game code is: <span id="gameCodeDisplay"></span></h1>
           <h2>Scenario: <span id="gameScenarioDisplay"></span></h2>
+          <h2><span id="numConnectionsDisplay"></span></h2>
           
           <div class="form-group">
               WL <input type="number" min="0" max="99999" placeholder="Easting" id="gridEastingInput"/>

@@ -10,7 +10,10 @@ socket.on('initFO', handleInitFO);
 //socket.on('gameOver', handleGameOver);
 socket.on('gameCode', handleGameCode);
 socket.on('unknownCode', handleUnknownCode);
-//socket.on('tooManyPlayers', handleTooManyPlayers);
+socket.on('newClient', data => {
+  console.log(data);
+  handleNewClient(data);
+});
 
 const gameScreen = document.getElementById('gameScreen');
 const scenarioScreen = document.getElementById('scenarioScreen');
@@ -19,6 +22,7 @@ const newGameBtn = document.getElementById('newGameButton');
 const joinGameBtn = document.getElementById('joinGameButton');
 const gameCodeInput = document.getElementById('gameCodeInput');
 const gameCodeDisplay = document.getElementById('gameCodeDisplay');
+const numConnectionsDisplay = document.getElementById('numConnectionsDisplay');
 const sendFireMissionBtn = document.getElementById('sendFireMission');
 const target1UpBtn = document.getElementById('target1UpButton');
 const target2UpBtn = document.getElementById('target2UpButton');
@@ -123,7 +127,7 @@ function handleInit(number) {
 function handleInitFO(number) {
   playerNumber = number;
   const code = gameCodeInput.value;
-  window.location.href = 'https://observed-fire-simulator.glitch.me/FO.html?game=' + code;
+  window.location.href = 'https://observed-fire-test.glitch.me/FO.html?game=' + code;
 }
 /*
 function handleGameState(gameState) {
@@ -171,11 +175,16 @@ function reset() {
   gameScreen.style.display = "none";
 }
 
+function handleNewClient(numClients) {
+  console.log("Client count change: "+numClients);
+  numConnectionsDisplay.innerText = numClients;
+}
+
 //from:   https://davidshimjs.github.io/qrcodejs/ 
 //MIT license
 function makeCode (code) {
   var qrcode = new QRCode("qrcodeDisplay");
-	var elText = 'https://terrain-visualization.glitch.me/viewer.html?room=' + code;
+	var elText = 'https://observed-fire-test.glitch.me/FO.html?game=' + code;
 	
 	if (!elText) {
 		alert("no room code");

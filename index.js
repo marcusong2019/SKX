@@ -3,8 +3,8 @@ var express = require("express");
 var app = express();
 var server = require("http").createServer(app);
 var io = require("socket.io")(server);
-const { initGame, gameLoop, getUpdatedVelocity } = require('./game');
-const { FRAME_RATE } = require('./constants');
+//const { initGame, gameLoop, getUpdatedVelocity } = require('./game');
+//const { FRAME_RATE } = require('./constants');
 const { makeid } = require('./utils');
 
 const state = {};
@@ -20,12 +20,24 @@ app.use(express.static("public"));
 
 io.on('connection', client => {
 
-  client.on('keydown', handleKeydown);
+  //client.on('keydown', handleKeydown);
   client.on('newGame', handleNewGame);
   client.on('joinGame', handleJoinGame);
   client.on('test', handleTest);
   client.on('target', (data) => {handleNewTarget(data)});
   client.on('firemissionG', (dataA, dataB, dataC) => {handleFireMission(dataA, dataB, dataC)});
+  client.on('disconnect', handleDisconnect);
+      
+  function handleDisconnect() {
+    console.log('A user disconnected');
+    const roomName = clientRooms[client.id];
+    if (!roomName) {
+      return;
+    }
+    numClients = Object.keys(allUsers).length;
+    io.sockets.in(roomName)
+    .emit('newClient',numClients);
+  }
   
   function handleTest() {
     client.emit('reply','hello');
@@ -52,7 +64,7 @@ io.on('connection', client => {
   
   function handleJoinGame(roomName) {
     const room = io.sockets.adapter.rooms[roomName];
-
+console.log("join game");
     let allUsers;
     if (room) {
       allUsers = room.sockets;
@@ -66,18 +78,18 @@ io.on('connection', client => {
     if (numClients === 0) {
       client.emit('unknownCode');
       return;
-    } else if (numClients > 1) {
-      client.emit('tooManyPlayers');
-      return;
-    }
-
+    } 
+    
     clientRooms[client.id] = roomName;
 
     client.join(roomName);
-    client.number = 2;
+    //client.number = 2;
     client.emit('initFO', 2);
     
-    startGameInterval(roomName);
+    io.sockets.in(room)
+    .emit('newClient',numClients);
+    console.log(numClients);
+    
     client.emit('reply','Room Joined '+roomName);
   }
 
@@ -92,7 +104,8 @@ io.on('connection', client => {
     client.number = 1;
     client.emit('init', 1);
   }
-
+});
+  /*
   function handleKeydown(keyCode) {
     const roomName = clientRooms[client.id];
     if (!roomName) {
@@ -137,3 +150,4 @@ function emitGameOver(room, winner) {
   io.sockets.in(room)
     .emit('gameOver', JSON.stringify({ winner }));
 }
+*/

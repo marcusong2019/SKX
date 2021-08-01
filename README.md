@@ -1,4 +1,4 @@
-# Socket.IO Chat
+# Observed Fire Simulator
 
-Multiple users can join a chat room by each entering a unique username
-when the website loads. Users can type chat messages to the room, and a notification is sent to all users when another user joins or leaves.
+Multiplayer where one user is the Fire Direction Center (FDC) controlling when targets appear and where indirect fire lands, 
+while other players are Forward Observers (FO) that see the 3D terrain and call in fire missions to adjust fire.
