@@ -114,7 +114,8 @@ AFRAME.registerComponent('ground-clamp', {
 //const urlParams = new URLSearchParams(window.location.search); // get all parameters from the url
 const code = urlParams.get("game"); //get the variable we want
   console.log("Attempt join game:", code);
-var socket = io("https://observed-fire-test.glitch.me/");
+const urlOrigin = window.location.origin;
+var socket = io(urlOrigin);
   console.log(socket);
 socket.on("connect", () => {
   console.log("Connected " + socket.id);

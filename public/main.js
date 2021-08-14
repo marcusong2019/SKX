@@ -1,8 +1,8 @@
 //const BG_COLOUR = '#231f20';
 //const SNAKE_COLOUR = '#c2c2c2';
 //const FOOD_COLOUR = '#e66916';
-
-var socket = io('https://observed-fire-test.glitch.me/');
+const urlOrigin = window.location.origin;
+var socket = io(urlOrigin);//'https://observed-fire-test.glitch.me/');
   
 //socket.on('init', handleInit);
 socket.on('initFO', handleInitFO);
@@ -128,7 +128,7 @@ function handleInit(number) {
 function handleInitFO(number) {
   playerNumber = number;
   const code = gameCodeInput.value;
-  window.location.href = 'https://observed-fire-test.glitch.me/FO.html?game=' + code;
+  window.location.href = urlOrigin+'/FO.html?game=' + code;
 }
 /*
 function handleGameState(gameState) {
@@ -185,7 +185,7 @@ function handleNewClient(numClients) {
 //MIT license
 function makeCode (code) {
   var qrcode = new QRCode("qrcodeDisplay");
-	var elText = 'https://observed-fire-test.glitch.me/FO.html?game=' + code;
+	var elText = urlOrigin+'/FO.html?game=' + code;
 	
 	if (!elText) {
 		alert("no room code");
