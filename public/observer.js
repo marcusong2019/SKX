@@ -1,3 +1,25 @@
+// Initial connection
+        const urlParams = new URLSearchParams(window.location.search); // get all parameters from the url
+        var lat = urlParams.get("lat"); //get the variable we want
+        var lon = urlParams.get("lon"); //get the variable we want
+        var az = urlParams.get("az"); //get the variable we want
+        if (az==null) { az = 0 };
+        if (lat==null || lon==null) {
+          lat = 41.36289858633997;
+          lon = -74.01923243991936;
+          if (az==0) { az = 165 };
+        };
+        az = -1 * az;
+        console.log("Attempt lat/lon:",lat,lon);
+
+const opGrid = mgrs.forward([lon, lat],5);
+const opParts = mgrs.decode(opGrid);
+const opEasting = opParts.easting.toString().slice(-5);
+const opNorthing = opParts.northing.toString().slice(-5);
+console.log("E:"+opEasting+" N:"+opNorthing);
+
+
+/*
 const opEasting = padGrid(82030);
 const opNorthing = padGrid(79507);
 console.log(opNorthing);
@@ -8,6 +30,8 @@ const [lon, lat] = mgrs.toPoint(opMgrsStr);
 console.log("OP at lat: "+lat+" lon: "+lon);
 const easting = "1234";
 console.log(easting.toString().length);
+*/
+
 
 // Allow logging to console from inside A-Frame
 AFRAME.registerComponent("log", {
@@ -19,11 +43,78 @@ AFRAME.registerComponent("log", {
   }
 });
 
+      AFRAME.registerComponent('compass', {
+        init: function () {
+          //this.el.setAttibute('text','value','test');
+          //const cameraDirection = new THREE.Vector3(0,0,1);
+          const sceneEl = document.querySelector('a-scene');
+          const camViewEl = sceneEl.querySelector("#viewDirection");
+          console.log(camViewEl);
+        },
+        tick: function () {
+          const sceneEl = document.querySelector('a-scene');
+          const cameraRigEl = sceneEl.querySelector('#camera-rig');
+          const camViewEl = sceneEl.querySelector("#viewDirection");
+          var camRigRot = cameraRigEl.getAttribute('rotation').y;
+          var rotationRaw = camViewEl.getAttribute('rotation').y;
+          var rotation = parseFloat(camRigRot) + parseFloat(rotationRaw);
+          //console.log("raw "+rotation);
+          var viewAz = rot2bearing(rotation);
+          var viewAzMils = deg2mils(viewAz);
+          viewAz = Math.round(viewAz);
+          viewAzMils = Math.round(viewAzMils);
+          //console.log("setting "+ viewAz + " or mils: "+viewAzMils);
+          this.el.setAttribute('text','value',viewAz.toString() +"°\n"+ viewAzMils.toString());
+          /*
+          //works to get euler angle
+          var rotVec = this.el.object3D.getWorldDirection(THREE.Vector3(1,0,0)); //get rotation - likely in radians
+          var rotation = new THREE.Euler();
+          rotation.setFromVector3(rotVec);
+          console.log(rotation);
+          */          
+        }
+        
+      });//end component 
+      function rot2bearing (rot) {
+        while (rot > 180) { rot = rot - 360 };
+        while (rot < -180) { rot = rot + 360 };
+        if (rot <= 0) {az = -rot};
+        if (rot > 0) { az= 360-rot};
+        //console.log("convert to "+az);
+        return az;        
+      };
+      
+      function deg2mils (deg) {
+        var mils = ( 6400 / 360 ) * deg;
+        return mils;
+      };
+
+AFRAME.registerComponent('ground-clamp', {
+        schema: {
+          height: {default: 0},
+        },
+
+    tick: function () {
+        var position = this.el.object3D.position; //getAttribute('position');
+
+        var location = new THREE.Vector3(position.x, 9000, position.z);
+        const direction = new THREE.Vector3(0, -1, 0);
+        const raycaster = new THREE.Raycaster();
+        raycaster.set(location, direction);
+
+        const mesh = document.querySelector("#ground").sceneEl.object3D;
+        var intersects = raycaster.intersectObject(mesh, true);
+        var point = intersects[0].point; // a three value point XYZ in world coord
+        var Y = point.y + this.data.height;
+        this.el.object3D.position.y=Y;      
+}
+  });
+
 // Initial connection
-const urlParams = new URLSearchParams(window.location.search); // get all parameters from the url
+//const urlParams = new URLSearchParams(window.location.search); // get all parameters from the url
 const code = urlParams.get("game"); //get the variable we want
   console.log("Attempt join game:", code);
-var socket = io("https://observed-fire-simulator.glitch.me/");
+var socket = io("https://observed-fire-test.glitch.me/");
   console.log(socket);
 socket.on("connect", () => {
   console.log("Connected " + socket.id);
@@ -74,16 +165,16 @@ function padGrid(ening) {
 function handleNewTarget(tgtNum) {
   console.log(tgtNum);
   if (tgtNum == 1) {
-    createTarget(100,0);
+    createTarget(82300,79000);
     console.log("Creating Target 1");
   } else if (tgtNum == 2) {
-    createTarget(100,100);
+    createTarget(82100,79100);
     console.log("Creating Target 2");
   } else if (tgtNum == 3) {
-    createTarget(300,-175);
+    createTarget(81800,78100);
     console.log("Creating Target 3");
   } else if (tgtNum == 4) {
-    createTarget(160,880);
+    createTarget(81850,78150);
     console.log("Creating Target 4");
   } else {
     console.log("request for target failed");
@@ -114,7 +205,8 @@ function getGroundLevel(X, Z) {
   };
 }
 
-function createTarget(X, Z, Model = "#T90Tank", Az = 0) {
+function createTarget(gridE,gridN, Model = "#T90Tank", Az = 0) {
+   var [X,Z] = convertGrid(gridE,gridN);
   var groundLevel = getGroundLevel(X, Z);
   var position = groundLevel.point;
   var normal = groundLevel.normal;
@@ -199,33 +291,3 @@ function createSmokeEl(Rot = 0) {
 }
 
 
-document.addEventListener("keypress", function(e){
-  console.log("keypress",e.keyCode);
-    if(e.keyCode == 32) { //space bar
-      swapCameras();      
-    };
-});
-
-if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-  console.log("mobile");
-  document.addEventListener("click", swapCameras);
-}else{
-  console.log("not mobile");
-}
-
-
-function swapCameras() {
-  var mainCameraEl = document.querySelector('#camera1');
-  var secondCameraEl = document.querySelector('#camera2');
-  console.log("main cam",mainCameraEl.getAttribute('camera').active);
-  if (mainCameraEl.getAttribute('camera').active) {
-    mainCameraEl.setAttribute('camera', 'active', false);
-    mainCameraEl.setAttribute('visible', false);
-    secondCameraEl.setAttribute('camera', 'active', true);
-  } else {
-    mainCameraEl.setAttribute('camera', 'active', true);
-    mainCameraEl.setAttribute('visible', true);
-    secondCameraEl.setAttribute('camera', 'active', false);
-  };
-  console.log("swap cameras")
-}

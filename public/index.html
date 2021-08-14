@@ -49,7 +49,8 @@
       
       <div id="scenarioScreen" class="h-100">
         
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+        
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
           
           <div class="col">        
             <div class="card" style="width: 18rem;">
@@ -58,6 +59,21 @@
                 <h5 class="card-title">West Point OP McNair</h5>
                 <p class="card-text">Example scenario on West Point' artillery range terrain.</p>
                 <button class="btn btn-primary" onclick="setScenario('West Point OP McNair')">Select</button>
+              </div>
+            </div>
+          </div>
+  
+            <div class="col">        
+            <div class="card" style="width: 18rem;">
+              <img src="https://cdn.glitch.com/ff04fad4-579c-40f2-b2d7-d1a5cf0a03be%2FMapSegment.png?v=1628971820083" class="card-img-top" alt="West Point Thumbnail" height="200" width="200">
+              <div class="card-body">
+                <h5 class="card-title">Custom Location</h5>
+                <p class="card-text"> Enter MGRS grid (include grid zone designator)
+                    <div class="form-group">
+                      <input type="text" placeholder="18TWL81647945" id="gridInput"/> 
+                    </div>
+                </p>
+                <button type="submit" class="btn btn-primary" id="sendMgrsGrid">Submit</button>
               </div>
             </div>
           </div>
@@ -80,13 +96,16 @@
         <div class="d-flex flex-column align-items-center justify-content-center h-100">
 
           <div id="qrcodeDisplay"></div>
-          <h1>Your game code is: <span id="gameCodeDisplay"></span></h1>
+          <a href="#" id="linkURL" target="_blank">
+            <h1>Your game code is: <span id="gameCodeDisplay"></span></h1>
+          </a>
           <h2>Scenario: <span id="gameScenarioDisplay"></span></h2>
+          <!--<h2><span id="numConnectionsDisplay"></span></h2>-->
           
           <div class="form-group">
               WL <input type="number" min="0" max="99999" placeholder="Easting" id="gridEastingInput"/>
               <input type="number" min="0" max="99999" placeholder="Northing" id="gridNorthingInput"/>
-              <! maxlength="5" only works for text input type  
+              <! maxlength="5" only works for text input type  >
           </div>
           <div>
             <select id="roundTypeInput">

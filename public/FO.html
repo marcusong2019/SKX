@@ -1,26 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Forward Observer</title>
+    <title>Forward Observer 2</title>
     <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
     <script src="./Cesium.js"></script>
     <script src="./aframe-aterrain-component.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script> <!--AFrame extra for motion controls -->
     <script src="/socket.io/socket.io.js"></script>
     <script src="./mgrs.js"></script>
     <script src="./observer.js"></script>
-    <!-- foldable viewer config  using https://wwgc.firebaseapp.com/     http://google.com/cardboard/cfg?p=CgRXUFNDEg9Gb2xkYWJsZSBWaWV3ZXId9P1UPSW4HoU9KhAAAEhCAABIQgAASEIAAEhCWAE1KVwPPToImpkZPpqZGT5QAGAA -->
-    <!--<script>
-      // auto for demo and testing
-      setTimeout(createTarget, 3000,100,0);//,"#T90Tank",180);
-      setTimeout(createIDF, 7000,100,20);
-      setTimeout(createIDF, 8000,300,-175);
-      setTimeout(createIDF, 10000,100,100);
-    </script>-->
   </head>
   <body>
-    <a-scene>
+    <a-scene background="color: #87ceeb">     
       <!-- Preload assets -->
-      <a-assets>
+      <a-assets>        
+        <img id="crosshair" crossorigin="anonymous" src="https://cdn.glitch.com/43148ef6-d50d-4e2d-9f92-9cdadde2d68a%2FCrosshair3.png">
         <a-asset-item
           id="M2Bradley"
           src="https://cdn.glitch.com/43148ef6-d50d-4e2d-9f92-9cdadde2d68a%2FM2Bradley.glb"
@@ -39,17 +33,7 @@
           src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2Flow_poly_2655945_tank.glb?v=1626967824598"
           response-type="arraybuffer"
         ></a-asset-item>
-
-        <img
-          id="sky1"
-          crossorigin="anonymous"
-          src="https://cdn.glitch.com/43148ef6-d50d-4e2d-9f92-9cdadde2d68a%2F100_3FLY_FLY08001_spherical_0.jpg"
-        />
-        <img
-          id="crosshair"
-          crossorigin="anonymous"
-          src="https://cdn.glitch.com/43148ef6-d50d-4e2d-9f92-9cdadde2d68a%2FCrosshair3.png"
-        />
+        
         <img
           id="fire"
           crossorigin="anonymous"
@@ -59,45 +43,111 @@
           id="cloud"
           crossorigin="anonymous"
           src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FHEimpact2a.png"
-        />
+        />        
       </a-assets>
-
-      <a-entity id="camera-rig" look-controls wasd-controls="fly:true">
+      
+<a-entity
+        id="camera-rig"        
+        movement-controls="camera: #viewDirection"
+        ground-clamp="height:1.6;"
+      >
+  <!--TODO perhaps ground clamp to zero and put cameras at height 1.6 to accomodate the position tracking of headset -->
+  <a-entity id="viewDirection" look-controls>
         <a-entity id="camera1" camera="zoom: 7;active:false" visible="false">
           <a-image
             src="#crosshair"
             position="0 0 -1"
             material="alphaTest: 0.5"
-            scale="0.17 0.15 1"
+            scale="0.17 0.15 1"                              
           ></a-image>
           <!-- scale 0.14 is 1/7th -->
+          <a-entity compass
+             id="compass-text"
+             text="value: abc; align: center" 
+             position="0 0.09 -1"
+             scale="0.5 0.5 0.5"></a-entity>
         </a-entity>
-        <a-entity id="camera2" camera="active:true"></a-entity>
-        <a-sphere dynamic-body radius="5" visible="false"></a-sphere>
+        <a-entity id="camera2" camera="active:true" ></a-entity>
+    </a-entity>
+        <a-entity
+          id="lefthand"
+          vive-controls="hand: left"
+          oculus-touch-controls="hand: left"
+          windows-motion-controls="hand: left"          
+        ></a-entity>
+        <a-entity
+          vive-controls="hand: right"
+          oculus-touch-controls="hand: right"
+          windows-motion-controls="hand: right"
+        ></a-entity>
       </a-entity>
 
+      
+      <a-box position="0 0 0" scale="0.5 1 0.5" color="red"></a-box>
+      
       <a-entity
         light="type: directional; color: #EED; intensity: 3"
         position="-1 1 1"
       ></a-entity>
-
-      <a-sky color="#0FF" radius="4000"></a-sky>
-
-      <a-entity
-        id="ground"
-        class="ground"
-        a-terrain="fovpad:3;
-                  latitude: 41.36289858633997;
-                  longitude:-74.01923243991936;                     
-                  elevation:10;
-                  lod:15;"
-      ></a-entity>
-      <!-- above grid based on 18TWL8203079507 is
-                  latitude: 41.36289858633997;
-                  longitude:-74.01923243991936;  
-          older tests at:
-          41.36177634714477;
-       -74.02275327296475; -->
+      
     </a-scene>
+    <!--<script src="./viewScript.js"></script>-->
+    <script>
+        // Initial connection
+        /*const urlParams = new URLSearchParams(window.location.search); // get all parameters from the url
+        var lat = urlParams.get("lat"); //get the variable we want
+        var lon = urlParams.get("lon"); //get the variable we want
+        if (lat==null || lon==null) {
+          lat = 41.36289858633997;
+          lon = -74.01923243991936
+        };
+        console.log("Attempt lat/lon:",lat,lon);*/
+
+        //setup terrain
+        var sceneEl = document.querySelector("a-scene");
+        var entityEl = document.createElement("a-entity");
+        entityEl.setAttribute("id","ground");
+        entityEl.setAttribute("class","ground");
+        entityEl.setAttribute("static-body","");
+        entityEl.setAttribute("a-terrain", "fovpad:5;elevation:0;lod:14;latitude:"+lat+";longitude:"+lon+";");
+        sceneEl.appendChild(entityEl);
+      
+      //set camera
+      var cameraRigEl = document.querySelector('#camera-rig');
+      cameraRigEl.setAttribute("rotation","0 "+az+" 0");
+      console.log("Camera Rig az",az);
+      
+      document.addEventListener("keypress", function(e){
+  console.log("keypress",e.keyCode);
+    if(e.keyCode == 32) { //space bar
+      swapCameras();      
+    };
+});
+
+if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+  console.log("mobile");
+  document.addEventListener("click", swapCameras);
+}else{
+  console.log("not mobile");
+}
+
+
+function swapCameras() {
+  var mainCameraEl = document.querySelector('#camera1');
+  var secondCameraEl = document.querySelector('#camera2');
+  console.log("main cam",mainCameraEl.getAttribute('camera').active);
+  if (mainCameraEl.getAttribute('camera').active) {
+    mainCameraEl.setAttribute('camera', 'active', false);
+    mainCameraEl.setAttribute('visible', false);
+    secondCameraEl.setAttribute('camera', 'active', true);
+  } else {
+    mainCameraEl.setAttribute('camera', 'active', true);
+    mainCameraEl.setAttribute('visible', true);
+    secondCameraEl.setAttribute('camera', 'active', false);
+  };
+  console.log("swap cameras")
+}
+    </script>
   </body>
 </html>
+

@@ -2,7 +2,7 @@
 //const SNAKE_COLOUR = '#c2c2c2';
 //const FOOD_COLOUR = '#e66916';
 
-var socket = io('https://observed-fire-simulator.glitch.me/');
+var socket = io('https://observed-fire-test.glitch.me/');
   
 //socket.on('init', handleInit);
 socket.on('initFO', handleInitFO);
@@ -22,6 +22,7 @@ const newGameBtn = document.getElementById('newGameButton');
 const joinGameBtn = document.getElementById('joinGameButton');
 const gameCodeInput = document.getElementById('gameCodeInput');
 const gameCodeDisplay = document.getElementById('gameCodeDisplay');
+const linkURL = document.getElementById('linkURL');
 const numConnectionsDisplay = document.getElementById('numConnectionsDisplay');
 const sendFireMissionBtn = document.getElementById('sendFireMission');
 const target1UpBtn = document.getElementById('target1UpButton');
@@ -127,7 +128,7 @@ function handleInit(number) {
 function handleInitFO(number) {
   playerNumber = number;
   const code = gameCodeInput.value;
-  window.location.href = 'https://observed-fire-simulator.glitch.me/FO.html?game=' + code;
+  window.location.href = 'https://observed-fire-test.glitch.me/FO.html?game=' + code;
 }
 /*
 function handleGameState(gameState) {
@@ -184,7 +185,7 @@ function handleNewClient(numClients) {
 //MIT license
 function makeCode (code) {
   var qrcode = new QRCode("qrcodeDisplay");
-	var elText = 'https://observed-fire-simulator.glitch.me/FO.html?game=' + code;
+	var elText = 'https://observed-fire-test.glitch.me/FO.html?game=' + code;
 	
 	if (!elText) {
 		alert("no room code");
@@ -192,6 +193,8 @@ function makeCode (code) {
 	}
 	
 	qrcode.makeCode(elText);
+  //linkDisplay.innerText = elText;
+  linkURL.href = elText;
 }
 
 function forceKeyPressUppercase(e)
