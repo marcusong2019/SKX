@@ -14,12 +14,7 @@
     <a-scene background="color: #87ceeb">     
       <!-- Preload assets -->
       <a-assets>        
-        <img id="crosshair" crossorigin="anonymous" src="https://cdn.glitch.com/43148ef6-d50d-4e2d-9f92-9cdadde2d68a%2FCrosshair3.png">
-        <a-asset-item
-          id="M2Bradley"
-          src="https://cdn.glitch.com/43148ef6-d50d-4e2d-9f92-9cdadde2d68a%2FM2Bradley.glb"
-          response-type="arraybuffer"
-        ></a-asset-item>
+        <img id="crosshair" crossorigin="anonymous" src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FCrosshair3.png?v=1629202456710">
 
         <a-asset-item
           id="T90Tank"
@@ -37,12 +32,12 @@
         <img
           id="fire"
           crossorigin="anonymous"
-          src="https://cdn.glitch.com/43148ef6-d50d-4e2d-9f92-9cdadde2d68a%2FDaco_4214507.png"
+          src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FDaco_4214507.png?v=1629202720362"
         />
         <img
           id="cloud"
           crossorigin="anonymous"
-          src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FHEimpact2a.png"
+          src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FHEimpact2a.png?v=1627049785796"
         />        
       </a-assets>
       
@@ -91,17 +86,8 @@
       ></a-entity>
       
     </a-scene>
-    <!--<script src="./viewScript.js"></script>-->
+
     <script>
-        // Initial connection
-        /*const urlParams = new URLSearchParams(window.location.search); // get all parameters from the url
-        var lat = urlParams.get("lat"); //get the variable we want
-        var lon = urlParams.get("lon"); //get the variable we want
-        if (lat==null || lon==null) {
-          lat = 41.36289858633997;
-          lon = -74.01923243991936
-        };
-        console.log("Attempt lat/lon:",lat,lon);*/
 
         //setup terrain
         var sceneEl = document.querySelector("a-scene");
