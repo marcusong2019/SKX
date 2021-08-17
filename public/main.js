@@ -15,6 +15,11 @@ socket.on('newClient', data => {
   handleNewClient(data);
 });
 
+var opEasting = 82030; // TODO get from
+var opNorthing = 79507;
+var opLocation = [opEasting, opNorthing];
+var lastFireMission=[0,0];
+
 const gameScreen = document.getElementById('gameScreen');
 const scenarioScreen = document.getElementById('scenarioScreen');
 const initialScreen = document.getElementById('initialScreen');
@@ -31,7 +36,16 @@ const target3UpBtn = document.getElementById('target3UpButton');
 const target4UpBtn = document.getElementById('target4UpButton');
 const gridEasting = document.getElementById('gridEastingInput');
 const gridNorthing = document.getElementById('gridNorthingInput');
+const polarDirection = document.getElementById('polarDirectionInput');
+const polarDistance = document.getElementById('polarDistanceInput');
+const shiftDirection = document.getElementById('shiftDirectionInput');
+const shiftRange = document.getElementById('shiftRangeInput');
+const shiftAddDrop = document.getElementById('correctRangeAdd');
+const shiftDeviation = document.getElementById('shiftDeviationInput');
+const shiftRight = document.getElementById('correctDevRight');
 const roundType = document.getElementById('roundTypeInput');
+const splashMesage = document.getElementById('splashMesage');
+const shotTimer = document.getElementById('shotTimer');
 
 newGameBtn.addEventListener('click', newGame);
 gameCodeInput .addEventListener("keypress", forceKeyPressUppercase, false);
@@ -39,12 +53,113 @@ joinGameBtn.addEventListener('click', joinGame);
 sendFireMissionBtn.addEventListener('click', sendFireMission);
 
 function sendFireMission() {
-  console.log("FIRE MISSION!")
-  const gridE = gridEasting.value;
-  const gridN = gridNorthing.value;
+  console.log("FIRE MISSION!")  
+  
+  var gridTabEl = document.getElementById('gridTab').style.display;
+  var polarTabEl = document.getElementById('polarTab').style.display;
+  var correctionTabEl = document.getElementById('correctionTab').style.display;
+  var gridE;
+  var gridN;
+  if (polarTabEl == "block") {
+    console.log("Adjust fire, polar");
+    let direction = polarDirection.value;
+    let distance = polarDistance.value;
+    [gridE, gridN] = calcPolar2Grid(direction, distance, opLocation);//TODO add FO location- need way to send/track
+    
+  } else if (correctionTabEl =="block"){
+    console.log("correct fire");
+    
+    console.log(shiftAddDrop.checked,shiftRange.value,shiftRight.checked,shiftDeviation.value);
+    
+    let [x,y] = getAdjustFireShift();
+    let [adjEast,adjNorth] = calcAdjustFireShift(shiftDirection.value,x,y);
+    gridE = lastFireMission[0] + adjEast;
+    gridN = lastFireMission[1] + adjNorth;    
+console.log(x,y,adjEast,adjNorth);
+    
+  } else if (gridTabEl =="block") {
+    console.log("Adjust Fire, grid");  
+    console.log(gridEasting.value);
+    gridE = gridEasting.value;
+    gridN = gridNorthing.value;
+  }
   const round = roundType.value;
+  gridE = padGrid(gridE);
+  gridN = padGrid(gridN);
   console.log(gridE, gridN, round);
   socket.emit('firemissionG',gridE, gridN, round);
+  lastFireMission=[gridE,gridN]; //store for future
+}
+
+/*function splashTimer() {
+  splashMesage.style.display = "none";
+  shotTimer.style.display = "block";
+  var flighTimeToSplash = 45000; //ms TODO randomize
+  var timeleft = 100;
+  var splashTimerBar = setInterval(function(){
+    if(timeleft <= 0){
+      clearInterval(splashTimerBar);
+      splashMesage.style.display = "block";
+      shotTimer.style.display = "none";
+      document.getElementById("splashProgressBar").value = 0;
+      return true;
+    }
+    document.getElementById("splashProgressBar").value = 100 - timeleft;
+    timeleft -= 1;
+  }, (flighTimeToSplash/100));  
+} */
+
+function padGrid(ening) {
+  var len = ening.toString().length;
+  console.log("length: "+len);
+  var Xin;
+  if (len==3){
+      Xin = Number(ening+"00");
+    }else if (len==4){
+      Xin = Number(ening+"0");
+    }else if (len==5){
+      Xin = Number(ening);    
+  } else {
+    console.log("Bad grid");
+    alert("Grid must be in 6, 8, or 10 digit format")
+  }
+  return Xin;
+}
+
+function calcAdjustFireShift(direction,x,y) {      
+    let dirRadians = direction * Math.PI / 3200; //mils to radians
+    adjEast = ( x * Math.cos(dirRadians) ) + ( y * Math.sin(dirRadians) );
+    adjNorth = (-1 * x * Math.sin(dirRadians) ) + ( y * Math.cos(dirRadians) );
+  return [Math.round(adjEast),Math.round(adjNorth)];
+}
+
+function getAdjustFireShift() {
+  let x = 0;
+  let y = 0;
+      if (shiftAddDrop.checked==true) {
+      y = shiftRange.value;
+    } else {
+      y = -shiftRange.value;
+    };
+    
+    if (shiftRight.checked==true) {
+      x = shiftDeviation.value;
+    } else {
+      x = -shiftDeviation.value;
+    };
+  console.log(x,y);
+  return [x,y];
+}
+
+function calcPolar2Grid(direction, distance, opLocation=[0,0]) {
+  console.log('calc polar');
+  let dirRadians = direction * Math.PI / 3200; //mils to radians
+  let shiftE = distance * ( Math.sin(dirRadians) );
+  let shiftN = distance * ( Math.cos(dirRadians) );
+  let gridE = opLocation[0] + Math.round(shiftE);
+  let gridN = opLocation[1] + Math.round(shiftN);
+  console.log(gridE,gridN);
+  return [gridE, gridN];
 }
 
 function requestTarget(tgtNum){
@@ -81,6 +196,8 @@ function init() {
   initialScreen.style.display = "none";
   scenarioScreen.style.display = "none";
   gameScreen.style.display = "block";
+  splashMesage.style.display = "none";
+  shotTimer.style.display = "none";
 
 //  canvas = document.getElementById('canvas');
 // ctx = canvas.getContext('2d');
@@ -211,3 +328,27 @@ function forceKeyPressUppercase(e)
       }
     }
   }
+
+// from w3schools.com example for tabs
+// https://www.w3schools.com/howto/howto_js_tabs.asp
+// correctionTab  polarTab gridTab
+
+document.getElementById("defaultOpen").click();
+
+function openAdjustFire(evt, fireMissionType) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(fireMissionType).style.display = "block";
+  evt.currentTarget.className += " active";
+  console.log(fireMissionType);
+  console.log(document.getElementById('correctionTab').style.display);
+  console.log(document.getElementById('polarTab').style.display);
+  console.log(document.getElementById('gridTab').style.display);
+}

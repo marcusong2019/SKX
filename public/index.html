@@ -12,6 +12,45 @@
 #scenarioScreen {
   display: none;
 }
+  
+body {font-family: Arial;}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
 </style>
 </head>
 <body>
@@ -64,7 +103,7 @@
   
             <div class="col">        
             <div class="card" style="width: 18rem;">
-              <img src="https://cdn.glitch.com/ff04fad4-579c-40f2-b2d7-d1a5cf0a03be%2FMapSegment.png?v=1628971820083" class="card-img-top" alt="West Point Thumbnail" height="200" width="200">
+              <img src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FMapSegment.png?v=1629203016733" class="card-img-top" alt="West Point Thumbnail" height="200" width="200">
               <div class="card-body">
                 <h5 class="card-title">Custom Location</h5>
                 <p class="card-text"> Enter MGRS grid (include grid zone designator)
@@ -101,11 +140,76 @@
           <h2>Scenario: <span id="gameScenarioDisplay"></span></h2>
           <!--<h2><span id="numConnectionsDisplay"></span></h2>-->
           
-          <div class="form-group">
-              WL <input type="number" min="0" max="99999" placeholder="Easting" id="gridEastingInput"/>
-              <input type="number" min="0" max="99999" placeholder="Northing" id="gridNorthingInput"/>
-              <! maxlength="5" only works for text input type  >
+<div class="tab">
+            <button class="tablinks" onclick="openAdjustFire(event, 'gridTab')" id="defaultOpen">Grid</button>
+            <button class="tablinks" onclick="openAdjustFire(event, 'polarTab')">Polar</button>
+            <button class="tablinks" onclick="openAdjustFire(event, 'correctionTab')">Correction</button>
           </div>
+          
+          <div id="gridTab" class="tabcontent">
+            <div class="form-group">
+                WL <input type="number" min="0" max="99999" placeholder="Easting" id="gridEastingInput"/>
+                <input type="number" min="0" max="99999" placeholder="Northing" id="gridNorthingInput"/>
+                <! maxlength="5" only works for text input type  >
+            </div>
+          </div>
+          <div id="polarTab" class="tabcontent">
+            <div class="form-group">
+                <label for="polarDirectionInput">Direction</label>
+                <input type="number" min="0" max="6400" placeholder="mils" id="polarDirectionInput"/>
+                <label for="polarDistanceInput">Distance</label>
+                <input type="number" min="0" max="10000" placeholder="meters" id="polarDistanceInput"/>
+            </div>
+          </div>
+          <div id="correctionTab" class="tabcontent">
+            <div class="form-group">
+              <table>
+                <tr>
+                  <th>
+                    <label for="shiftDirectionInput">Direction</label>
+                  </th><td>
+                    <input type="number" min="0" max="6400" placeholder="mils" id="shiftDirectionInput"/>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                  <label for="shiftRangeInput">Range</label>
+                    </th><td>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="correctRangeAddDrop" id="correctRangeAdd" value="add" checked>
+                    <label class="form-check-label" for="correctRangeAdd">Add</label>
+                  </div>
+                  </td><td>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="correctRangeAddDrop" id="correctRangeDrop" value="drop">
+                    <label class="form-check-label" for="correctRangeDrop">Drop</label>
+                  </div>
+                  </td><td>
+                  <input type="number" min="-1000" max="1000" placeholder="meters" id="shiftRangeInput"/>
+                  </td>
+                </tr>
+                <!br>  
+                <tr>
+                  <th>
+                <label for="shiftDeviationInput">Deviation</label>
+                    </th><td>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="correctDevLeftRight" id="correctDevLeft" value="left">
+                  <label class="form-check-label" for="correctDevLeft">Left</label>
+                </div>
+                  </td><td>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="correctDevLeftRight" id="correctDevRight" value="right" checked>
+                  <label class="form-check-label" for="correctDevRight">Right</label>
+                </div>
+                  </td><td>
+                <input type="number" min="0" max="1000" placeholder="meters" id="shiftDeviationInput"/>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          
           <div>
             <select id="roundTypeInput">
               <option value="HEPD" selected>High Explosive Quick</option>

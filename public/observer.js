@@ -187,8 +187,10 @@ function handleFireMission(gridE, gridN, round) {
   var [X,Y] = convertGrid(gridE,gridN);
   //const X = gridE;
   //const Y = gridN;
+  let plusZ = 0;
+  if (round=="HEVT") {plusZ=7;};
   console.log(X,Y);
-  createIDF(X, Y);
+  createIDF(X, Y, plusZ);
 }
 
 function getGroundLevel(X, Z) {
@@ -229,9 +231,12 @@ function createTarget(gridE,gridN, Model = "#T90Tank", Az = 0) {
   console.log("Target Created at ", position);
 }
 
-function createIDF(X, Z) {
+function createIDF(X, Z, agl=0) {
   var groundLevel = getGroundLevel(X, Z);
   var position = groundLevel.point;
+  //console.log("ground at",position.y);
+  position.y = position.y + agl;
+  //console.log("burst at",position.y);
 
   var sceneEl = document.querySelector("a-scene");
   var entityEl = document.createElement("a-entity");
