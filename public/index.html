@@ -84,6 +84,76 @@ body {font-family: Arial;}
             >
               Join FDC as Observer
             </button>
+          <br />
+                    <div> <!-- Instruction area -->
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+              Instructions
+            </button>
+            <div class="collapse" id="collapseExample">
+              <div class="card card-body">
+                <h4>Overview</h4>
+                This simulation requires two users (or at least, two instances of a web browser). One user acts as the Fire Direction Center (FDC) and has control over targets and inputs the fire missions.
+                One or more other users connect to the same scenario as Forwar Observers (FO). They will see a 3D rendering of the terrain and can observe round impacts. 
+                By communicating with the FDC, the FO can practice requesting and adjusting indirect fire missions.
+                
+                <h4>Create a new FDC</h4>
+                Click the green "Create New FDC" button to create a new training simulation. You will shown the set of available scenarios, select the one you wish to use. 
+                You will then be taken to the FDC game screen. The top of the screen has a QR code and game code. Give the game code, or show the QR code, to the forward observer(s).
+                
+                <h4>Join an FDC as a Forward Observer</h4>
+                FOs can either follow a QR code directly to the scenario, or enter the game code and press the green "Join FDC as Observer" button to enter the simulation.
+                The screen will briefly be blue as the scenario loads. If the screen hangs on blue for a long time, refresh the page.
+                
+                <h4>FO View on Desktop</h4>
+                You will see the view of the scene from the Observation Point (OP). Pressing the space bar will toggle between your "eye" view and a 7x binocular view. 
+                The binoculars have a reticle simualting an M22 binocular. The compas angle is displayed above the reticle (currently in degrees on top, and mils below).
+                You can walk using the WASD keys. W to move forward; A for backward, A and D are left and right.
+
+                <h4>
+                  FO View on cell phones
+                </h4>
+                You can tap the screen to toggle between the "eye" and binocular views. Slide your finger to rotate the view left, right, up, or down. Holding you finger on the screen will make you walk forward.
+
+                <h4>
+                  FDC Game Controls
+                </h4>
+                Top of the screen shows the links and code that allow FOs to connect to your FDC. Provide these to you FOs so they can connect to your scenario.
+                Below that are tabs fro Grid, Polar, and Correction. Select the tab to provide inputs for that type of fire mission.
+                <p>
+                  Grid: Enter the MGRS grid coordinate for the requested fire mission. The easting and northing go in seperate boxes. You must use a 6, 8, or 10 digit grid (3, 4, or 5 digits in each box).
+                </p>
+                <p>
+                  Polar: Enter the direction and distance for teh requested fire mission. The app assumes the observer is located at the OP (where they spawned when entering the simulation.)
+                </p>
+                <p>
+                  Correction: Enter the direction of view (in mils) along with the add/drop and left/right information (in meters). The app will adjust frie from the last fire mission's impact point.
+                </p>
+                <p>
+                  Select the type of round to use from the drop down. Press the green Submit button to eecute the fire mission. 
+                  The app will send the impact almost immediately. You should press the button just after "Splash, Over".
+                </p>
+                <p>
+                  Targets: There are four target buttons. Pressing them will trun on the targets so your FO can see them. 
+                  Note, if you press the same target a second time after the target already exists, this can cause odd behavrios, such as two targets stacked on each other.
+                  The target set is differnet fro eachs scenario.
+                </p>
+                
+                <h4>
+                  Oculus Quest
+                </h4>
+                This app is been tested with an Oculus Quest headeset and controllers. Other headsets should work, but this is untested.
+                NB: Head mounted displays, like Oculus Quest, are not fully supported. FOs can view the simulation, but do not have access to binoculars.
+                Load the view link in the Oculus browser. After the scene renders, click the [VR] button in the lower right of the virtual screen to enter VR mode.
+                You can move you head to look in different direction. The left thumbstick controls your movement. Up will make you go forward, the direction you are looking. Left and right will slide you left or right.
+                Use the Oculus button on the right controller to open a menu and click "Exit" to leave the 360 VR.
+                <h4>
+                  Comments, Issues, and Suggestions
+                </h4>
+                This web app is built by the West Point Simulation Center as a working prototype. It certainly has its problems. Send comments to Dr. Gordon Cooke: gordon dot cooke at westpoint dot edu.
+                Suggestions for improvement, including feature requests for new use cases, are very welcome.
+              </div>
+            </div>
+      </div> <!-- Instruction area end -->
         </div>
       </div>
       
