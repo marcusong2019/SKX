@@ -17,17 +17,17 @@
         <img id="crosshair" crossorigin="anonymous" src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FCrosshair3.png?v=1629202456710">
 
         <a-asset-item
-          id="T90Tank"
+          id="T90Tank-origin"
           src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FT90.glb?v=1626968225914"
           response-type="arraybuffer"
         ></a-asset-item>
         <!-- https://www.cgtrader.com/items/3127302/download-page -->
 
         <a-asset-item
-          id="lowTank"
+          id="T90Tank"
           src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2Flow_poly_2655945_tank.glb?v=1626967824598"
           response-type="arraybuffer"
-        ></a-asset-item>
+        ></a-asset-item><!--lowTank-->
         
         <img
           id="fire"
@@ -43,7 +43,7 @@
       
 <a-entity
         id="camera-rig"        
-        movement-controls="camera: #viewDirection"
+        movement-controls="camera: #viewDirection; speed:1;"
         ground-clamp="height:1.6;"
       >
   <!--TODO perhaps ground clamp to zero and put cameras at height 1.6 to accomodate the position tracking of headset -->
@@ -110,12 +110,21 @@
     };
 });
 
-if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+/*if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
   console.log("mobile");
   document.addEventListener("click", swapCameras);
 }else{
   console.log("not mobile");
-}
+}*/
+
+  var isMobile = AFRAME.utils.device.isMobile();
+  var isHeadset = AFRAME.utils.device.checkHeadsetConnected();
+  console.log("Headset: " + isHeadset);
+
+  if (isMobile) {
+    console.log("mobile");
+    document.addEventListener("click", swapCameras);
+  }
 
 
 function swapCameras() {
