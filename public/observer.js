@@ -17,6 +17,7 @@ const opParts = mgrs.decode(opGrid);
 const opEasting = opParts.easting.toString().slice(-5);
 const opNorthing = opParts.northing.toString().slice(-5);
 console.log("E:"+opEasting+" N:"+opNorthing);
+const hitDistSq = 2500; //50m squared (using the squared distance vector)
 
 
 /*
@@ -64,7 +65,7 @@ AFRAME.registerComponent("log", {
           viewAz = Math.round(viewAz);
           viewAzMils = Math.round(viewAzMils);
           //console.log("setting "+ viewAz + " or mils: "+viewAzMils);
-          this.el.setAttribute('text','value',viewAz.toString() +"°\n"+ viewAzMils.toString());
+          this.el.setAttribute('text','value',viewAz.toString() +" deg\n"+ viewAzMils.toString() +" mils");
           /*
           //works to get euler angle
           var rotVec = this.el.object3D.getWorldDirection(THREE.Vector3(1,0,0)); //get rotation - likely in radians
@@ -102,12 +103,15 @@ AFRAME.registerComponent('ground-clamp', {
         const raycaster = new THREE.Raycaster();
         raycaster.set(location, direction);
 
-        const mesh = document.querySelector("#ground").sceneEl.object3D;
+        const mesh = document.querySelector("#ground").object3D;
         var intersects = raycaster.intersectObject(mesh, true);
+      
+      if (intersects.length > 0){
         var point = intersects[0].point; // a three value point XYZ in world coord
         var Y = point.y + this.data.height;
-        this.el.object3D.position.y=Y;      
-}
+        this.el.object3D.position.y=Y;    
+      }
+    }
   });
 
 // Initial connection
@@ -190,7 +194,26 @@ function handleFireMission(gridE, gridN, round) {
   let plusZ = 0;
   if (round=="HEVT") {plusZ=7;};
   console.log(X,Y);
-  createIDF(X, Y, plusZ);
+  var impactPosition = createIDF(X, Y, plusZ);
+  checkTargetHit (impactPosition);
+}
+
+function checkTargetHit (impactPosition) {
+  console.log("checktargets");
+  var sceneEl = document.querySelector("a-scene");
+  var els = sceneEl.querySelectorAll(".target");
+  console.log(els);
+  for (var i = 0; i < els.length; i++) {
+    var tgtPosition = els[i].getAttribute('position');
+    console.log(i,tgtPosition);
+    //tgtPosition.x tgtPosition.y
+    var distSq = tgtPosition.distanceToSquared(impactPosition);
+    if (distSq <= hitDistSq) {
+      console.log("HIT ",els[i]);
+      createHit(tgtPosition);
+      socket.emit('hit');// TODO send target num      
+    }
+  };
 }
 
 function getGroundLevel(X, Z) {
@@ -199,8 +222,8 @@ function getGroundLevel(X, Z) {
   const raycaster = new THREE.Raycaster();
   raycaster.set(location, direction);
 
-  const mesh = document.querySelector("#ground").sceneEl.object3D;
-  const intersects = raycaster.intersectObject(mesh, true);
+  const mesh = document.querySelector("#ground").object3D;
+  var intersects = raycaster.intersectObject(mesh, true);
 
   return {
     point: intersects[0].point, // a three value point XYZ in world coord
@@ -218,6 +241,7 @@ function createTarget(gridE,gridN, Model = "#T90Tank", Az = 0) {
   var entityEl = document.createElement("a-entity");
   //entityEl.setAttribute("id", "target1");  //needs to be unique
   entityEl.setAttribute("position", position);
+  entityEl.setAttribute("class", "target");
   var entityE2 = document.createElement("a-entity");
   entityE2.setAttribute("gltf-model", Model); //can I abstract model if scale and position may be affected? may need ifs
   entityE2.setAttribute("scale", "1 1 1");
