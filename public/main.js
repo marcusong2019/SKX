@@ -1,6 +1,7 @@
-//const BG_COLOUR = '#231f20';
-//const SNAKE_COLOUR = '#c2c2c2';
-//const FOOD_COLOUR = '#e66916';
+if (location.protocol !== 'https:') {
+    location.replace(`https:${location.href.substring(location.protocol.length)}`);
+}
+
 const urlOrigin = window.location.origin;
 var socket = io(urlOrigin);//'https://observed-fire-test.glitch.me/');
   
@@ -9,6 +10,7 @@ socket.on('initFO', handleInitFO);
 //socket.on('gameState', handleGameState);
 //socket.on('gameOver', handleGameOver);
 socket.on('gameCode', handleGameCode);
+socket.on('hit', handleHit);
 socket.on('unknownCode', handleUnknownCode);
 socket.on('newClient', data => {
   console.log(data);
@@ -30,6 +32,7 @@ const gameCodeDisplay = document.getElementById('gameCodeDisplay');
 const linkURL = document.getElementById('linkURL');
 const numConnectionsDisplay = document.getElementById('numConnectionsDisplay');
 const sendFireMissionBtn = document.getElementById('sendFireMission');
+const gameHitDisplay = document.getElementById('gameHitDisplay');
 const target1UpBtn = document.getElementById('target1UpButton');
 const target2UpBtn = document.getElementById('target2UpButton');
 const target3UpBtn = document.getElementById('target3UpButton');
@@ -45,15 +48,20 @@ const shiftDeviation = document.getElementById('shiftDeviationInput');
 const shiftRight = document.getElementById('correctDevRight');
 const roundType = document.getElementById('roundTypeInput');
 const splashMesage = document.getElementById('splashMesage');
-const shotTimer = document.getElementById('shotTimer');
 
 newGameBtn.addEventListener('click', newGame);
 gameCodeInput .addEventListener("keypress", forceKeyPressUppercase, false);
 joinGameBtn.addEventListener('click', joinGame);
 sendFireMissionBtn.addEventListener('click', sendFireMission);
 
+function handleHit () {
+  gameHitDisplay.innerText = "..Hit!..";
+  console.log("set hit display");
+}
+
 function sendFireMission() {
   console.log("FIRE MISSION!")  
+  gameHitDisplay.innerText = ""; //reset
   
   var gridTabEl = document.getElementById('gridTab').style.display;
   var polarTabEl = document.getElementById('polarTab').style.display;
@@ -90,24 +98,6 @@ console.log(x,y,adjEast,adjNorth);
   socket.emit('firemissionG',gridE, gridN, round);
   lastFireMission=[gridE,gridN]; //store for future
 }
-
-/*function splashTimer() {
-  splashMesage.style.display = "none";
-  shotTimer.style.display = "block";
-  var flighTimeToSplash = 45000; //ms TODO randomize
-  var timeleft = 100;
-  var splashTimerBar = setInterval(function(){
-    if(timeleft <= 0){
-      clearInterval(splashTimerBar);
-      splashMesage.style.display = "block";
-      shotTimer.style.display = "none";
-      document.getElementById("splashProgressBar").value = 0;
-      return true;
-    }
-    document.getElementById("splashProgressBar").value = 100 - timeleft;
-    timeleft -= 1;
-  }, (flighTimeToSplash/100));  
-} */
 
 function padGrid(ening) {
   var len = ening.toString().length;
@@ -197,48 +187,11 @@ function init() {
   scenarioScreen.style.display = "none";
   gameScreen.style.display = "block";
   splashMesage.style.display = "none";
-  shotTimer.style.display = "none";
+  //shotTimer.style.display = "none";
 
-//  canvas = document.getElementById('canvas');
-// ctx = canvas.getContext('2d');
-
-//  canvas.width = canvas.height = 600;
-
-//  ctx.fillStyle = BG_COLOUR;
-//  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-//  document.addEventListener('keydown', keydown);
   gameActive = true;
 }
-/*
-function keydown(e) {
-  socket.emit('keydown', e.keyCode);
-}
 
-function paintGame(state) {
-  ctx.fillStyle = BG_COLOUR;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  const food = state.food;
-  const gridsize = state.gridsize;
-  const size = canvas.width / gridsize;
-
-  ctx.fillStyle = FOOD_COLOUR;
-  ctx.fillRect(food.x * size, food.y * size, size, size);
-
-  paintPlayer(state.players[0], size, SNAKE_COLOUR);
-  paintPlayer(state.players[1], size, 'red');
-}
-
-function paintPlayer(playerState, size, colour) {
-  const snake = playerState.snake;
-
-  ctx.fillStyle = colour;
-  for (let cell of snake) {
-    ctx.fillRect(cell.x * size, cell.y * size, size, size);
-  }
-}
-*/
 function handleInit(number) {
   playerNumber = number;
 }
