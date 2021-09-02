@@ -279,20 +279,38 @@ function createIDF(X, Z, agl=0) {
   setTimeout(function() {
     entityEl.parentNode.removeChild(entityEl);
   }, 300000); //delay is in milliseconds
+  
+    return position;
 }
 
-function createFireEl(Rot = 0) {
+function createFireEl(Rot = 0, tgtHit = false) {
   var entityFire = document.createElement("a-image");
   entityFire.setAttribute("src", "#fire");
   entityFire.setAttribute("material", "alphaTest: 0.5");
   entityFire.setAttribute("geometry", "");
   entityFire.setAttribute("side", "double");
   entityFire.setAttribute("rotation", "0 " + Rot + " 0");
-  entityFire.setAttribute(
-    "animation",
-    "property: scale; from: 1 1 1; to: 10 20 10; dur: 700; loop: 2; dir: alternate"
-  );
   entityFire.setAttribute("position", "0 0 0");
+  if (tgtHit) {
+    console.log("hitflames");
+    entityFire.setAttribute(
+      "animation",
+      "property: scale; from: 20 20 1; to: 50 75 1; dur: 500; loop: 1"
+    );
+    entityFire.setAttribute(
+      "animation__2",
+      "property: scale; from: 20 20 1; to: 30 30 1; delay: 500; dur: 700; loop: true; dir: alternate"
+    );
+    entityFire.setAttribute(
+      "animation__3",
+      "property: rotation; from: 0 "+(Rot-40) + " 0; to: 0 "+(Rot+40)+" 0; delay: 500; dur: 900; loop: true; dir: alternate"
+    );
+  } else {
+    entityFire.setAttribute(
+      "animation",
+      "property: scale; from: 1 1 1; to: 10 20 10; dur: 700; loop: 2; dir: alternate"
+    );
+  }  
   return entityFire;
 }
 
@@ -304,6 +322,7 @@ function createSmokeEl(Rot = 0) {
   entityE2.setAttribute("side", "double");
   entityE2.setAttribute("rotation", "0 " + Rot + " 0");
   entityE2.setAttribute("opacity", "0.8");
+  entityE2.setAttribute("position", "0 0 0");  
   entityE2.setAttribute(
     "animation",
     "property: scale; from: 10 10 1; to: 30 30 1; dur: 5000; loop: 1"
@@ -316,8 +335,23 @@ function createSmokeEl(Rot = 0) {
     "animation__3",
     "property: opacity; from: 1.0; to: 0.2; delay: 2000; dur: 120000; loop: 1"
   );
-  entityE2.setAttribute("position", "0 0 0");
+  
   return entityE2;
 }
+
+function createHit (position) {
+  var sceneEl = document.querySelector("a-scene");
+  var entityEl = document.createElement("a-entity");
+  entityEl.setAttribute("position", position);
+  var entityFire1 = createFireEl(45,true);
+  var entityFire2 = createFireEl(-45,true);
+  
+  entityEl.appendChild(entityFire1);
+  entityEl.appendChild(entityFire2);
+  sceneEl.appendChild(entityEl);
+  //console.log("created fire");
+  
+}
+
 
 

@@ -13,7 +13,7 @@
 }
 #scenarioScreen {
   display: none;
-}
+}  
   
 body {font-family: Arial;}
 
@@ -84,8 +84,8 @@ body {font-family: Arial;}
             >
               Join FDC as Observer
             </button>
-          <br />
-                    <div> <!-- Instruction area -->
+          <br/>
+          <div> <!-- Instruction area -->
             <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
               Instructions
             </button>
@@ -141,8 +141,8 @@ body {font-family: Arial;}
                 <h4>
                   Oculus Quest
                 </h4>
-                This app is been tested with an Oculus Quest headeset and controllers. Other headsets should work, but this is untested.
-                NB: Head mounted displays, like Oculus Quest, are not fully supported. FOs can view the simulation, but do not have access to binoculars.
+                This app has been tested with an Oculus Quest headeset and controllers. Other headsets should work, but this is untested.
+                NB: Head mounted displays, like Oculus Quest, are not fully supported. FOs can view the simulation, but do not yet have access to binoculars.
                 Load the view link in the Oculus browser. After the scene renders, click the [VR] button in the lower right of the virtual screen to enter VR mode.
                 You can move you head to look in different direction. The left thumbstick controls your movement. Up will make you go forward, the direction you are looking. Left and right will slide you left or right.
                 Use the Oculus button on the right controller to open a menu and click "Exit" to leave the 360 VR.
@@ -167,7 +167,7 @@ body {font-family: Arial;}
               <img src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FU.S._Military_Academy_Coat_of_Arms.svg.png?v=1626658887348" class="card-img-top" alt="West Point Thumbnail" height="200" width="200">
               <div class="card-body">
                 <h5 class="card-title">West Point OP McNair</h5>
-                <p class="card-text">Example scenario on West Point' artillery range terrain.</p>
+                <p class="card-text">Example scenario on West Point's artillery range terrain.</p>
                 <button class="btn btn-primary" onclick="setScenario('West Point OP McNair')">Select</button>
               </div>
             </div>
@@ -175,7 +175,7 @@ body {font-family: Arial;}
   
             <div class="col">        
             <div class="card" style="width: 18rem;">
-              <img src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FMapSegment.png?v=1629203016733" class="card-img-top" alt="West Point Thumbnail" height="200" width="200">
+              <img src="https://cdn.glitch.com/ff04fad4-579c-40f2-b2d7-d1a5cf0a03be%2FMapSegment.png?v=1628971820083" class="card-img-top" alt="West Point Thumbnail" height="200" width="200">
               <div class="card-body">
                 <h5 class="card-title">Custom Location</h5>
                 <p class="card-text"> Enter MGRS grid (include grid zone designator)
@@ -183,7 +183,7 @@ body {font-family: Arial;}
                       <input type="text" placeholder="18TWL81647945" id="gridInput"/> 
                     </div>
                 </p>
-                <button type="submit" disabled class="btn btn-primary" id="sendMgrsGrid">Submit</button>
+                <button disabled class="btn btn-primary" id="sendMgrsGrid">Submit</button>
               </div>
             </div>
           </div>
@@ -212,7 +212,7 @@ body {font-family: Arial;}
           <h2>Scenario: <span id="gameScenarioDisplay"></span></h2>
           <!--<h2><span id="numConnectionsDisplay"></span></h2>-->
           
-<div class="tab">
+          <div class="tab">
             <button class="tablinks" onclick="openAdjustFire(event, 'gridTab')" id="defaultOpen">Grid</button>
             <button class="tablinks" onclick="openAdjustFire(event, 'polarTab')">Polar</button>
             <button class="tablinks" onclick="openAdjustFire(event, 'correctionTab')">Correction</button>
@@ -286,7 +286,7 @@ body {font-family: Arial;}
             <select id="roundTypeInput">
               <option value="HEPD" selected>High Explosive Quick</option>
               <option value="HEVT">High Explosive Variable Time</option>
-              <option value="HED">High Explosive Delay</option>
+              <!--<option value="HED">High Explosive Delay</option>-->
             </select>
             <button
               type="submit"
@@ -295,6 +295,18 @@ body {font-family: Arial;}
             >
               Submit
             </button>
+          </div>
+          
+          <div>
+            <h2 style="background-color:red;color:white"><span id="gameHitDisplay"></span></h2>
+          </div>
+          
+          <div id="shotTimer">
+            SHOT, over
+            <progress value="0" max="100" id="splashProgressBar"></progress>
+          </div>
+          <div id="splashMesage">
+            <b style='color:red'>SPLASH, over</b>
           </div>
           
           <div class="py-3">
