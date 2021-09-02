@@ -3,8 +3,6 @@ var express = require("express");
 var app = express();
 var server = require("http").createServer(app);
 var io = require("socket.io")(server);
-//const { initGame, gameLoop, getUpdatedVelocity } = require('./game');
-//const { FRAME_RATE } = require('./constants');
 const { makeid } = require('./utils');
 
 const state = {};
@@ -20,13 +18,23 @@ app.use(express.static("public"));
 
 io.on('connection', client => {
 
-  //client.on('keydown', handleKeydown);
   client.on('newGame', handleNewGame);
   client.on('joinGame', handleJoinGame);
   client.on('test', handleTest);
   client.on('target', (data) => {handleNewTarget(data)});
   client.on('firemissionG', (dataA, dataB, dataC) => {handleFireMission(dataA, dataB, dataC)});
   client.on('disconnect', handleDisconnect);
+  client.on('hit',handleHit);
+  
+  function handleHit() {
+    console.log('hit');
+    const roomName = clientRooms[client.id];
+    if (!roomName) {
+      return;
+    }
+      io.sockets.in(roomName)
+    .emit('hit');
+  }
       
   function handleDisconnect() {
     console.log('A user disconnected');
@@ -98,49 +106,3 @@ console.log("join game");
     client.emit('init', 1);
   }
 });
-  /*
-  function handleKeydown(keyCode) {
-    const roomName = clientRooms[client.id];
-    if (!roomName) {
-      return;
-    }
-    try {
-      keyCode = parseInt(keyCode);
-    } catch(e) {
-      console.error(e);
-      return;
-    }
-
-    const vel = getUpdatedVelocity(keyCode);
-
-    if (vel) {
-      state[roomName].players[client.number - 1].vel = vel;
-    }
-  }
-});
-
-function startGameInterval(roomName) {
-  const intervalId = setInterval(() => {
-    const winner = gameLoop(state[roomName]);
-    
-    if (!winner) {
-      emitGameState(roomName, state[roomName])
-    } else {
-      emitGameOver(roomName, winner);
-      state[roomName] = null;
-      clearInterval(intervalId);
-    }
-  }, 2000 / FRAME_RATE);
-}
-
-function emitGameState(room, gameState) {
-  // Send this event to everyone in the room.
-  io.sockets.in(room)
-    .emit('gameState', JSON.stringify(gameState));
-}
-
-function emitGameOver(room, winner) {
-  io.sockets.in(room)
-    .emit('gameOver', JSON.stringify({ winner }));
-}
-*/

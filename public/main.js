@@ -200,30 +200,7 @@ function handleInitFO(number) {
   const code = gameCodeInput.value;
   window.location.href = urlOrigin+'/FO.html?game=' + code;
 }
-/*
-function handleGameState(gameState) {
-  if (!gameActive) {
-    return;
-  }
-  gameState = JSON.parse(gameState);
-  requestAnimationFrame(() => paintGame(gameState));
-}
 
-function handleGameOver(data) {
-  if (!gameActive) {
-    return;
-  }
-  data = JSON.parse(data);
-
-  gameActive = false;
-
-  if (data.winner === playerNumber) {
-    alert('You Win!');
-  } else {
-    alert('You Lose :(');
-  }
-}
-*/
 function handleGameCode(gameCode) {
   gameCodeDisplay.innerText = gameCode;
   makeCode(gameCode);
