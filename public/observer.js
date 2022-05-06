@@ -169,9 +169,9 @@ function padGrid(ening) {
   return Xin;
 }
 
-function handleNewTarget(tgtArray) {
+function handleNewTarget(tgtNum) {
   //console.log(tgtNum);  
-  /*if (tgtNum == 1) {
+  if (tgtNum == 1) {
     createTarget(82300,79000);
     console.log("Creating Target 1");
   } else if (tgtNum == 2) {
@@ -185,9 +185,9 @@ function handleNewTarget(tgtArray) {
     console.log("Creating Target 4");
   } else {
     console.log("request for target failed");
-  } */
+  } 
   
-  console.log(tgtArray);
+  //console.log(tgtArray);
   
 }
 
