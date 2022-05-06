@@ -37,7 +37,7 @@
       
 <a-entity
         id="camera-rig"        
-        movement-controls="camera: #viewDirection; speed:1;"
+        movement-controls="controls: keyboard; camera: #viewDirection; speed:1;"
         ground-clamp="height:1.6;"
       >
   <!--TODO perhaps ground clamp to zero and put cameras at height 1.6 to accomodate the position tracking of headset -->
@@ -75,9 +75,13 @@
       <a-box position="0 0 0" scale="0.5 1 0.5" color="red"></a-box>
       
       <a-entity
-        light="type: directional; color: #EED; intensity: 3"
+        light="type: directional; color: #EED; intensity: 1"
         position="-1 1 1"
       ></a-entity>
+      <a-light 
+        type="ambient"
+        color="#EED"> 
+      </a-light>
       
     </a-scene>
 
