@@ -170,22 +170,25 @@ function padGrid(ening) {
 }
 
 function handleNewTarget(tgtArray) {
-  console.log(tgtArray);
-  if (tgtArray[1] {
+  //console.log(tgtNum);  
+  /*if (tgtNum == 1) {
     createTarget(82300,79000);
     console.log("Creating Target 1");
-  } else if (tgtArray[2] ) {
+  } else if (tgtNum == 2) {
     createTarget(82100,79100);
     console.log("Creating Target 2");
-  } else if (tgtArray[3] ) {
+  } else if (tgtNum == 3) {
     createTarget(81800,78100);
     console.log("Creating Target 3");
-  } else if (tgtArray[4] ) {
+  } else if (tgtNum == 4) {
     createTarget(81850,78150);
     console.log("Creating Target 4");
   } else {
     console.log("request for target failed");
-  }
+  } */
+  
+  console.log(tgtArray);
+  
 }
 
 function handleFireMission(gridE, gridN, round) {
