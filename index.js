@@ -9,8 +9,6 @@ const state = {};
 const clientRooms = {};
 var port = process.env.PORT || 3000;
 
-const 
-
 server.listen(port, function() {
   console.log("Server listening at port %d", port);
 });
@@ -53,7 +51,8 @@ io.on('connection', client => {
     }
       io.sockets.in(roomName)
     .emit('target',tgtNum);
-      targetArray(tgtNum)=true;
+      io.sockets.adapter.rooms[roomName].targetArray[tgtNum]=true;
+      console.log("targets: ", io.sockets.adapter.rooms[roomName].targetArray);
   }
   
       function handleFireMission(gridE, gridN, round) {
@@ -107,5 +106,6 @@ console.log("join game");
     client.join(roomName);
     client.number = 1;
     client.emit('init', 1);
+    io.sockets.adapter.rooms[roomName].targetArray=[false,false,false,false,false];
   }
 });
