@@ -107,7 +107,7 @@ console.log("join game");
 
     client.join(roomName);
     client.number = 1;
-    client.emit('init', 1);
+    //client.emit('init', 1);
     io.sockets.adapter.rooms[roomName].targetArray=[false,false,false,false,false];
   }
 });
