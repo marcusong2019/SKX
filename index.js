@@ -9,6 +9,8 @@ const state = {};
 const clientRooms = {};
 var port = process.env.PORT || 3000;
 
+const 
+
 server.listen(port, function() {
   console.log("Server listening at port %d", port);
 });
@@ -51,6 +53,7 @@ io.on('connection', client => {
     }
       io.sockets.in(roomName)
     .emit('target',tgtNum);
+      targetArray(tgtNum)=true;
   }
   
       function handleFireMission(gridE, gridN, round) {
