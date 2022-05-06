@@ -94,6 +94,8 @@ console.log("join game");
     console.log(numClients);
     
     client.emit('reply','Room Joined '+roomName);
+    
+    //send current targets: io.sockets.adapter.rooms[roomName].targetArray
   }
 
   function handleNewGame() {
