@@ -107,7 +107,7 @@ function createTarget1(item){
 function createSquad(gridE, gridN, Az = 0){
   console.log("squad at: " + gridE + " " + gridN);
   
-  const azRad = -Az/0.01745329251994329576923690768489; //Az in degrees, convert to radians
+  const azRad = (90-Az)/(0.01745329251994329576923690768489); //Az in degrees, convert to radians
   // x in n   y in e
   const e1 = Math.round( 18*Math.cos(azRad));
   const e2 = Math.round( 13*Math.cos(azRad-0.57));
@@ -127,14 +127,14 @@ function createSquad(gridE, gridN, Az = 0){
   const n8 = Math.round( 33*Math.sin(azRad+2.7));
   
   createTarget(gridE, gridN, "#soldier", Az); //Squad Leader in center
-  createTarget(gridE+e1, gridN+n1, "#soldier", Az);
-  createTarget(gridE+e2, gridN+n2, "#soldier", Az);
-  createTarget(gridE+e3, gridN+n3, "#soldier", Az);
-  createTarget(gridE+e4, gridN+n4, "#soldier", Az);
-  createTarget(gridE+e5, gridN+n5, "#soldier", Az);
-  createTarget(gridE+e6, gridN+n6, "#soldier", Az);
-  createTarget(gridE+e7, gridN+n7, "#soldier", Az);
-  createTarget(gridE+e8, gridN+n8, "#soldier", Az);
+  createTarget(gridE+e1, gridN+n1, "#soldier", -Az);
+  createTarget(gridE+e2, gridN+n2, "#soldier", -Az);
+  createTarget(gridE+e3, gridN+n3, "#soldier", -Az);
+  createTarget(gridE+e4, gridN+n4, "#soldier", -Az);
+  createTarget(gridE+e5, gridN+n5, "#soldier", -Az);
+  createTarget(gridE+e6, gridN+n6, "#soldier", -Az);
+  createTarget(gridE+e7, gridN+n7, "#soldier", -Az);
+  createTarget(gridE+e8, gridN+n8, "#soldier", -Az);
 }
 
 // Allow logging to console from inside A-Frame

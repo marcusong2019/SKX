@@ -187,7 +187,7 @@ function setScenario(scenarioID) {
       
       target[1] = {
         "e": 81900,
-        "n": 7875,
+        "n": 78750,
         "model": "squad",
         "az": 225 }
       
