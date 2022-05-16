@@ -6,12 +6,13 @@
     <script src="./Cesium.js"></script>
     <script src="./aframe-aterrain-component.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script> <!--AFrame extra for motion controls -->
+    <script src="https://unpkg.com/aframe-render-order-component@1.0.0/dist/aframe-render-order-component.min.js"></script> <!-- render order for transparent objects- smoke, fire https://npm.io/package/aframe-render-order-component-->
     <script src="/socket.io/socket.io.js"></script>
     <script src="./mgrs.js"></script>
     <script src="./observer.js"></script>
   </head>
   <body>
-    <a-scene background="color: #87ceeb">     
+    <a-scene background="color: #87ceeb" render-order="background, foreground, fire, smoke, HUD" loading-screen="dotsColor: yellow; backgroundColor: black">     
       <!-- Preload assets -->
       <a-assets>        
         <img id="crosshair" crossorigin="anonymous" src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FCrosshair3.png?v=1629202456710">
@@ -23,6 +24,12 @@
         ></a-asset-item>
         <!-- https://www.cgtrader.com/items/3127302/download-page -->
         
+        <a-asset-item
+          id="soldier"
+          src="https://cdn.glitch.global/cb84e525-00ad-44ef-8555-9970acb03bba/low_poly_soldier.glb?v=1652452882460"                      
+          response-type="arraybuffer"
+        ></a-asset-item> <!-- rescale glb with https://glb-scale-o-matic.glitch.me/ -->        
+                
         <img
           id="fire"
           crossorigin="anonymous"
@@ -42,7 +49,7 @@
       >
   <!--TODO perhaps ground clamp to zero and put cameras at height 1.6 to accomodate the position tracking of headset -->
   <a-entity id="viewDirection" look-controls>
-        <a-entity id="camera1" camera="zoom: 7;active:false" visible="false">
+        <a-entity id="camera1" camera="zoom: 7;active:false" visible="false" render-order="HUD">
           <a-image
             src="#crosshair"
             position="0 0 -1"
@@ -72,11 +79,11 @@
       </a-entity>
 
       
-      <a-box position="0 0 0" scale="0.5 1 0.5" color="red"></a-box>
+      <a-box position="0 0 0" scale="0.5 1 0.5" color="red" render-order="foreground"></a-box>
       
       <a-entity
         light="type: directional; color: #EED; intensity: 2"
-        position="-1 1 2"
+        position="-1 3 2"
       ></a-entity>
       <a-light 
         type="ambient"
@@ -86,7 +93,7 @@
     </a-scene>
 
     <script>
-
+/*
         //setup terrain
         var sceneEl = document.querySelector("a-scene");
         var entityEl = document.createElement("a-entity");
@@ -95,25 +102,18 @@
         entityEl.setAttribute("static-body","");
         entityEl.setAttribute("a-terrain", "fovpad:5;elevation:0;lod:14;latitude:"+lat+";longitude:"+lon+";");
         sceneEl.appendChild(entityEl);
-      
-      //set camera
+      */
+      /* /set camera
       var cameraRigEl = document.querySelector('#camera-rig');
       cameraRigEl.setAttribute("rotation","0 "+az+" 0");
-      console.log("Camera Rig az",az);
+      console.log("Camera Rig az",az); */
       
       document.addEventListener("keypress", function(e){
   console.log("keypress",e.keyCode);
     if(e.keyCode == 32) { //space bar
-      swapCameras();      
+      swapCameras();     
     };
 });
-
-/*if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-  console.log("mobile");
-  document.addEventListener("click", swapCameras);
-}else{
-  console.log("not mobile");
-}*/
 
   var isMobile = AFRAME.utils.device.isMobile();
   var isHeadset = AFRAME.utils.device.checkHeadsetConnected();
@@ -123,7 +123,6 @@
     console.log("mobile");
     document.addEventListener("click", swapCameras);
   }
-
 
 function swapCameras() {
   var mainCameraEl = document.querySelector('#camera1');
@@ -143,4 +142,3 @@ function swapCameras() {
     </script>
   </body>
 </html>
-
