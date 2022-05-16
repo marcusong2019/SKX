@@ -329,7 +329,7 @@ function createTarget(gridE, gridN, Model = "#T90Tank", Az = 0) {
   entityE2.setAttribute("gltf-model", Model); //can I abstract model if scale and position may be affected? may need ifs
   entityE2.setAttribute("scale", "1 1 1");
   entityE2.setAttribute("position", "0 0 0");
-  entityE2.setAttribute("rotation", "0 " + Az + " 0"); // rotate to Az for facing direction-may not match map bearing
+  entityE2.setAttribute("rotation", "0 " + -Az + " 0"); // rotate to Az for facing direction-may not match map bearing
 
   // append entities to build up scene
   entityEl.appendChild(entityE2);
