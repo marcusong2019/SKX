@@ -107,8 +107,8 @@ function createTarget1(item){
 function createSquad(gridE, gridN, Az = 0){
   console.log("squad at: " + gridE + " " + gridN);
   
-  const C = Math.cos(Az/0.01745329251994329576923690768489); //Az in degrees, convert to radians
-  const S = Math.sin(Az/0.01745329251994329576923690768489);
+  const C = Math.cos(-Az/0.01745329251994329576923690768489); //Az in degrees, convert to radians
+  const S = Math.sin(-Az/0.01745329251994329576923690768489);
   
   const e1 = Math.round( -18*S);
   const e2 = Math.round( -7*C-11*S);
