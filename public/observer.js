@@ -107,25 +107,24 @@ function createTarget1(item){
 function createSquad(gridE, gridN, Az = 0){
   console.log("squad at: " + gridE + " " + gridN);
   
-  const C = Math.cos(Az/0.01745329251994329576923690768489); //Az in degrees, convert to radians
-  const S = Math.sin(Az/0.01745329251994329576923690768489);
-  
-  const e1 = Math.round( -18*S);
-  const e2 = Math.round( -7*C-11*S);
-  const e3 = Math.round( 7*C-11*S);
-  const e4 = Math.round( -14*C-5*S);
-  const e5 = Math.round( 16*S);
-  const e6 = Math.round( -7*C+23*S);
-  const e7 = Math.round( 7*C+23*S);
-  const e8 = Math.round( 14*C+30*S);
-  const n1 = Math.round( 18*C);
-  const n2 = Math.round( -7*S+11*C);
-  const n3 = Math.round( 7*S+11*C);
-  const n4 = Math.round( -14*S+5*C);
-  const n5 = Math.round( -16*C);
-  const n6 = Math.round( -7*S-23*C);
-  const n7 = Math.round( 7*S-23*C);
-  const n8 = Math.round( 14*S-30*C);
+  const azRad = -Az/0.01745329251994329576923690768489); //Az in degrees, convert to radians
+  // x in n   y in e
+  const e1 = Math.round( 18*Math.cos(azRad));
+  const e2 = Math.round( 13*Math.cos(azRad-0.57));
+  const e3 = Math.round( 13*Math.cos(azRad+0.57));
+  const e4 = Math.round( 15*Math.cos(azRad-1.23));
+  const e5 = Math.round( 16*Math.cos(azRad+3.14));
+  const e6 = Math.round( 24*Math.cos(azRad+3.5));
+  const e7 = Math.round( 24*Math.cos(azRad+2.85));
+  const e8 = Math.round( 33*Math.cos(azRad+2.7));
+  const n1 = Math.round( 18*Math.cos(azRad));
+  const n2 = Math.round( 13*Math.cos(azRad-0.57));
+  const n3 = Math.round( 13*Math.cos(azRad+0.57));
+  const n4 = Math.round( 15*Math.cos(azRad-1.23));
+  const n5 = Math.round( 16*Math.cos(azRad+3.14));
+  const n6 = Math.round( 24*Math.cos(azRad+3.5));
+  const n7 = Math.round( 24*Math.cos(azRad+2.85));
+  const n8 = Math.round( 33*Math.cos(azRad+2.7));
   
   createTarget(gridE, gridN, "#soldier", Az); //Squad Leader in center
   createTarget(gridE+e1, gridN+n1, "#soldier", Az);
