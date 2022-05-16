@@ -186,13 +186,13 @@ function setScenario(scenarioID) {
       //18T WL 82030 79507
       
       target[1] = {
-        "e": 82100,
-        "n": 79000,
-        "model": "#T90Tank",
-        "az": 0 }
+        "e": 81900,
+        "n": 7875,
+        "model": "squad",
+        "az": 300 }
       
       target[2] = {
-        "e": 82100,
+        "e": 82500,
         "n": 79100,
         "model": "#T90Tank",
         "az": 0 }
