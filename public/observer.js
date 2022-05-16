@@ -126,15 +126,15 @@ function createSquad(gridE, gridN, Az = 0){
   const n7 = Math.round( 24*Math.sin(azRad+2.85));
   const n8 = Math.round( 33*Math.sin(azRad+2.7));
   
-  createTarget(gridE, gridN, "#soldier", (180-Az)); //Squad Leader in center
-  createTarget(gridE+e1, gridN+n1, "#soldier", (180-Az));
-  createTarget(gridE+e2, gridN+n2, "#soldier", (180-Az));
-  createTarget(gridE+e3, gridN+n3, "#soldier", (180-Az));
-  createTarget(gridE+e4, gridN+n4, "#soldier", (180-Az));
-  createTarget(gridE+e5, gridN+n5, "#soldier", (180-Az));
-  createTarget(gridE+e6, gridN+n6, "#soldier", (180-Az));
-  createTarget(gridE+e7, gridN+n7, "#soldier", (180-Az));
-  createTarget(gridE+e8, gridN+n8, "#soldier", (180-Az));
+  createTarget(gridE, gridN, "#soldier", (90-Az)); //Squad Leader in center
+  createTarget(gridE+e1, gridN+n1, "#soldier", (90-Az));
+  createTarget(gridE+e2, gridN+n2, "#soldier", (90-Az));
+  createTarget(gridE+e3, gridN+n3, "#soldier", (90-Az));
+  createTarget(gridE+e4, gridN+n4, "#soldier", (90-Az));
+  createTarget(gridE+e5, gridN+n5, "#soldier", (90-Az));
+  createTarget(gridE+e6, gridN+n6, "#soldier", (90-Az));
+  createTarget(gridE+e7, gridN+n7, "#soldier", (90-Az));
+  createTarget(gridE+e8, gridN+n8, "#soldier", (90-Az));
 }
 
 // Allow logging to console from inside A-Frame
