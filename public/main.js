@@ -29,6 +29,7 @@ const numConnectionsDisplay = document.getElementById('numConnectionsDisplay');
 const sendFireMissionBtn = document.getElementById('sendFireMission');
 const gameHitDisplay = document.getElementById('gameHitDisplay');
 const resetBtn = document.getElementById('resetButton');
+const fireForEffectBtn = document.getElementById('fireForEffectButton');
 const gridEasting = document.getElementById('gridEastingInput');
 const gridNorthing = document.getElementById('gridNorthingInput');
 const polarDirection = document.getElementById('polarDirectionInput');
@@ -49,6 +50,7 @@ gameCodeInput .addEventListener("keypress", forceKeyPressUppercase, false);
 joinGameBtn.addEventListener('click', joinGame);
 sendFireMissionBtn.addEventListener('click', sendFireMission);
 resetBtn.addEventListener('click', requestReset);
+fireForEffectBtn.addEventListener('click', fireForEffect);
 
 function handleHit () {
   gameHitDisplay.innerText = "..Hit!..";
@@ -93,6 +95,22 @@ function sendFireMission() {
   console.log(gridE, gridN, round);
   socket.emit('firemissionG',gridE, gridN, round);
   lastFireMission=[gridE,gridN]; //store for future
+}
+
+function fireForEffect() {
+  const round = roundType.value;
+  for (let i = 0; i < 5; i++) {
+    setTimeout(() => {  
+      adjEast = Math.floor(Math.random() * 101) -50;
+      adjNorth = Math.floor(Math.random() * 101) -50;
+      gridE = lastFireMission[0] + adjEast;
+      gridN = lastFireMission[1] + adjNorth;   
+      gridE = padGrid(gridE);
+      gridN = padGrid(gridN);
+      console.log("Fire For Effect: ", gridE, gridN);
+      socket.emit('firemissionG',gridE, gridN, round);
+    }, Math.floor(Math.random() * 1500));
+  };
 }
 
 function padGrid(ening) {
