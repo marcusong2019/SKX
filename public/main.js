@@ -215,36 +215,78 @@ function setScenario(scenarioID) {
       scenario = {
         Name: 'West Point Test',
         designator: 'WL',
-        lat: 41.34932,
-        lon: -74.01980,
+        lat: 41.3499529,
+        lon: -74.0195403,
         az: 345
       };
-      // move 21 x (E), -72 z (N)
-      //18T WL 82000 77999
+      //old 18T WL 82000 77999   lat: 41.34932, lon: -74.01980,      
+      //new 18TWL8202178070
       
-      target[1] = {
+      //1st Platoon
+      target[0] = {
         "e": 82110,
         "n": 79120,
-        "model": "#soldier",
-        "az": 0 }
-      
+        "model": "#T90Tank",
+        "az": 140 }      
+      target[1] = {
+        "e": 82106,
+        "n": 79110,
+        "model": "#T90Tank",
+        "az": 135 }      
       target[2] = {
         "e": 82100,
-        "n": 79100,
+        "n": 79097,
+        "model": "#T90Tank",
+        "az": 150 }      
+      target[3] = {
+        "e": 82090,
+        "n": 79057,
+        "model": "#T90Tank",
+        "az": 145 }
+      
+      //2nd Platoon
+      target[4] = {
+        "e": 81000,
+        "n": 78150,
+        "model": "#T90Tank",
+        "az": 90 }      
+      target[5] = {
+        "e": 81000,
+        "n": 78000,
+        "model": "#T90Tank",
+        "az": 45 }      
+      target[6] = {
+        "e": 81320,
+        "n": 78000,
+        "model": "squad",
+        "az": 29 }      
+      target[7] = {
+        "e": 81050,
+        "n": 78260,
+        "model": "squad",
+        "az": 20 }
+      
+      //3rd Platoon
+      target[8] = {
+        "e": 81000,
+        "n": 79000,
         "model": "#T90Tank",
         "az": 0 }
-      
-      target[3] = {
-        "e": 81800,
-        "n": 78140,
+      target[9] = {
+        "e": 81000,
+        "n": 78900,
         "model": "#T90Tank",
-        "az": 90 }
-      
-      target[4] = {
-        "e": 81850,
-        "n": 78150,
-        "model": "squad",
-        "az": 90 }
+        "az": 10 }
+      target[10] = {
+        "e": 80950,
+        "n": 78800,
+        "model": "#T90Tank",
+        "az": 15 }
+      target[11] = {
+        "e": 81040,
+        "n": 78950,
+        "model": "#soldier",
+        "az": 90 }      
       break;
     
     case 2:
