@@ -17,9 +17,9 @@ socket.on('newClient', data => {
   handleNewClient(data);
 });
 
-var opEasting = 82030; // TODO get from
-var opNorthing = 79507;
-var opLocation = [opEasting, opNorthing];
+//var opEasting = 82030; // TODO get from
+//var opNorthing = 79507;
+var opLocation = [50000,50000];
 var lastFireMission=[0,0];
 
 const gameScreen = document.getElementById('gameScreen');
@@ -33,10 +33,11 @@ const linkURL = document.getElementById('linkURL');
 const numConnectionsDisplay = document.getElementById('numConnectionsDisplay');
 const sendFireMissionBtn = document.getElementById('sendFireMission');
 const gameHitDisplay = document.getElementById('gameHitDisplay');
-const target1UpBtn = document.getElementById('target1UpButton');
-const target2UpBtn = document.getElementById('target2UpButton');
-const target3UpBtn = document.getElementById('target3UpButton');
-const target4UpBtn = document.getElementById('target4UpButton');
+//const target1UpBtn = document.getElementById('target1UpButton');
+//const target2UpBtn = document.getElementById('target2UpButton');
+//const target3UpBtn = document.getElementById('target3UpButton');
+//const target4UpBtn = document.getElementById('target4UpButton');
+const resetBtn = document.getElementById('resetButton');
 const gridEasting = document.getElementById('gridEastingInput');
 const gridNorthing = document.getElementById('gridNorthingInput');
 const polarDirection = document.getElementById('polarDirectionInput');
@@ -49,10 +50,14 @@ const shiftRight = document.getElementById('correctDevRight');
 const roundType = document.getElementById('roundTypeInput');
 const splashMesage = document.getElementById('splashMesage');
 
-newGameBtn.addEventListener('click', newGame);
+var scenario = {};
+var target=[];
+
+newGameBtn.addEventListener('click', scenarioPicker);
 gameCodeInput .addEventListener("keypress", forceKeyPressUppercase, false);
 joinGameBtn.addEventListener('click', joinGame);
 sendFireMissionBtn.addEventListener('click', sendFireMission);
+resetBtn.addEventListener('click', requestReset);
 
 function handleHit () {
   gameHitDisplay.innerText = "..Hit!..";
@@ -157,10 +162,15 @@ function requestTarget(tgtNum){
   console.log("send target "+tgtNum);
 }
 
-function newGame() {
-  socket.emit('newGame');
-  scenarioPicker();
+function requestReset() {
+  console.log("send reset1");
+  socket.emit('requestReset');
+  gameHitDisplay.innerText = ""; //reset
+  console.log("send reset2");
 }
+
+//function newGame() {
+//}
 
 function joinGame() {
   const code = gameCodeInput.value;
@@ -177,16 +187,189 @@ function scenarioPicker() {
   gameScreen.style.display = "none";
 }
 
-function setScenario(scenarioName) {
-  gameScenarioDisplay.innerText = scenarioName;
+function setScenario(scenarioID) {
+  switch(scenarioID){
+    case 0:
+      scenario.Name='West Point OP McNair';
+      scenario.designator = 'WL';
+      scenario.lat = 41.36289858633997;
+      scenario.lon = -74.01923243991936;
+      scenario.az = 165;
+      //18T WL 82030 79507
+      
+      target[1] = {
+        "e": 82100,
+        "n": 79000,
+        "model": "#T90Tank",
+        "az": 0 }
+      
+      target[2] = {
+        "e": 82100,
+        "n": 79100,
+        "model": "#T90Tank",
+        "az": 0 }
+      
+      target[3] = {
+        "e": 81800,
+        "n": 78100,
+        "model": "#T90Tank",
+        "az": 90 }
+      
+      target[4] = {
+        "e": 81850,
+        "n": 78150,
+        "model": "#T90Tank",
+        "az": 90 }
+      
+      /*target[1].e=82100;
+      target[1].n=79000;
+      target[1].model="#T90Tank";
+      target[1].az=0;
+        
+      target[2].e=82100;
+      target[2].n= 79100;
+      target[2].model="#T90Tank";
+      target[2].az=0;
+        
+      target[3].e=81800;
+      target[3].n= 78100;
+      target[3].model="#T90Tank";
+      target[3].az=90;
+        
+      target[4].e=81850;
+      target[4].n= 78150;
+      target[4].model="#T90Tank";
+      target[4].az=90; */
+      break;
+      
+    case 1:
+      scenario = {
+        Name: 'West Point Test',
+        designator: 'WL',
+        lat: 41.34932,
+        lon: -74.01980,
+        az: 345
+      };
+      //18T WL 82000 77999
+      //scenario.Name='West Point Test';
+      //scenario.lat = 41.34932;
+      //scenario.lon = -74.01980;
+      //scenario.az = 345;
+      
+      target[1] = {
+        "e": 82110,
+        "n": 79120,
+        "model": "#soldier",
+        "az": 0 }
+      
+      target[2] = {
+        "e": 82100,
+        "n": 79100,
+        "model": "#T90Tank",
+        "az": 0 }
+      
+      target[3] = {
+        "e": 81800,
+        "n": 78140,
+        "model": "#T90Tank",
+        "az": 90 }
+      
+      target[4] = {
+        "e": 81850,
+        "n": 78150,
+        "model": "squad",
+        "az": 90 }
+      break;
+    
+    case 2:
+      scenario = {
+        Name: 'Tower 4 Ridge',
+        designator: 'ND',
+        lat: 34.682562,
+        lon: -98.469281,
+        az: 270
+      };
+      //14S ND 48615 37969
+      
+      target[1] = {
+        "e": 47615,
+        "n": 37969,
+        "model": "#T90Tank",
+        "az": 0 }
+      
+      target[2] = {
+        "e": 47900,
+        "n": 38020,
+        "model": "#T90Tank",
+        "az": 180 }
+      
+      target[3] = {
+        "e": 47920,
+        "n": 37600,
+        "model": "#T90Tank",
+        "az": 90 }      
+
+      break;
+      
+      case 3:
+      scenario = {
+        Name: 'Ft Sill OB 11',
+        designator: 'ND',
+        lat: 34.6661786,
+        lon: -98.4542747,
+        az: 315
+      };
+      //14S ND 50000 36160
+      
+      target[1] = {
+        "e": 47615,
+        "n": 37969,
+        "model": "#T90Tank",
+        "az": 0 }
+      
+      target[2] = {
+        "e": 47900,
+        "n": 38020,
+        "model": "#T90Tank",
+        "az": 180 }
+      
+      target[3] = {
+        "e": 47920,
+        "n": 37600,
+        "model": "#T90Tank",
+        "az": 90 }      
+
+      break; 
+  }  
+  
+  opLocation = convertLatLon2Grid(scenario.lat,scenario.lon);
+  
+  //console.log(JSON.stringify(scenario));
+  console.log(scenario);
+  gameScenarioDisplay.innerText = scenario.Name;
+  gameGridDesignatorDisplay.innerText = scenario.designator;
+  socket.emit('newGame',JSON.stringify(scenario),JSON.stringify(target));
+  //socket.emit('newGame',scenario,target);
   init();
+}
+
+function convertLatLon2Grid(lat,lon) {
+  console.log("Convert: ", lat, lon);
+  const opGrid = mgrs.forward([lon, lat],5);
+  const opParts = mgrs.decode(opGrid);
+  const opEasting = opParts.easting.toString().slice(-5);
+  const opNorthing = opParts.northing.toString().slice(-5);
+  console.log("E:"+opEasting+" N:"+opNorthing);
+  var data = [+opEasting,+opNorthing];
+  console.log(data);
+  return data;
 }
 
 function init() {
   initialScreen.style.display = "none";
   scenarioScreen.style.display = "none";
   gameScreen.style.display = "block";
-  splashMesage.style.display = "none";
+  //splashMesage.style.display = "none";
   //shotTimer.style.display = "none";
 
   gameActive = true;

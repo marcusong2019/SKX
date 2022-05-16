@@ -152,6 +152,10 @@ body {font-family: Arial;}
                 </h4>
                 This web app is built by the West Point Simulation Center as a working prototype. It certainly has its problems. Send comments to Dr. Gordon Cooke: gordon dot cooke at westpoint dot edu.
                 Suggestions for improvement, including feature requests for new use cases, are very welcome.
+                <h4>
+                  Credits
+                </h4>  
+                  "low poly soldier" (https://skfb.ly/o6qEO) by Kolos Studios is licensed under Creative Commons Attribution CC-BY (http://creativecommons.org/licenses/by/4.0/).
                 </div>
               </div>
             </div>
@@ -171,12 +175,45 @@ body {font-family: Arial;}
               <div class="card-body">
                 <h5 class="card-title">West Point OP McNair</h5>
                 <p class="card-text">Example scenario on West Point's artillery range terrain. <a href="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FMap%20Extract.pdf?v=1630549323821">Download Map Sheet</a></p>
-                <button class="btn btn-primary" onclick="setScenario('West Point OP McNair')">Select</button>
+                <button class="btn btn-primary" onclick="setScenario(0)">Select</button>
               </div>
             </div>
           </div>
+          
+          <div class="col">
+            <div class="card" style="width: 18rem;">
+              <img src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FUSMA%20SSI.jpg?v=1626658973120" class="card-img-top" alt="USMA Patch Thumbnail" height="200" width="200">
+              <div class="card-body">
+                <h5 class="card-title">Example Scenario</h5>
+                <p class="card-text">This is an inactive placeholder. Future updates to include a choice of scenarios.</p>
+                <button class="btn btn-primary" onclick="setScenario(1)">Select</button>
+              </div>
+            </div>
+          </div>
+        
+          <div class="col">
+              <div class="card" style="width: 18rem;">
+                <img src="https://cdn.glitch.global/cb84e525-00ad-44ef-8555-9970acb03bba/United_States_Army_Field_Artillery_School_SSI.png?v=1652189012366" class="card-img-top" alt="FA School Patch Thumbnail" height="200" width="200">
+                <div class="card-body">
+                  <h5 class="card-title">Ft Sill Tower 4 Ridge</h5>
+                  <p class="card-text">This is a placeholder. Future updates to include a choice of scenarios.</p>
+                  <button class="btn btn-primary" onclick="setScenario(2)">Select</button>
+                </div>
+              </div>
+          </div>
   
-            <div class="col">        
+          <div class="col">
+              <div class="card" style="width: 18rem;">
+                <img src="https://cdn.glitch.global/cb84e525-00ad-44ef-8555-9970acb03bba/United_States_Army_Field_Artillery_School_SSI.png?v=1652189012366" class="card-img-top" alt="FA School Patch Thumbnail" height="200" width="200">
+                <div class="card-body">
+                  <h5 class="card-title">Ft Sill OB 11</h5>
+                  <p class="card-text">This is a placeholder. Future updates to include a choice of scenarios.</p>
+                  <button class="btn btn-primary" onclick="setScenario(3)">Select</button>
+                </div>
+              </div>
+          </div>
+  
+          <div class="col">        
             <div class="card" style="width: 18rem;">
               <img src="https://cdn.glitch.com/ff04fad4-579c-40f2-b2d7-d1a5cf0a03be%2FMapSegment.png?v=1628971820083" class="card-img-top" alt="West Point Thumbnail" height="200" width="200">
               <div class="card-body">
@@ -187,17 +224,6 @@ body {font-family: Arial;}
                     </div>
                 </p>
                 <button disabled class="btn btn-primary" id="sendMgrsGrid">Submit</button>
-              </div>
-            </div>
-          </div>
-          
-          <div class="col">
-            <div class="card" style="width: 18rem;">
-              <img src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FUSMA%20SSI.jpg?v=1626658973120" class="card-img-top" alt="USMA Patch Thumbnail" height="200" width="200">
-              <div class="card-body">
-                <h5 class="card-title">Example Sceanrio</h5>
-                <p class="card-text">This is an inactive placeholder. Future updates to include a choice of scenarios.</p>
-                <button class="btn btn-primary" disabled onclick="setScenario('Test 2')">Select</button>
               </div>
             </div>
           </div>
@@ -223,7 +249,7 @@ body {font-family: Arial;}
           
           <div id="gridTab" class="tabcontent">
             <div class="form-group">
-                WL <input type="number" min="0" max="99999" placeholder="Easting" id="gridEastingInput"/>
+                <span id="gameGridDesignatorDisplay"></span> <input type="number" min="0" max="99999" placeholder="Easting" id="gridEastingInput"/>
                 <input type="number" min="0" max="99999" placeholder="Northing" id="gridNorthingInput"/>
                 <! maxlength="5" only works for text input type  >
             </div>
@@ -308,6 +334,15 @@ body {font-family: Arial;}
             <button
               type="submit"
               class="btn btn-success"
+              id="resetButton"
+              onclick="requestReset"
+            >
+              Reset
+            </button>
+            <!--
+            <button
+              type="submit"
+              class="btn btn-success"
               id="target1UpButton"
               onclick="requestTarget(1)"
             >
@@ -339,7 +374,7 @@ body {font-family: Arial;}
               onclick="requestTarget(4)"
             >
               Target 4
-            </button>
+            </button> -->
 
           </div>
           
@@ -349,6 +384,7 @@ body {font-family: Arial;}
 </section>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/qrcode.min.js"></script>
+  <script src="./mgrs.js"></script>
   <script src="/main.js"></script>
 </body>
 </html>

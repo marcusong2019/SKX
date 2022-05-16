@@ -42,40 +42,40 @@
         />        
       </a-assets>
       
-<a-entity
-        id="camera-rig"        
-        movement-controls="controls: keyboard; camera: #viewDirection; speed:1;"
-        ground-clamp="height:1.6;"
-      >
-  <!--TODO perhaps ground clamp to zero and put cameras at height 1.6 to accomodate the position tracking of headset -->
-  <a-entity id="viewDirection" look-controls>
-        <a-entity id="camera1" camera="zoom: 7;active:false" visible="false" render-order="HUD">
-          <a-image
-            src="#crosshair"
-            position="0 0 -1"
-            material="alphaTest: 0.5"
-            scale="0.17 0.15 1"                              
-          ></a-image>
-          <!-- scale 0.14 is 1/7th -->
-          <a-entity compass
-             id="compass-text"
-             text="value: abc; align: center" 
-             position="0 0.09 -1"
-             scale="0.5 0.5 0.5"></a-entity>
+      <a-entity
+              id="camera-rig"        
+              movement-controls="controls: keyboard; camera: #viewDirection; speed:1;"
+              ground-clamp="height:1.6;"
+            >
+        <!--TODO perhaps ground clamp to zero and put cameras at height 1.6 to accomodate the position tracking of headset -->
+        <a-entity id="viewDirection" look-controls>
+            <a-entity id="camera1" camera="zoom: 7;active:false" visible="false" render-order="HUD">
+              <a-image
+                src="#crosshair"
+                position="0 0 -1"
+                material="alphaTest: 0.5"
+                scale="0.17 0.15 1"                              
+              ></a-image>
+              <!-- scale 0.14 is 1/7th -->
+              <a-entity compass
+                 id="compass-text"
+                 text="value: abc; align: center" 
+                 position="0 0.09 -1"
+                 scale="0.5 0.5 0.5"></a-entity>
+            </a-entity>
+            <a-entity id="camera2" camera="active:true" ></a-entity>
         </a-entity>
-        <a-entity id="camera2" camera="active:true" ></a-entity>
-    </a-entity>
-        <a-entity
-          id="lefthand"
-          vive-controls="hand: left"
-          oculus-touch-controls="hand: left"
-          windows-motion-controls="hand: left"          
-        ></a-entity>
-        <a-entity
-          vive-controls="hand: right"
-          oculus-touch-controls="hand: right"
-          windows-motion-controls="hand: right"
-        ></a-entity>
+            <a-entity
+              id="lefthand"
+              vive-controls="hand: left"
+              oculus-touch-controls="hand: left"
+              windows-motion-controls="hand: left"          
+            ></a-entity>
+            <a-entity
+              vive-controls="hand: right"
+              oculus-touch-controls="hand: right"
+              windows-motion-controls="hand: right"
+            ></a-entity>
       </a-entity>
 
       
@@ -93,23 +93,9 @@
     </a-scene>
 
     <script>
-/*
-        //setup terrain
-        var sceneEl = document.querySelector("a-scene");
-        var entityEl = document.createElement("a-entity");
-        entityEl.setAttribute("id","ground");
-        entityEl.setAttribute("class","ground");
-        entityEl.setAttribute("static-body","");
-        entityEl.setAttribute("a-terrain", "fovpad:5;elevation:0;lod:14;latitude:"+lat+";longitude:"+lon+";");
-        sceneEl.appendChild(entityEl);
-      */
-      /* /set camera
-      var cameraRigEl = document.querySelector('#camera-rig');
-      cameraRigEl.setAttribute("rotation","0 "+az+" 0");
-      console.log("Camera Rig az",az); */
       
       document.addEventListener("keypress", function(e){
-  console.log("keypress",e.keyCode);
+        console.log("keypress",e.keyCode);
     if(e.keyCode == 32) { //space bar
       swapCameras();     
     };

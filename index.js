@@ -17,14 +17,28 @@ server.listen(port, function() {
 app.use(express.static("public"));
 
 io.on('connection', client => {
+  console.log('new connection');
 
-  client.on('newGame', handleNewGame);
-  client.on('joinGame', handleJoinGame);
+  client.on('newGame', (dataA, dataB) => {handleNewGame(dataA, dataB)});
+  client.on('joinGame', (data, callback) => handleJoinGame(data, callback));
   client.on('test', handleTest);
   client.on('target', (data) => {handleNewTarget(data)});
   client.on('firemissionG', (dataA, dataB, dataC) => {handleFireMission(dataA, dataB, dataC)});
   client.on('disconnect', handleDisconnect);
   client.on('hit',handleHit);
+  client.on('requestReset',handleReset);
+  
+  function handleReset() {
+    console.log('Request to Reset');
+    const roomName = clientRooms[client.id];
+    if (!roomName) {
+      return;
+    }
+    io.sockets.in(roomName)
+    .emit('reset');
+    console.log('Reset ' + roomName);
+    
+  }
   
   function handleHit() {
     console.log('hit');
@@ -41,12 +55,14 @@ io.on('connection', client => {
   }
   
   function handleTest() {
+    console.log('Replied to test message');
     client.emit('reply','hello');
   }
 
     function handleNewTarget(tgtNum) {
       const roomName = clientRooms[client.id];
     if (!roomName) {
+      console.log('Error: New target but roomname does not exist');
       return;
     }
       io.sockets.in(roomName)
@@ -58,6 +74,7 @@ io.on('connection', client => {
       function handleFireMission(gridE, gridN, round) {
       const roomName = clientRooms[client.id];
     if (!roomName) {
+      console.log('Error: New fire mission but roomname does not exits');
       return;
     }
       io.sockets.in(roomName)
@@ -65,7 +82,7 @@ io.on('connection', client => {
   }
   
   
-  function handleJoinGame(roomName) {
+  function handleJoinGame(roomName, callback) {
     const room = io.sockets.adapter.rooms[roomName];
 console.log("join game");
     let allUsers;
@@ -80,12 +97,15 @@ console.log("join game");
 
     if (numClients === 0) {
       client.emit('unknownCode');
+      console.log('unknown code');
       return;
     } 
     
     clientRooms[client.id] = roomName;
 
     client.join(roomName);
+    
+    callback(io.sockets.adapter.rooms[roomName].scenario, io.sockets.adapter.rooms[roomName].targetList);
     //client.number = 2;
     client.emit('initFO', 2);
     
@@ -95,13 +115,15 @@ console.log("join game");
     
     client.emit('reply','Room Joined '+roomName);
     
-    client.emit('target',io.sockets.adapter.rooms[roomName].targetArray)
+    //client.emit('scenarioInfo', io.sockets.adapter.rooms[roomName].scenario, io.sockets.adapter.rooms[roomName].targetList );
+    //client.emit('target',io.sockets.adapter.rooms[roomName].targetArray);
   }
 
-  function handleNewGame() {
+  function handleNewGame(scenario,targets) {
     let roomName = makeid(5);
     clientRooms[client.id] = roomName;
     client.emit('gameCode', roomName);
+    console.log('New Game ' + roomName + ' ' + scenario);
 
     //state[roomName] = initGame();
 
@@ -109,5 +131,8 @@ console.log("join game");
     client.number = 1;
     //client.emit('init', 1);
     io.sockets.adapter.rooms[roomName].targetArray=[false,false,false,false,false];
+    io.sockets.adapter.rooms[roomName].targetList=targets;
+    io.sockets.adapter.rooms[roomName].scenario=scenario;
+    //io.sockets.adapter.rooms[roomName].lon=scenario.lon;
   }
 });
