@@ -103,7 +103,7 @@ body {font-family: Arial;}
                 
                 <h4>Join an FDC as a Forward Observer</h4>
                 FOs can either follow a QR code directly to the scenario, or enter the game code and press the green "Join FDC as Observer" button to enter the simulation.
-                The screen will briefly be blue as the scenario loads. If the screen hangs on blue for a long time, refresh the page.
+                The screen will briefly be blue as the scenario loads. If the screen is black for more than a moment, refresh the page. If the screen hangs on blue for a long time, refresh the page.
                 
                 <h4>FO View on Desktop</h4>
                 You will see the view of the scene from the Observation Point (OP). Pressing the space bar will toggle between your "eye" view and a 7x binocular view. 
@@ -113,7 +113,7 @@ body {font-family: Arial;}
                 <h4>
                   FO View on cell phones
                 </h4>
-                You can tap the screen to toggle between the "eye" and binocular views. Slide your finger to rotate the view left, right, up, or down.
+                You can tap the screen to toggle between the "eye" and binocular views. Slide your finger to rotate the view left, right, up, or down. Or use the motion sensors to move your view (like binoculars).
 
                 <h4>
                   FDC Game Controls
@@ -134,9 +134,7 @@ body {font-family: Arial;}
                   The app will send the impact almost immediately. You should press the button just after "Splash, Over".
                 </p>
                 <p>
-                  Targets: There are four target buttons. Pressing them will turn on the targets so your FO can see them. 
-                  Note, if you press the same target a second time after the target already exists, this can cause odd behaviors, such as two targets stacked on each other.
-                  The target set is different for each scenario.
+                  The Reset button will revive all targets and remove all previous fire missions (smoke/dust) from the view.
                 </p>
                 
                 <h4>
@@ -159,7 +157,7 @@ body {font-family: Arial;}
                 </div>
               </div>
             </div>
-      </div> <!-- Instruction area end -->
+          </div> <!-- Instruction area end -->
           <a href="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FMap%20Extract.pdf?v=1630549323821">Download Map Sheet</a>
         </div>
       </div>
@@ -184,8 +182,8 @@ body {font-family: Arial;}
             <div class="card" style="width: 18rem;">
               <img src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FUSMA%20SSI.jpg?v=1626658973120" class="card-img-top" alt="USMA Patch Thumbnail" height="200" width="200">
               <div class="card-body">
-                <h5 class="card-title">Example Scenario</h5>
-                <p class="card-text">This is an inactive placeholder. Future updates to include a choice of scenarios.</p>
+                <h5 class="card-title">West Point South</h5>
+                <p class="card-text">This is an example placeholder. OP located at the southern end of the impct area at West Point.</p>
                 <button class="btn btn-primary" onclick="setScenario(1)">Select</button>
               </div>
             </div>
@@ -207,7 +205,7 @@ body {font-family: Arial;}
                 <img src="https://cdn.glitch.global/cb84e525-00ad-44ef-8555-9970acb03bba/United_States_Army_Field_Artillery_School_SSI.png?v=1652189012366" class="card-img-top" alt="FA School Patch Thumbnail" height="200" width="200">
                 <div class="card-body">
                   <h5 class="card-title">Ft Sill OB 11</h5>
-                  <p class="card-text">This is a placeholder. Future updates to include a choice of scenarios.</p>
+                  <p class="card-text">OP is locted at Ft Sill's Observation Bunker 11 loking onto the artillery range. Several tank targets in the distance.</p>
                   <button class="btn btn-primary" onclick="setScenario(3)">Select</button>
                 </div>
               </div>
@@ -239,7 +237,6 @@ body {font-family: Arial;}
             <h1>Your game code is: <span id="gameCodeDisplay"></span></h1>
           </a>
           <h2>Scenario: <span id="gameScenarioDisplay"></span></h2>
-          <!--<h2><span id="numConnectionsDisplay"></span></h2>-->
           
           <div class="tab">
             <button class="tablinks" onclick="openAdjustFire(event, 'gridTab')" id="defaultOpen">Grid</button>
@@ -251,7 +248,7 @@ body {font-family: Arial;}
             <div class="form-group">
                 <span id="gameGridDesignatorDisplay"></span> <input type="number" min="0" max="99999" placeholder="Easting" id="gridEastingInput"/>
                 <input type="number" min="0" max="99999" placeholder="Northing" id="gridNorthingInput"/>
-                <! maxlength="5" only works for text input type  >
+                <!-- maxlength="5" only works for text input type  -->
             </div>
           </div>
           <div id="polarTab" class="tabcontent">
@@ -339,45 +336,7 @@ body {font-family: Arial;}
             >
               Reset
             </button>
-            <!--
-            <button
-              type="submit"
-              class="btn btn-success"
-              id="target1UpButton"
-              onclick="requestTarget(1)"
-            >
-              Target 1
-            </button>
-
-            <button
-              type="submit"
-              class="btn btn-success"
-              id="target2UpButton"
-              onclick="requestTarget(2)"
-            >
-              Target 2
-            </button>
-
-            <button
-              type="submit"
-              class="btn btn-success"
-              id="target3UpButton"
-              onclick="requestTarget(3)"
-            >
-              Target 3
-            </button>
-
-            <button
-              type="submit"
-              class="btn btn-success"
-              id="target4UpButton"
-              onclick="requestTarget(4)"
-            >
-              Target 4
-            </button> -->
-
-          </div>
-          
+          </div>          
         </div>
       </div>
     </div>

@@ -5,10 +5,7 @@ if (location.protocol !== 'https:') {
 const urlOrigin = window.location.origin;
 var socket = io(urlOrigin);//'https://observed-fire-test.glitch.me/');
   
-//socket.on('init', handleInit);
 socket.on('initFO', handleInitFO);
-//socket.on('gameState', handleGameState);
-//socket.on('gameOver', handleGameOver);
 socket.on('gameCode', handleGameCode);
 socket.on('hit', handleHit);
 socket.on('unknownCode', handleUnknownCode);
@@ -17,8 +14,6 @@ socket.on('newClient', data => {
   handleNewClient(data);
 });
 
-//var opEasting = 82030; // TODO get from
-//var opNorthing = 79507;
 var opLocation = [50000,50000];
 var lastFireMission=[0,0];
 
@@ -33,10 +28,6 @@ const linkURL = document.getElementById('linkURL');
 const numConnectionsDisplay = document.getElementById('numConnectionsDisplay');
 const sendFireMissionBtn = document.getElementById('sendFireMission');
 const gameHitDisplay = document.getElementById('gameHitDisplay');
-//const target1UpBtn = document.getElementById('target1UpButton');
-//const target2UpBtn = document.getElementById('target2UpButton');
-//const target3UpBtn = document.getElementById('target3UpButton');
-//const target4UpBtn = document.getElementById('target4UpButton');
 const resetBtn = document.getElementById('resetButton');
 const gridEasting = document.getElementById('gridEastingInput');
 const gridNorthing = document.getElementById('gridNorthingInput');
@@ -221,25 +212,6 @@ function setScenario(scenarioID) {
         "model": "#T90Tank",
         "az": 90 }
       
-      /*target[1].e=82100;
-      target[1].n=79000;
-      target[1].model="#T90Tank";
-      target[1].az=0;
-        
-      target[2].e=82100;
-      target[2].n= 79100;
-      target[2].model="#T90Tank";
-      target[2].az=0;
-        
-      target[3].e=81800;
-      target[3].n= 78100;
-      target[3].model="#T90Tank";
-      target[3].az=90;
-        
-      target[4].e=81850;
-      target[4].n= 78150;
-      target[4].model="#T90Tank";
-      target[4].az=90; */
       break;
       
     case 1:
