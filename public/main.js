@@ -79,7 +79,7 @@ function sendFireMission() {
     let [adjEast,adjNorth] = calcAdjustFireShift(shiftDirection.value,x,y);
     gridE = lastFireMission[0] + adjEast;
     gridN = lastFireMission[1] + adjNorth;    
-console.log(x,y,adjEast,adjNorth);
+    console.log(x,y,adjEast,adjNorth);
     
   } else if (gridTabEl =="block") {
     console.log("Adjust Fire, grid");  
@@ -160,9 +160,6 @@ function requestReset() {
   console.log("send reset2");
 }
 
-//function newGame() {
-//}
-
 function joinGame() {
   const code = gameCodeInput.value;
   socket.emit('joinGame', code);
@@ -224,10 +221,6 @@ function setScenario(scenarioID) {
       };
       // move 21 x (E), -72 z (N)
       //18T WL 82000 77999
-      //scenario.Name='West Point Test';
-      //scenario.lat = 41.34932;
-      //scenario.lon = -74.01980;
-      //scenario.az = 345;
       
       target[1] = {
         "e": 82110,
@@ -317,12 +310,10 @@ function setScenario(scenarioID) {
   
   opLocation = convertLatLon2Grid(scenario.lat,scenario.lon);
   
-  //console.log(JSON.stringify(scenario));
   console.log(scenario);
   gameScenarioDisplay.innerText = scenario.Name;
   gameGridDesignatorDisplay.innerText = scenario.designator;
   socket.emit('newGame',JSON.stringify(scenario),JSON.stringify(target));
-  //socket.emit('newGame',scenario,target);
   init();
 }
 
@@ -342,15 +333,13 @@ function init() {
   initialScreen.style.display = "none";
   scenarioScreen.style.display = "none";
   gameScreen.style.display = "block";
-  //splashMesage.style.display = "none";
-  //shotTimer.style.display = "none";
-
   gameActive = true;
 }
 
 function handleInit(number) {
   playerNumber = number;
 }
+
 function handleInitFO(number) {
   playerNumber = number;
   const code = gameCodeInput.value;
