@@ -92,39 +92,38 @@
       
     </a-scene>
 
-    <script>
-      
+    <script>      
       document.addEventListener("keypress", function(e){
         console.log("keypress",e.keyCode);
-    if(e.keyCode == 32) { //space bar
-      swapCameras();     
-    };
-});
+        if(e.keyCode == 32) { //space bar
+          swapCameras();     
+        };
+      });
 
-  var isMobile = AFRAME.utils.device.isMobile();
-  var isHeadset = AFRAME.utils.device.checkHeadsetConnected();
-  console.log("Headset: " + isHeadset);
+      var isMobile = AFRAME.utils.device.isMobile();
+      var isHeadset = AFRAME.utils.device.checkHeadsetConnected();
+      console.log("Headset: " + isHeadset);
 
-  if (isMobile) {
-    console.log("mobile");
-    document.addEventListener("click", swapCameras);
-  }
+      if (isMobile) {
+        console.log("mobile");
+        document.addEventListener("click", swapCameras);
+      }
 
-function swapCameras() {
-  var mainCameraEl = document.querySelector('#camera1');
-  var secondCameraEl = document.querySelector('#camera2');
-  console.log("main cam",mainCameraEl.getAttribute('camera').active);
-  if (mainCameraEl.getAttribute('camera').active) {
-    mainCameraEl.setAttribute('camera', 'active', false);
-    mainCameraEl.setAttribute('visible', false);
-    secondCameraEl.setAttribute('camera', 'active', true);
-  } else {
-    mainCameraEl.setAttribute('camera', 'active', true);
-    mainCameraEl.setAttribute('visible', true);
-    secondCameraEl.setAttribute('camera', 'active', false);
-  };
-  console.log("swap cameras")
-}
+      function swapCameras() {
+        var mainCameraEl = document.querySelector('#camera1');
+        var secondCameraEl = document.querySelector('#camera2');
+        console.log("main cam",mainCameraEl.getAttribute('camera').active);
+        if (mainCameraEl.getAttribute('camera').active) {
+          mainCameraEl.setAttribute('camera', 'active', false);
+          mainCameraEl.setAttribute('visible', false);
+          secondCameraEl.setAttribute('camera', 'active', true);
+        } else {
+          mainCameraEl.setAttribute('camera', 'active', true);
+          mainCameraEl.setAttribute('visible', true);
+          secondCameraEl.setAttribute('camera', 'active', false);
+        };
+        console.log("swap cameras")
+      }
     </script>
   </body>
 </html>

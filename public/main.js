@@ -250,6 +250,7 @@ function setScenario(scenarioID) {
         lon: -74.01980,
         az: 345
       };
+      // move 21 x (E), -72 z (N)
       //18T WL 82000 77999
       //scenario.Name='West Point Test';
       //scenario.lat = 41.34932;
