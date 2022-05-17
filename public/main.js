@@ -218,7 +218,7 @@ function setScenario(scenarioID) {
       target[3] = {
         "e": 81800,
         "n": 78100,
-        "model": "#T90Tank",
+        "model": "#BTR80",
         "az": 90 }
       
       target[4] = {
