@@ -68,7 +68,16 @@
                  position="0 0.09 -1"
                  scale="0.5 0.5 0.5"></a-entity>
             </a-entity>
-            <a-entity id="camera2" camera="active:true" ></a-entity>
+            <a-entity id="camera2" camera="active:true" >
+              <a-entity gps
+                 id="gps-text"
+                 visible="false";
+                 text="value: Acquiring /n Satellites; align: left" 
+                 position="-0.3 -0.7 -1"
+                 scale="0.6 0.6 0.6">
+                <a-plane color="#6e8072" height="0.3" width="0.3" position="-0.4 0 0" shader="flat"></a-plane>
+              </a-entity>
+            </a-entity>
         </a-entity>
             <a-entity
               id="lefthand"
@@ -102,6 +111,9 @@
         if(e.keyCode == 32) { //space bar
           swapCameras();     
         };
+        if(e.code == "KeyG") { //g key
+          toggleGPS();     
+        };
       });
 
       var isMobile = AFRAME.utils.device.isMobile();
@@ -127,6 +139,17 @@
           secondCameraEl.setAttribute('camera', 'active', false);
         };
         console.log("swap cameras")
+      }
+      
+      function toggleGPS() {
+        var gpsEl = document.querySelector('#gps-text');
+        if (gpsEl.getAttribute('visible')) {
+          gpsEl.setAttribute('visible', false);
+          console.log("GPS Off")
+        } else {
+          gpsEl.setAttribute('visible', true);
+          console.log("GPS On")
+        };
       }
     </script>
   </body>

@@ -73,7 +73,7 @@ function handleUnknownCode() {
 function initializeMap(lat,lon,az) {
   console.log("Attempt lat/lon:",lat,lon);
   const opGrid = mgrs.forward([lon, lat],5);
-  const opParts = mgrs.decode(opGrid);
+  opParts = mgrs.decode(opGrid) ;
   opEasting = opParts.easting.toString().slice(-5);
   opNorthing = opParts.northing.toString().slice(-5);
   console.log("E:"+opEasting+" N:"+opNorthing);
@@ -165,6 +165,39 @@ AFRAME.registerComponent('compass', {
     viewAz = Math.round(viewAz);
     viewAzMils = Math.round(viewAzMils);
     this.el.setAttribute('text','value',viewAz.toString() +" deg\n"+ viewAzMils.toString() +" mils");     
+  }        
+});//end component 
+
+AFRAME.registerComponent('gps', {
+
+  init: function () {
+    const sceneEl = document.querySelector('a-scene');
+    const camViewEl = sceneEl.querySelector("#viewDirection");
+    console.log("GPS Loaded",camViewEl);
+    this.tick = AFRAME.utils.throttleTick(this.tick, 1000, this);
+    
+  },
+  tick: function () {
+    if (this.el.object3D.visible) {
+      const sceneEl = document.querySelector('a-scene');
+      const cameraRigEl = sceneEl.querySelector('#camera-rig');
+      const camViewEl = sceneEl.querySelector("#viewDirection");
+      var camRigPos = cameraRigEl.getAttribute('position');
+      var camPosRaw = camViewEl.getAttribute('position');
+      var camPosX = camRigPos.x + camPosRaw.x;
+      var camPosZ = camRigPos.z + camPosRaw.z;
+      var N = +opNorthing - camPosZ;
+      var E = +opEasting + camPosX ;
+      console.log("Position",Math.round(E), Math.round(N));
+      var gpsError1 = (Math.random() * 10)-5;
+      var gpsError2 = (Math.random() * 10)-5;
+      var viewGpsE = Math.round(E + gpsError1);
+      var viewGpsN = Math.round(N + gpsError2);
+      //console.log(gpsError1,gpsError2);
+      this.el.setAttribute('text','value',opParts.zoneNumber.toString() + 
+            opParts.zoneLetter.toString() +"\n" + opParts.hunK +
+            "\n" + viewGpsE.toString() +"e\n"+ viewGpsN.toString() + "n");   
+    };
   }        
 });//end component 
 

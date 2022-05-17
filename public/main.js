@@ -235,7 +235,7 @@ function setScenario(scenarioID) {
         designator: 'WL',
         lat: 41.3499529,
         lon: -74.0195403,
-        az: 345
+        az: 328
       };
       //old 18T WL 82000 77999   lat: 41.34932, lon: -74.01980,      
       //new 18TWL8202178070
@@ -266,12 +266,12 @@ function setScenario(scenarioID) {
       target[4] = {
         "e": 81000,
         "n": 78150,
-        "model": "#T90Tank",
-        "az": 90 }      
+        "model": "#BTR80",
+        "az": 5 }      
       target[5] = {
         "e": 81000,
         "n": 78000,
-        "model": "#T90Tank",
+        "model": "#BTR80",
         "az": 45 }      
       target[6] = {
         "e": 81320,
@@ -283,28 +283,33 @@ function setScenario(scenarioID) {
         "n": 78260,
         "model": "squad",
         "az": 20 }
+      target[8] = {
+        "e": 80200,
+        "n": 77750,
+        "model": "#BTR80",
+        "az": 0 }  
       
       //3rd Platoon
-      target[8] = {
+      target[9] = {
         "e": 81000,
         "n": 79000,
         "model": "#T90Tank",
         "az": 0 }
-      target[9] = {
+      target[10] = {
         "e": 81000,
         "n": 78900,
         "model": "#T90Tank",
         "az": 10 }
-      target[10] = {
+      target[11] = {
         "e": 80950,
         "n": 78800,
         "model": "#T90Tank",
         "az": 15 }
-      target[11] = {
+      target[12] = {
         "e": 81040,
         "n": 78950,
         "model": "#soldier",
-        "az": 90 }      
+        "az": 90 }  
       break;
     
     case 2:
