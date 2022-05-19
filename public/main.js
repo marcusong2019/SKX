@@ -352,23 +352,29 @@ function setScenario(scenarioID) {
       };
       //14S ND 50000 36160
       
+      target[0] = {
+        "e": 47515,
+        "n": 37879,
+        "model": "#T90Tank",
+        "az": 35 }
+      
       target[1] = {
         "e": 47615,
         "n": 37969,
         "model": "#T90Tank",
-        "az": 0 }
+        "az": 40 }
       
       target[2] = {
         "e": 47900,
         "n": 38020,
         "model": "#T90Tank",
-        "az": 180 }
+        "az": 45 }
       
       target[3] = {
         "e": 47920,
-        "n": 37600,
+        "n": 37500,
         "model": "#T90Tank",
-        "az": 90 }      
+        "az": 39 }      
 
       break; 
   }  
