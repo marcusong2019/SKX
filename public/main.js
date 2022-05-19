@@ -316,17 +316,24 @@ function setScenario(scenarioID) {
       scenario = {
         Name: 'Tower 4 Ridge',
         designator: 'ND',
-        lat: 34.682562,
-        lon: -98.469281,
+        lat: 34.6826690,
+        lon: -98.4699191,        
         az: 270
       };
-      //14S ND 48615 37969
+      //14SND4855737981
+      //14S ND 48615 37969 old lat: 34.682562,     lon: -98.469281,
+      
+      target[0] = {
+        "e": 47725,
+        "n": 37805,
+        "model": "squad",
+        "az": 165 }
       
       target[1] = {
         "e": 47615,
         "n": 37969,
         "model": "#T90Tank",
-        "az": 0 }
+        "az": 170 }
       
       target[2] = {
         "e": 47900,
@@ -338,7 +345,7 @@ function setScenario(scenarioID) {
         "e": 47920,
         "n": 37600,
         "model": "#T90Tank",
-        "az": 90 }      
+        "az": 135 }      
 
       break;
       
@@ -349,7 +356,7 @@ function setScenario(scenarioID) {
         lat: 34.6661786,
         lon: -98.4542747,
         az: 315
-      };
+      };      
       //14S ND 50000 36160
       
       target[0] = {
