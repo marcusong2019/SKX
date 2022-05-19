@@ -108,7 +108,7 @@ console.log("join game " + roomName);
 
     client.join(roomName);
     
-    callback(io.sockets.adapter.rooms[roomName].scenario, io.sockets.adapter.rooms[roomName].targetList);
+    //callback(io.sockets.adapter.rooms[roomName].scenario, io.sockets.adapter.rooms[roomName].targetList);
     //client.number = 2;
     client.emit('initFO', 2);
     
@@ -117,6 +117,7 @@ console.log("join game " + roomName);
     console.log(numClients);
     
     client.emit('reply','Room Joined '+roomName);
+    callback(io.sockets.adapter.rooms[roomName].scenario, io.sockets.adapter.rooms[roomName].targetList);
     
     //client.emit('scenarioInfo', io.sockets.adapter.rooms[roomName].scenario, io.sockets.adapter.rooms[roomName].targetList );
     //client.emit('target',io.sockets.adapter.rooms[roomName].targetArray);
