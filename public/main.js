@@ -237,9 +237,8 @@ function setScenario(scenarioID) {
         lat: 41.3499529,
         lon: -74.0195403,
         az: 328
-      };
-      //old 18T WL 82000 77999   lat: 41.34932, lon: -74.01980,      
-      //new 18TWL8202178070
+      };   
+      //18TWL8202178070
       
       //1st Platoon
       target[0] = {
@@ -322,7 +321,6 @@ function setScenario(scenarioID) {
         az: 270
       };
       //14SND4855737981
-      //14S ND 48615 37969 old lat: 34.682562,     lon: -98.469281,
       
       target[0] = {
         "e": 47725,
