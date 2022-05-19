@@ -69,13 +69,14 @@ function sendFireMission() {
   if (polarTabEl == "block") {
     console.log("Adjust fire, polar");
     let direction = polarDirection.value;
+    shiftDirection.value = direction;
     let distance = polarDistance.value;
     [gridE, gridN] = calcPolar2Grid(direction, distance, opLocation);//TODO add FO location- need way to send/track
     
   } else if (correctionTabEl =="block"){
-    console.log("correct fire");
-    
+    console.log("correct fire");    
     console.log(shiftAddDrop.checked,shiftRange.value,shiftRight.checked,shiftDeviation.value);
+    polarDirection.value = shiftDirection.value;
     
     let [x,y] = getAdjustFireShift();
     let [adjEast,adjNorth] = calcAdjustFireShift(shiftDirection.value,x,y);
