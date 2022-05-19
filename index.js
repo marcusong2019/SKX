@@ -29,9 +29,10 @@ io.on('connection', client => {
   client.on('requestReset',handleReset);
   
   function handleReset() {
-    console.log('Request to Reset');
     const roomName = clientRooms[client.id];
+    console.log('Request to Reset ' + roomName);    
     if (!roomName) {
+      console.log('Error: no room name to reset')
       return;
     }
     io.sockets.in(roomName)
@@ -40,10 +41,11 @@ io.on('connection', client => {
     
   }
   
-  function handleHit() {
-    console.log('hit');
+  function handleHit() {    
     const roomName = clientRooms[client.id];
+    console.log('hit ' + roomName);
     if (!roomName) {
+      console.log('Error: no room name on Hit')
       return;
     }
       io.sockets.in(roomName)
@@ -51,7 +53,8 @@ io.on('connection', client => {
   }
       
   function handleDisconnect() {
-    console.log('A user disconnected');
+    const roomName = clientRooms[client.id];
+    console.log('A user disconnected ' + roomName);
   }
   
   function handleTest() {
@@ -77,6 +80,7 @@ io.on('connection', client => {
       console.log('Error: New fire mission but roomname does not exits');
       return;
     }
+        console.log('Fire Missin ' + roomName);
       io.sockets.in(roomName)
     .emit('firemissionG',gridE, gridN, round);
   }
