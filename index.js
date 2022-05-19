@@ -53,8 +53,7 @@ io.on('connection', client => {
   }
       
   function handleDisconnect() {
-    const roomName = clientRooms[client.id];
-    console.log('A user disconnected ' + roomName);
+    console.log('A user disconnected');
   }
   
   function handleTest() {
@@ -88,7 +87,7 @@ io.on('connection', client => {
   
   function handleJoinGame(roomName, callback) {
     const room = io.sockets.adapter.rooms[roomName];
-console.log("join game");
+console.log("join game " + roomName);
     let allUsers;
     if (room) {
       allUsers = room.sockets;
