@@ -63,7 +63,6 @@ AFRAME.registerComponent('gps', {
       var gpsError2 = (Math.random() * 10)-5;
       var viewGpsE = Math.round(E + gpsError1);
       var viewGpsN = Math.round(N + gpsError2);
-      //console.log(gpsError1,gpsError2);
       this.el.setAttribute('text','value',opParts.zoneNumber.toString() + 
             opParts.zoneLetter.toString() +"\n" + opParts.hunK +
             "\n" + viewGpsE.toString() +"e\n"+ viewGpsN.toString() + "n");   
@@ -141,7 +140,6 @@ AFRAME.registerComponent('type', {
   });
 
 
-
 // Initial connection
 const urlParams = new URLSearchParams(window.location.search); // get all parameters from the url
 const code = urlParams.get("game"); //get the variable we want
@@ -149,38 +147,31 @@ console.log("Attempt join game:", code);
 const urlOrigin = window.location.origin;
 var socket = io(urlOrigin);
 console.log("Socket: ", socket);
-socket.on("connect", () => {
+
+// First time connection, join game
+socket.once("connect", () => {
   console.log("Connected " + socket.id);
-  socket.emit("joinGame", code, (scenarioJSON,targetsJSON)=>{
+  socket.emit("joinGame", code);  
+});
+
+// Receive and parse the scenario info, including targets
+socket.on('scenarioInfo', (scenarioJSON,targetsJSON)=>{
     console.log(scenarioJSON);
     console.log(targetsJSON);
     const scenario = JSON.parse(scenarioJSON);
     const targets = JSON.parse(targetsJSON);
     console.log(scenario);
+    console.log(targets);
+  
     lat = scenario.lat;
     lon = scenario.lon;
     az = -1 * scenario.az;
-
-    //setup terrain
-          var sceneEl = document.querySelector("a-scene");
-          var entityEl = document.createElement("a-entity");
-          entityEl.setAttribute("id","ground");
-          entityEl.setAttribute("class","ground");
-          entityEl.setAttribute("render-order","foreground");
-          entityEl.setAttribute("static-body","");
-          console.log("fovpad:5;elevation:0;lod:14;latitude:"+lat+";longitude:"+lon);
-          entityEl.setAttribute("a-terrain", "fovpad:5;elevation:0;lod:14;latitude:"+lat+";longitude:"+lon+";");
-          sceneEl.appendChild(entityEl);
-
-    //set camera
-        var cameraRigEl = document.querySelector('#camera-rig');
-        cameraRigEl.setAttribute("rotation","0 "+az+" 0");
-        console.log("Camera Rig az",az);
-
-    initializeMap(scenario.lat,scenario.lon,scenario.az);
+  
+    createTerrain(lat,lon);
+    setCamera(az);  
+    initializeOpLocation(scenario.lat,scenario.lon,scenario.az);
     initializeTargets(targets);
   });
-});
 
 // react to incoming messages
 socket.on("reply", data => {
@@ -199,28 +190,47 @@ socket.on('unknownCode',handleUnknownCode);
 
 socket.on('reset',handleReset);
 
+function createTerrain (lat,lon) {
+    var sceneEl = document.querySelector("a-scene");
+    var entityEl = document.createElement("a-entity");
+    entityEl.setAttribute("id","ground");
+    entityEl.setAttribute("class","ground");
+    entityEl.setAttribute("render-order","foreground");
+    entityEl.setAttribute("static-body","");
+    console.log("fovpad:5;elevation:0;lod:14;latitude:"+lat+";longitude:"+lon);
+    entityEl.setAttribute("a-terrain", "fovpad:5;elevation:0;lod:14;latitude:"+lat+";longitude:"+lon+";");
+    sceneEl.appendChild(entityEl);
+    // the A-Terrain system will then take its time to create and load the tiles
+    // this is async and does not send an ack
+}
+
+function setCamera (az) {
+      var cameraRigEl = document.querySelector('#camera-rig');
+      cameraRigEl.setAttribute("rotation","0 "+az+" 0");
+      console.log("Camera Rig az",az);
+}
+
 function handleUnknownCode() {
   alert('Unknown Game Code');
   //forward to the index page to re-enter code or start new
   window.location.href = urlOrigin+'/index.html';
 }
 
-function initializeMap(lat,lon,az) {
+function initializeOpLocation(lat,lon,az) {
   console.log("Attempt lat/lon:",lat,lon);
   const opGrid = mgrs.forward([lon, lat],5);
   opParts = mgrs.decode(opGrid) ;
   opEasting = opParts.easting.toString().slice(-5);
   opNorthing = opParts.northing.toString().slice(-5);
   console.log("E:"+opEasting+" N:"+opNorthing);
-  const hitDistSq = 2500; //50m squared (using the squared distance vector)
 }
 
 function initializeTargets(targets) {
   console.log("Start target setup ", targets) ;
-  targets.forEach(createTarget1);  
+  targets.forEach(parseTarget);  
 }
 
-function createTarget1(item){
+function parseTarget(item){
   if (item){
     console.log(item);
     var gridE = item.e;
@@ -228,40 +238,40 @@ function createTarget1(item){
     var Model = item.model;
     var Az = item.az;
     if (Model=="squad") {
+      console.log("squad at: " + gridE + " " + gridN);
       createSquad(gridE, gridN, Az);
     } else {
       console.log("target at: " + gridE + " " + gridN);
       createTarget(gridE, gridN, Model, Az);
-    }
-    
+    }    
   } else {
     console.log("target item null");
   }
 }
   
 function createSquad(gridE, gridN, Az = 0){
-  console.log("squad at: " + gridE + " " + gridN);
+  console.log("building squad");
+  const azRad = (Az)*(0.01745329251994329576923690768489); //Az in degrees, convert to radians
+  console.log("squad az", Az,azRad);
+  // x in n  y in e
+  const n1 = Math.round( 18*Math.cos(azRad));
+  const n2 = Math.round( 13*Math.cos(azRad-0.57));
+  const n3 = Math.round( 13*Math.cos(azRad+0.57));
+  const n4 = Math.round( 15*Math.cos(azRad-1.23));
+  const n5 = Math.round( 16*Math.cos(azRad+3.14));
+  const n6 = Math.round( 24*Math.cos(azRad+3.5));
+  const n7 = Math.round( 24*Math.cos(azRad+2.85));
+  const n8 = Math.round( 33*Math.cos(azRad+2.7));
+  const e1 = Math.round( 18*Math.sin(azRad));
+  const e2 = Math.round( 13*Math.sin(azRad-0.57));
+  const e3 = Math.round( 13*Math.sin(azRad+0.57));
+  const e4 = Math.round( 15*Math.sin(azRad-1.23));
+  const e5 = Math.round( 16*Math.sin(azRad+3.14));
+  const e6 = Math.round( 24*Math.sin(azRad+3.5));
+  const e7 = Math.round( 24*Math.sin(azRad+2.85));
+  const e8 = Math.round( 33*Math.sin(azRad+2.7));
   
-  const azRad = (360-Az)/(0.01745329251994329576923690768489); //Az in degrees, convert to radians
-  // x in n   y in e
-  const e1 = Math.round( 18*Math.cos(azRad));
-  const e2 = Math.round( 13*Math.cos(azRad-0.57));
-  const e3 = Math.round( 13*Math.cos(azRad+0.57));
-  const e4 = Math.round( 15*Math.cos(azRad-1.23));
-  const e5 = Math.round( 16*Math.cos(azRad+3.14));
-  const e6 = Math.round( 24*Math.cos(azRad+3.5));
-  const e7 = Math.round( 24*Math.cos(azRad+2.85));
-  const e8 = Math.round( 33*Math.cos(azRad+2.7));
-  const n1 = Math.round( 18*Math.sin(azRad));
-  const n2 = Math.round( 13*Math.sin(azRad-0.57));
-  const n3 = Math.round( 13*Math.sin(azRad+0.57));
-  const n4 = Math.round( 15*Math.sin(azRad-1.23));
-  const n5 = Math.round( 16*Math.sin(azRad+3.14));
-  const n6 = Math.round( 24*Math.sin(azRad+3.5));
-  const n7 = Math.round( 24*Math.sin(azRad+2.85));
-  const n8 = Math.round( 33*Math.sin(azRad+2.7));
-  
-  createTarget(gridE, gridN, "#soldier", (-90-Az)); //Squad Leader in center
+  createTarget(gridE, gridN, "#soldier", (-45-Az)); //Squad Leader in center
   createTarget(gridE+e1, gridN+n1, "#soldier", (-90-Az));
   createTarget(gridE+e2, gridN+n2, "#soldier", (-90-Az));
   createTarget(gridE+e3, gridN+n3, "#soldier", (-90-Az));
