@@ -351,7 +351,6 @@ function setScenario(scenarioID) {
         "n": 37600,
         "model": "#T90Tank",
         "az": 135 }      
-
       break;
       
       case 3:
@@ -387,7 +386,6 @@ function setScenario(scenarioID) {
         "n": 37500,
         "model": "#T90Tank",
         "az": 39 }      
-
       break; 
   }  
   
@@ -509,4 +507,22 @@ function openAdjustFire(evt, fireMissionType) {
   console.log(document.getElementById('correctionTab').style.display);
   console.log(document.getElementById('polarTab').style.display);
   console.log(document.getElementById('gridTab').style.display);
+}
+
+function randomApproxNormal (v = 5) {
+  // simple method for creating approximately normal distro
+  // v=5 iterations yields a mean ~0.5 and stdev ~0.125 (65% within 1 StDev)
+  var r = 0;
+  for (var i=v; i>0; i--) {
+    r += Math.random();
+  }
+  return r/v;  
+}
+
+function shotError (cep = 30) {
+  var a = 0.5 - randomApproxNormal(5); //random normal from -0.5 to +0.5 with mean zero
+  var b = cep/0.125; // multiplier based on CEP, 66% should be within 'CEP'
+  var c = b*a;
+  console.log("calc shot error", c);
+  return c;  
 }
