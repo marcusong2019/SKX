@@ -3,7 +3,7 @@ if (location.protocol !== 'https:') {
 }
 
 const urlOrigin = window.location.origin;
-var socket = io(urlOrigin);//'https://observed-fire-test.glitch.me/');
+var socket = io(urlOrigin);//'https://observed-fire-simulator.glitch.me/');
   
 socket.on('initFO', handleInitFO);
 socket.on('gameCode', handleGameCode);
@@ -16,6 +16,7 @@ socket.on('newClient', data => {
 
 var opLocation = [50000,50000];
 var lastFireMission=[0,0];
+
 
 const gameScreen = document.getElementById('gameScreen');
 const scenarioScreen = document.getElementById('scenarioScreen');
