@@ -7,6 +7,141 @@ var opEasting = [];
 var opNorthing = [];
 var hitDistSq = 2500; //50m squared (using the squared distance vector)
 
+// Allow logging to console from inside A-Frame
+AFRAME.registerComponent("log", {
+  schema: { type: "string" },
+
+  init: function() {
+    var stringToLog = this.data;
+    console.log(stringToLog);
+  }
+});
+
+AFRAME.registerComponent('compass', {
+  init: function () {
+    const sceneEl = document.querySelector('a-scene');
+    const camViewEl = sceneEl.querySelector("#viewDirection");
+    console.log(camViewEl);
+  },
+  tick: function () {
+    const sceneEl = document.querySelector('a-scene');
+    const cameraRigEl = sceneEl.querySelector('#camera-rig');
+    const camViewEl = sceneEl.querySelector("#viewDirection");
+    var camRigRot = cameraRigEl.getAttribute('rotation').y;
+    var rotationRaw = camViewEl.getAttribute('rotation').y;
+    var rotation = parseFloat(camRigRot) + parseFloat(rotationRaw);
+    var viewAz = rot2bearing(rotation);
+    var viewAzMils = deg2mils(viewAz);
+    viewAz = Math.round(viewAz);
+    viewAzMils = Math.round(viewAzMils);
+    this.el.setAttribute('text','value',viewAz.toString() +" deg\n"+ viewAzMils.toString() +" mils");     
+  }        
+});//end component 
+
+AFRAME.registerComponent('gps', {
+
+  init: function () {
+    const sceneEl = document.querySelector('a-scene');
+    const camViewEl = sceneEl.querySelector("#viewDirection");
+    console.log("GPS Loaded",camViewEl);
+    this.tick = AFRAME.utils.throttleTick(this.tick, 1000, this);
+    
+  },
+  tick: function () {
+    if (this.el.object3D.visible) {
+      const sceneEl = document.querySelector('a-scene');
+      const cameraRigEl = sceneEl.querySelector('#camera-rig');
+      const camViewEl = sceneEl.querySelector("#viewDirection");
+      var camRigPos = cameraRigEl.getAttribute('position');
+      var camPosRaw = camViewEl.getAttribute('position');
+      var camPosX = camRigPos.x + camPosRaw.x;
+      var camPosZ = camRigPos.z + camPosRaw.z;
+      var N = +opNorthing - camPosZ;
+      var E = +opEasting + camPosX ;
+      console.log("Position",Math.round(E), Math.round(N));
+      var gpsError1 = (Math.random() * 10)-5;
+      var gpsError2 = (Math.random() * 10)-5;
+      var viewGpsE = Math.round(E + gpsError1);
+      var viewGpsN = Math.round(N + gpsError2);
+      //console.log(gpsError1,gpsError2);
+      this.el.setAttribute('text','value',opParts.zoneNumber.toString() + 
+            opParts.zoneLetter.toString() +"\n" + opParts.hunK +
+            "\n" + viewGpsE.toString() +"e\n"+ viewGpsN.toString() + "n");   
+    };
+  }        
+});//end component 
+
+AFRAME.registerComponent('ground-clamp', {
+        schema: {
+          height: {default: 0},
+        },
+
+    tick: function () {
+        var position = this.el.object3D.position;
+
+        var location = new THREE.Vector3(position.x, 9000, position.z);
+        const direction = new THREE.Vector3(0, -1, 0);
+        const raycaster = new THREE.Raycaster();
+        raycaster.set(location, direction);
+
+        const mesh = document.querySelector("#ground").object3D;
+        var intersects = raycaster.intersectObject(mesh, true);
+      
+      if (intersects.length > 0){
+        var point = intersects[0].point; // a three value point XYZ in world coord
+        var Y = point.y + this.data.height;
+        this.el.object3D.position.y=Y;    
+      }
+    }
+  });
+
+AFRAME.registerComponent('groundcheck', {
+    schema: {
+        height: {default: 0},
+    },
+    init: function () {
+        this.tick = AFRAME.utils.throttleTick(this.tick, 1000, this);    
+    },
+
+    tick: function () {
+        var position = this.el.object3D.position;
+        var location = new THREE.Vector3(position.x, 9000, position.z);
+        const direction = new THREE.Vector3(0, -1, 0);
+        const raycaster = new THREE.Raycaster();
+        raycaster.set(location, direction);
+
+        const mesh = document.querySelector("#ground").object3D;
+        var intersects = raycaster.intersectObject(mesh, true);
+      
+      if (intersects.length > 0){
+        var point = intersects[0].point; // a three value point XYZ in world coord
+        var Y = point.y + this.data.height;
+        this.el.object3D.position.y=Y;  //set onto ground
+        console.log(this.el.components.type.data);
+        if (this.el.components.type.data=="tank") {
+          var normal = intersects[0].face.normal;
+          var normal2 = new THREE.Vector3(normal.z, normal.y, normal.x).normalize();  
+          var up = new THREE.Vector3( 0, 0, 1);          
+          this.el.object3D.quaternion.setFromUnitVectors(up, normal2);
+          var up2 = new THREE.Vector3( 0, 1, 0);
+          this.el.object3D.rotateOnAxis(up2,-1.5708);
+        }
+      }
+    }
+  });
+
+AFRAME.registerComponent('type', {
+  schema: {type: 'string', default: "tank"}
+  //init: function () {},
+  //update: function () {},
+  //tick: function () {},
+  //remove: function () {},
+  //pause: function () {},
+  //play: function () {}
+  });
+
+
+
 // Initial connection
 const urlParams = new URLSearchParams(window.location.search); // get all parameters from the url
 const code = urlParams.get("game"); //get the variable we want
@@ -137,69 +272,6 @@ function createSquad(gridE, gridN, Az = 0){
   createTarget(gridE+e8, gridN+n8, "#soldier", (-90-Az));
 }
 
-// Allow logging to console from inside A-Frame
-AFRAME.registerComponent("log", {
-  schema: { type: "string" },
-
-  init: function() {
-    var stringToLog = this.data;
-    console.log(stringToLog);
-  }
-});
-
-AFRAME.registerComponent('compass', {
-  init: function () {
-    const sceneEl = document.querySelector('a-scene');
-    const camViewEl = sceneEl.querySelector("#viewDirection");
-    console.log(camViewEl);
-  },
-  tick: function () {
-    const sceneEl = document.querySelector('a-scene');
-    const cameraRigEl = sceneEl.querySelector('#camera-rig');
-    const camViewEl = sceneEl.querySelector("#viewDirection");
-    var camRigRot = cameraRigEl.getAttribute('rotation').y;
-    var rotationRaw = camViewEl.getAttribute('rotation').y;
-    var rotation = parseFloat(camRigRot) + parseFloat(rotationRaw);
-    var viewAz = rot2bearing(rotation);
-    var viewAzMils = deg2mils(viewAz);
-    viewAz = Math.round(viewAz);
-    viewAzMils = Math.round(viewAzMils);
-    this.el.setAttribute('text','value',viewAz.toString() +" deg\n"+ viewAzMils.toString() +" mils");     
-  }        
-});//end component 
-
-AFRAME.registerComponent('gps', {
-
-  init: function () {
-    const sceneEl = document.querySelector('a-scene');
-    const camViewEl = sceneEl.querySelector("#viewDirection");
-    console.log("GPS Loaded",camViewEl);
-    this.tick = AFRAME.utils.throttleTick(this.tick, 1000, this);
-    
-  },
-  tick: function () {
-    if (this.el.object3D.visible) {
-      const sceneEl = document.querySelector('a-scene');
-      const cameraRigEl = sceneEl.querySelector('#camera-rig');
-      const camViewEl = sceneEl.querySelector("#viewDirection");
-      var camRigPos = cameraRigEl.getAttribute('position');
-      var camPosRaw = camViewEl.getAttribute('position');
-      var camPosX = camRigPos.x + camPosRaw.x;
-      var camPosZ = camRigPos.z + camPosRaw.z;
-      var N = +opNorthing - camPosZ;
-      var E = +opEasting + camPosX ;
-      console.log("Position",Math.round(E), Math.round(N));
-      var gpsError1 = (Math.random() * 10)-5;
-      var gpsError2 = (Math.random() * 10)-5;
-      var viewGpsE = Math.round(E + gpsError1);
-      var viewGpsN = Math.round(N + gpsError2);
-      //console.log(gpsError1,gpsError2);
-      this.el.setAttribute('text','value',opParts.zoneNumber.toString() + 
-            opParts.zoneLetter.toString() +"\n" + opParts.hunK +
-            "\n" + viewGpsE.toString() +"e\n"+ viewGpsN.toString() + "n");   
-    };
-  }        
-});//end component 
 
 function rot2bearing (rot) {
   while (rot > 180) { rot = rot - 360 };
@@ -215,39 +287,7 @@ function deg2mils (deg) {
   return mils;
 };
 
-AFRAME.registerComponent('ground-clamp', {
-        schema: {
-          height: {default: 0},
-        },
 
-    tick: function () {
-        var position = this.el.object3D.position;
-
-        var location = new THREE.Vector3(position.x, 9000, position.z);
-        const direction = new THREE.Vector3(0, -1, 0);
-        const raycaster = new THREE.Raycaster();
-        raycaster.set(location, direction);
-
-        const mesh = document.querySelector("#ground").object3D;
-        var intersects = raycaster.intersectObject(mesh, true);
-      
-      if (intersects.length > 0){
-        var point = intersects[0].point; // a three value point XYZ in world coord
-        var Y = point.y + this.data.height;
-        this.el.object3D.position.y=Y;    
-      }
-    }
-  });
-
-AFRAME.registerComponent('type', {
-  schema: {type: 'string', default: "tank"}
-  //init: function () {},
-  //update: function () {},
-  //tick: function () {},
-  //remove: function () {},
-  //pause: function () {},
-  //play: function () {}
-  });
 
 
 
