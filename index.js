@@ -20,7 +20,7 @@ io.on('connection', client => {
   console.log('new connection');
 
   client.on('newGame', (dataA, dataB) => {handleNewGame(dataA, dataB)});
-  client.on('joinGame', (data, callback) => handleJoinGame(data, callback));
+  client.on('joinGame', (data) => handleJoinGame(data));
   client.on('test', handleTest);
   client.on('target', (data) => {handleNewTarget(data)});
   client.on('firemissionG', (dataA, dataB, dataC) => {handleFireMission(dataA, dataB, dataC)});
@@ -38,7 +38,6 @@ io.on('connection', client => {
     io.sockets.in(roomName)
     .emit('reset');
     console.log('Reset ' + roomName);
-    
   }
   
   function handleHit() {    
@@ -79,11 +78,10 @@ io.on('connection', client => {
       console.log('Error: New fire mission but roomname does not exits');
       return;
     }
-        console.log('Fire Missin ' + roomName);
+        console.log('Fire Mission ' + roomName);
       io.sockets.in(roomName)
     .emit('firemissionG',gridE, gridN, round);
   }
-  
   
   function handleJoinGame(roomName, callback) {
     const room = io.sockets.adapter.rooms[roomName];
@@ -108,8 +106,6 @@ console.log("join game " + roomName);
 
     client.join(roomName);
     
-    //callback(io.sockets.adapter.rooms[roomName].scenario, io.sockets.adapter.rooms[roomName].targetList);
-    //client.number = 2;
     client.emit('initFO', 2);
     
     io.sockets.in(room)
@@ -117,10 +113,8 @@ console.log("join game " + roomName);
     console.log(numClients);
     
     client.emit('reply','Room Joined '+roomName);
-    callback(io.sockets.adapter.rooms[roomName].scenario, io.sockets.adapter.rooms[roomName].targetList);
     
-    //client.emit('scenarioInfo', io.sockets.adapter.rooms[roomName].scenario, io.sockets.adapter.rooms[roomName].targetList );
-    //client.emit('target',io.sockets.adapter.rooms[roomName].targetArray);
+    client.emit('scenarioInfo', io.sockets.adapter.rooms[roomName].scenario, io.sockets.adapter.rooms[roomName].targetList);
   }
 
   function handleNewGame(scenario,targets) {
@@ -129,14 +123,10 @@ console.log("join game " + roomName);
     client.emit('gameCode', roomName);
     console.log('New Game ' + roomName + ' ' + scenario);
 
-    //state[roomName] = initGame();
-
     client.join(roomName);
     client.number = 1;
-    //client.emit('init', 1);
     io.sockets.adapter.rooms[roomName].targetArray=[false,false,false,false,false];
     io.sockets.adapter.rooms[roomName].targetList=targets;
     io.sockets.adapter.rooms[roomName].scenario=scenario;
-    //io.sockets.adapter.rooms[roomName].lon=scenario.lon;
   }
 });

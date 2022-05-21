@@ -412,8 +412,6 @@ function getGroundLevel(X, Z) {
   };
 }
 
-
-
 function createIDF(X, Z, agl=0) {
   var groundLevel = getGroundLevel(X, Z);
   var position = groundLevel.point;
@@ -427,7 +425,6 @@ function createIDF(X, Z, agl=0) {
   var entityFire2 = createFireEl(-45);
   var entitySmoke1 = createSmokeEl(0);
   var entitySmoke2 = createSmokeEl(90);
-
 
   entityEl.appendChild(entitySmoke1);
   entityEl.appendChild(entitySmoke2);
@@ -520,7 +517,6 @@ function createHit (position) {
   entityEl.appendChild(entityFire1);
   entityEl.appendChild(entityFire2);
   sceneEl.appendChild(entityEl);
-  
 }
 
 function handleReset () {
