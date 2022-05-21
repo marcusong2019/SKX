@@ -271,24 +271,49 @@ function createSquad(gridE, gridN, Az = 0){
   const e7 = Math.round( 24*Math.sin(azRad+2.85));
   const e8 = Math.round( 33*Math.sin(azRad+2.7));
   
-  createTarget(gridE, gridN, "#soldier", (-45-Az)); //Squad Leader in center
-  createTarget(gridE+e1, gridN+n1, "#soldier", (-90-Az));
-  createTarget(gridE+e2, gridN+n2, "#soldier", (-90-Az));
+  createTarget(gridE, gridN, "#soldier", (-135-Az)); //Squad Leader in center
+  createTarget(gridE+e1, gridN+n1, "#soldier", (-135-Az));
+  createTarget(gridE+e2, gridN+n2, "#soldier", (-135-Az));
   createTarget(gridE+e3, gridN+n3, "#soldier", (-90-Az));
-  createTarget(gridE+e4, gridN+n4, "#soldier", (-90-Az));
-  createTarget(gridE+e5, gridN+n5, "#soldier", (-90-Az));
-  createTarget(gridE+e6, gridN+n6, "#soldier", (-90-Az));
-  createTarget(gridE+e7, gridN+n7, "#soldier", (-90-Az));
+  createTarget(gridE+e4, gridN+n4, "#soldier", (-135-Az));
+  createTarget(gridE+e5, gridN+n5, "#soldier", (-135-Az));
+  createTarget(gridE+e6, gridN+n6, "#soldier", (-115-Az));
+  createTarget(gridE+e7, gridN+n7, "#soldier", (-135-Az));
   createTarget(gridE+e8, gridN+n8, "#soldier", (-90-Az));
 }
 
+function createTarget(gridE, gridN, Model = "#T90Tank", Az = 0) {
+  var [X,Z] = convertGrid(gridE,gridN);
+  var position = new THREE.Vector3(X, 0, Z);
+
+  var sceneEl = document.querySelector("a-scene");
+  var entityEl = document.createElement("a-entity");
+  entityEl.setAttribute("position", position);
+  entityEl.setAttribute("groundcheck", "");
+  entityEl.setAttribute("class", "target");
+  if (Model=="#soldier"){
+    entityEl.setAttribute("type", "pax");
+  }else{
+    entityEl.setAttribute("type", "tank");
+  }
+  entityEl.setAttribute("render-order","foreground");
+  var entityE2 = document.createElement("a-entity");
+  entityE2.setAttribute("gltf-model", Model); //can I abstract model if scale and position may be affected? may need ifs
+  entityE2.setAttribute("scale", "1 1 1");
+  entityE2.setAttribute("position", "0 0 0");
+  entityE2.setAttribute("rotation", "0 " + -Az + " 0"); // rotate to Az for facing direction-may not match map bearing
+
+  // append entities to build up scene
+  entityEl.appendChild(entityE2);
+  sceneEl.appendChild(entityEl);
+  console.log("Target Created at ", position);
+}
 
 function rot2bearing (rot) {
   while (rot > 180) { rot = rot - 360 };
   while (rot < -180) { rot = rot + 360 };
   if (rot <= 0) {az = -rot};
   if (rot > 0) { az= 360-rot};
-  //console.log("convert to "+az);
   return az;        
 };
 
@@ -296,10 +321,6 @@ function deg2mils (deg) {
   var mils = ( 6400 / 360 ) * deg;
   return mils;
 };
-
-
-
-
 
 // Observed Fire Sim Functions
 function convertGrid(easting,northing) {
@@ -391,35 +412,7 @@ function getGroundLevel(X, Z) {
   };
 }
 
-function createTarget(gridE, gridN, Model = "#T90Tank", Az = 0) {
-  var [X,Z] = convertGrid(gridE,gridN);
-  var groundLevel = getGroundLevel(X, Z);
-  var position = groundLevel.point;
-  var normal = groundLevel.normal;
 
-  var sceneEl = document.querySelector("a-scene");
-  var entityEl = document.createElement("a-entity");
-  //entityEl.setAttribute("id", "target1");  //needs to be unique
-  entityEl.setAttribute("position", position);
-  entityEl.setAttribute("class", "target");
-  if (Model=="#soldier"){
-    entityEl.setAttribute("type", "pax");
-  }else{
-    entityEl.setAttribute("type", "tank");
-  }
-  entityEl.setAttribute("render-order","foreground");
-  var entityE2 = document.createElement("a-entity");
-  entityE2.setAttribute("gltf-model", Model); //can I abstract model if scale and position may be affected? may need ifs
-  entityE2.setAttribute("scale", "1 1 1");
-  entityE2.setAttribute("position", "0 0 0");
-  entityE2.setAttribute("rotation", "0 " + -Az + " 0"); // rotate to Az for facing direction-may not match map bearing
-
-  // append entities to build up scene
-  entityEl.appendChild(entityE2);
-  sceneEl.appendChild(entityEl);
-  entityEl.object3D.lookAt(normal); //sit correctly on terrain
-  console.log("Target Created at ", position);
-}
 
 function createIDF(X, Z, agl=0) {
   var groundLevel = getGroundLevel(X, Z);
