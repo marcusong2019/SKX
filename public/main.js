@@ -94,7 +94,12 @@ function sendFireMission() {
   const round = roundType.value;
   gridE = padGrid(gridE);
   gridN = padGrid(gridN);
-  console.log(gridE, gridN, round);
+  console.log("request", gridE, gridN, round);
+  errorE = Math.floor(shotError());
+  errorN = Math.floor(shotError());
+  gridE = gridE + errorE;
+  gridN = gridN + errorN;
+  console.log("shot", gridE, gridN);
   socket.emit('firemissionG',gridE, gridN, round);
   lastFireMission=[gridE,gridN]; //store for future
 }
@@ -174,10 +179,10 @@ function requestTarget(tgtNum){
 }
 
 function requestReset() {
-  console.log("send reset1");
+  console.log("send reset request");
   socket.emit('requestReset');
   gameHitDisplay.innerText = ""; //reset
-  console.log("send reset2");
+
 }
 
 function joinGame() {
@@ -213,7 +218,7 @@ function setScenario(scenarioID) {
       
       target[2] = {
         "e": 82100,
-        "n": 7805,
+        "n": 78050,
         "model": "#T90Tank",
         "az": 0 }
       
