@@ -14,3 +14,7 @@ Number of users connected visible frodm FDC
 set up/add targets for fdc
 
 HIT includes a target type/number/id
+
+GPS always in view?
+
+Mobile view port sze
