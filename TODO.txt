@@ -15,6 +15,12 @@ set up/add targets for fdc
 
 HIT includes a target type/number/id
 
-GPS always in view?
+GPS always in view-- worked out putting on the HTNML overlay.
+DAGR image as background?
+Revamp code for the aframe component/entity. Maybe add the DOM HTML elementduring init?
+start hidden.
+Other text to display?
 
 Mobile view port sze
+
+Instruction pop up at start.
