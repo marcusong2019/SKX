@@ -7,15 +7,13 @@ var opEasting = [];
 var opNorthing = [];
 var hitDistSq = 2500; //50m squared (using the squared distance vector)
 
-// Allow logging to console from inside A-Frame
-AFRAME.registerComponent("log", {
-  schema: { type: "string" },
-
-  init: function() {
-    var stringToLog = this.data;
-    console.log(stringToLog);
+AFRAME.registerComponent('checkload', {
+  init: function () {
+    this.el.addEventListener('loaded', function (event) {
+      console.log('Loaded', event);
+    })
   }
-});
+});//end component 
 
 AFRAME.registerComponent('compass', {
   init: function () {
@@ -36,6 +34,29 @@ AFRAME.registerComponent('compass', {
     viewAzMils = Math.round(viewAzMils);
     this.el.setAttribute('text','value',viewAz.toString() +" deg\n"+ viewAzMils.toString() +" mils");     
   }        
+});//end component 
+
+AFRAME.registerComponent('compassdial', {
+  init: function () {
+    const sceneEl = document.querySelector('a-scene');
+    const camViewEl = sceneEl.querySelector("#viewDirection");
+    console.log(camViewEl);
+    //this.tick = AFRAME.utils.throttleTick(this.tick, 300, this); 
+    this.el.addEventListener('loaded', function (event) {
+  console.log('Loaded', event);
+      //this.previousError = 0;
+    });
+  },
+  tick: function (time,delta) {
+    const sceneEl = document.querySelector('a-scene');
+    const cameraRigEl = sceneEl.querySelector('#camera-rig');
+    const camViewEl = sceneEl.querySelector("#viewDirection");
+    var camRigRot = cameraRigEl.getAttribute('rotation').y;
+    var rotationRaw = camViewEl.getAttribute('rotation').y;
+    var rotation = parseFloat(camRigRot) + parseFloat(rotationRaw);
+    var error = Math.sin(time/300);//(Math.random() * 3)-1.5;         
+    this.el.object3D.rotation.y= (error-rotation)*0.01745329251994329576923690768489;  //convert degree to radians, and right to left hand
+  }
 });//end component 
 
 AFRAME.registerComponent('gps', {
@@ -92,7 +113,7 @@ AFRAME.registerComponent('ground-clamp', {
         this.el.object3D.position.y=Y;    
       }
     }
-  });
+  }); //end component 
 
 AFRAME.registerComponent('groundcheck', {
     schema: {
@@ -127,7 +148,17 @@ AFRAME.registerComponent('groundcheck', {
         }
       }
     }
-  });
+  }); //end component 
+
+// Allow logging to console from inside A-Frame
+AFRAME.registerComponent("log", {
+  schema: { type: "string" },
+
+  init: function() {
+    var stringToLog = this.data;
+    console.log(stringToLog);
+  }
+}); //end component 
 
 AFRAME.registerComponent('type', {
   schema: {type: 'string', default: "tank"}
@@ -137,10 +168,10 @@ AFRAME.registerComponent('type', {
   //remove: function () {},
   //pause: function () {},
   //play: function () {}
-  });
+}); //end component 
 
 
-// Initial connection
+// Initial socket connection
 const urlParams = new URLSearchParams(window.location.search); // get all parameters from the url
 const code = urlParams.get("game"); //get the variable we want
 console.log("Attempt join game:", code);
