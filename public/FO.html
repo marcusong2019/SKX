@@ -137,52 +137,46 @@
       
     </a-scene>
 
-    <script>      
-      document.addEventListener("keypress", function(e){
-        console.log("keypress",e.keyCode);
-        var compassEl = document.querySelector('#compass');
-        var binocamEl = document.querySelector('#camera2');
-        if(e.keyCode == 32) { //space bar
-          if(compassEl.object3D.visible){
-            swapCameras('#camera1','#camera3');
-          } else {
-            swapCameras();  
-          }
-        };
-        if(e.code == "KeyG") { //g key
-          toggleGPS();     
-        };
-        if(e.code == "KeyC" && !binocamEl.getAttribute('camera').active) { //c key
-          toggleCompass();  
-        };
-        if(e.code == "KeyC" && binocamEl.getAttribute('camera').active) { //c key
-          swapCameras();
-          toggleCompass();  
-        };
-      });
-
+    <script>         
       var isMobile = AFRAME.utils.device.isMobile();
       var isHeadset = AFRAME.utils.device.checkHeadsetConnected();
       console.log("Headset: " + isHeadset);
-
       if (isMobile) {
         console.log("mobile");
         document.addEventListener("click", swapCameras);
       }
-
-      function swapCameras(cam1 = '#camera1', cam2 = '#camera2') {
-        var mainCameraEl = document.querySelector(cam1);
-        var secondCameraEl = document.querySelector(cam2);
-        if (mainCameraEl.getAttribute('camera').active) {
-          mainCameraEl.setAttribute('camera', 'active', false);
-          secondCameraEl.setAttribute('visible', true);
-          secondCameraEl.setAttribute('camera', 'active', true);
-        } else {
-          mainCameraEl.setAttribute('camera', 'active', true);
-          secondCameraEl.setAttribute('visible', false);
-          secondCameraEl.setAttribute('camera', 'active', false);
+      
+      document.addEventListener("keypress", function(e){
+        console.log("keypress",e.keyCode);
+        if(e.keyCode == 32) { //space bar
+          setCamView('main');
         };
-        console.log("swap cameras")
+        if(e.code == "KeyB") { //b key
+          toggleBino();     
+        };
+        if(e.code == "KeyG") { //g key
+          toggleGPS();     
+        };
+        if(e.code == "KeyC"){ //c key
+          toggleCompass();  
+        };
+      });
+      
+      function swapCameras() {
+        
+      }
+
+
+
+      function toggleBino() {
+        var binoCameraEl = document.querySelector('#camera2');
+        if (binoCameraEl.getAttribute('camera').active) {          
+          console.log("toggle bino off");
+          setCamView('main');
+        } else {          
+          console.log("toggle bino on");
+          setCamView('bino');
+        };        
       }
       
       function toggleGPS() {
@@ -197,18 +191,71 @@
       }
       
       function toggleCompass() {
+        var compassCameraEl = document.querySelector('#camera3');
         var compassEl = document.querySelector('#compass');
-        var mainCameraEl = document.querySelector('#camera1');
-        var secondCameraEl = document.querySelector('#camera3');
-        if (compassEl.getAttribute('visible')) {
-          compassEl.setAttribute('visible', false);
-          console.log("Compass Off")
-          mainCameraEl.setAttribute('camera', 'active', true);
-          secondCameraEl.setAttribute('camera', 'active', false);
+        if(compassCameraEl.getAttribute('camera').active) {
+          // if zoomed in view of dial then turn off compass
+          setCamView('main')  
+          console.log("Compass Off");
+        } else if (compassEl.getAttribute('visible')) {
+          // if compass on, but not zoomed in, then zoom in
+          setCamView('compassdial') 
+          console.log("Compass zoom dial");
         } else {
-          compassEl.setAttribute('visible', true);
-          console.log("Compass On");
+          // compass is off, then turn on compass
+          setCamView('compass')
+          console.log("Compass on");
         };
+      }
+      
+      function setCamView(cam) {
+        var mainCameraEl = document.querySelector('#camera1');
+        var binoCameraEl = document.querySelector('#camera2');
+        var compassCameraEl = document.querySelector('#camera3');
+        var compassEl = document.querySelector('#compass');
+        
+        switch(cam) {
+            case 'main':            
+              mainCameraEl.setAttribute('camera', 'active', true);                
+              binoCameraEl.setAttribute('camera', 'active', false);
+              binoCameraEl.setAttribute('visible', false);
+              compassCameraEl.setAttribute('camera', 'active', false);
+              compassEl.setAttribute('visible', false); 
+              console.log("switch to MAIN view");
+            break;
+            case 'bino':            
+              mainCameraEl.setAttribute('camera', 'active', false);                
+              binoCameraEl.setAttribute('camera', 'active', true);
+              binoCameraEl.setAttribute('visible', true);
+              compassCameraEl.setAttribute('camera', 'active', false);
+              compassEl.setAttribute('visible', false); 
+              console.log("switch to BINO view");
+            break;
+            case 'compass':            
+              mainCameraEl.setAttribute('camera', 'active', true);                
+              binoCameraEl.setAttribute('camera', 'active', false);
+              binoCameraEl.setAttribute('visible', false);
+              compassCameraEl.setAttribute('camera', 'active', false);
+              compassEl.setAttribute('visible', true); 
+              console.log("switch to COMPASS view");
+            break;
+            case 'compassdial':            
+              mainCameraEl.setAttribute('camera', 'active', false);                
+              binoCameraEl.setAttribute('camera', 'active', false);
+              binoCameraEl.setAttribute('visible', false);
+              compassCameraEl.setAttribute('camera', 'active', true);
+              compassEl.setAttribute('visible', true); 
+              console.log("switch to COMPASS DIAL view");
+            break;
+            default:            
+              mainCameraEl.setAttribute('camera', 'active', true);                
+              binoCameraEl.setAttribute('camera', 'active', false);
+              binoCameraEl.setAttribute('visible', false);
+              compassCameraEl.setAttribute('camera', 'active', false);
+              compassEl.setAttribute('visible', false); 
+              console.log("switch to DEFUALT (MAIN) view");
+            break;
+        };            
       }
     </script>
   </body>
