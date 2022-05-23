@@ -122,7 +122,7 @@
               windows-motion-controls="hand: right"
             ></a-entity>
       </a-entity>
-    </a-entity>
+  </a-entity>
 
       
       <a-box position="0 0 0" scale="0.5 1 0.5" color="red" render-order="foreground"></a-box>
@@ -140,11 +140,24 @@
     <script>      
       document.addEventListener("keypress", function(e){
         console.log("keypress",e.keyCode);
+        var compassEl = document.querySelector('#compass');
+        var binocamEl = document.querySelector('#camera2');
         if(e.keyCode == 32) { //space bar
-          swapCameras();     
+          if(compassEl.object3D.visible){
+            swapCameras('#camera1','#camera3');
+          } else {
+            swapCameras();  
+          }
         };
         if(e.code == "KeyG") { //g key
           toggleGPS();     
+        };
+        if(e.code == "KeyC" && !binocamEl.getAttribute('camera').active) { //c key
+          toggleCompass();  
+        };
+        if(e.code == "KeyC" && binocamEl.getAttribute('camera').active) { //c key
+          swapCameras();
+          toggleCompass();  
         };
       });
 
@@ -157,17 +170,16 @@
         document.addEventListener("click", swapCameras);
       }
 
-      function swapCameras() {
-        var mainCameraEl = document.querySelector('#camera1');
-        var secondCameraEl = document.querySelector('#camera2');
-        console.log("main cam",mainCameraEl.getAttribute('camera').active);
+      function swapCameras(cam1 = '#camera1', cam2 = '#camera2') {
+        var mainCameraEl = document.querySelector(cam1);
+        var secondCameraEl = document.querySelector(cam2);
         if (mainCameraEl.getAttribute('camera').active) {
           mainCameraEl.setAttribute('camera', 'active', false);
-          mainCameraEl.setAttribute('visible', false);
+          secondCameraEl.setAttribute('visible', true);
           secondCameraEl.setAttribute('camera', 'active', true);
         } else {
           mainCameraEl.setAttribute('camera', 'active', true);
-          mainCameraEl.setAttribute('visible', true);
+          secondCameraEl.setAttribute('visible', false);
           secondCameraEl.setAttribute('camera', 'active', false);
         };
         console.log("swap cameras")
@@ -181,6 +193,21 @@
         } else {
           gpsEl.setAttribute('visible', true);
           console.log("GPS On")
+        };
+      }
+      
+      function toggleCompass() {
+        var compassEl = document.querySelector('#compass');
+        var mainCameraEl = document.querySelector('#camera1');
+        var secondCameraEl = document.querySelector('#camera3');
+        if (compassEl.getAttribute('visible')) {
+          compassEl.setAttribute('visible', false);
+          console.log("Compass Off")
+          mainCameraEl.setAttribute('camera', 'active', true);
+          secondCameraEl.setAttribute('camera', 'active', false);
+        } else {
+          compassEl.setAttribute('visible', true);
+          console.log("Compass On");
         };
       }
     </script>
