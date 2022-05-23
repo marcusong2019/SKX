@@ -6,3 +6,4 @@ a-entity light="type: spot; color: #FFF; intensity: 0.5; target: #compassface; d
 Added compass as a 3d model and working dial. 
 Removed text azimuth from binocular view. 
 Compass dial has a sine error that osolates +/- 1 degree
+(C key toggles compass on/off. Spce bar is zoom- bring up bino if compass off, zoom compass dial if compass on.)
