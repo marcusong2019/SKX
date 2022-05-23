@@ -4,3 +4,6 @@ PID on compass spin so it damps down
 particle smoke/fire and dust
 why compass load so slow?  smaller model?
 on mobile - click system through views since no c key
+
+hit enter will submit fire mission
+hit enter in code box will join as obserever

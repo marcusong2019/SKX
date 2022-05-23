@@ -162,11 +162,23 @@
         };
       });
       
-      function swapCameras() {
-        
+      function swapCameras() { //cycle cameras for one button operation
+        var mainCameraEl = document.querySelector('#camera1');
+        var binoCameraEl = document.querySelector('#camera2');
+        var compassCameraEl = document.querySelector('#camera3');
+        var compassEl = document.querySelector('#compass');
+         console.log("swap cameras");
+        if(compassEl.getAttribute('visible')) {
+          // Compass is on
+          setCamView('bino'); 
+        } else if (binoCameraEl.getAttribute('camera').active) {
+          // binos are on
+          setCamView('main'); 
+        } else {
+          // compass is off, then turn on compass
+          setCamView('compass');
+        };  
       }
-
-
 
       function toggleBino() {
         var binoCameraEl = document.querySelector('#camera2');
