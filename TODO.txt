@@ -1,0 +1,6 @@
+handle disconnects- message to user
+add G-M angle to scenarios and compass calc
+PID on compass spin so it damps down
+particle smoke/fire and dust
+why compass load so slow?  smaller model?
+on mobile - click system through views since no c key
