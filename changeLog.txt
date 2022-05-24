@@ -1,6 +1,7 @@
 23 MAY 2022
 Added a light as part of the compass rig.
 a-entity light="type: spot; color: #FFF; intensity: 0.5; target: #compassface; distance: 0.7; angle: 50; decay: 0.02;" position="0.01 0.5 0.05"
+Change alphaTest on crosshair from 0.5 to 0.2 for better render of reticle
 
 22 MAY 2022
 Added compass as a 3d model and working dial. 
