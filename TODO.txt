@@ -24,3 +24,5 @@ Other text to display?
 Mobile view port sze
 
 Instruction pop up at start.
+
+Look at: https://github.com/squarefeet/ShaderParticleEngine/issues/72  to fix emitter and size on particiles with zoom
