@@ -1,5 +1,7 @@
 25 MAY 2022
-Add loading splash screen, with instructions and progress bar
+Add loading splash screen, with instructions and progress bar (add loadscreen AFRAM component)
+moved setCamView(cam) to observer.js file (used by the splash screen)
+Compass set to visible when first loaded (to load and render on first pass) then hide before splash screen off
 
 23 MAY 2022
 Added a light as part of the compass rig.

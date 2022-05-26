@@ -142,7 +142,7 @@
                 position="0 -0.17728 -0.25193" 
                 rotation="8 0 0" 
                 gltf-model="#compassbody" 
-                visible="false">
+                visible="true">
                 <!-- 7.6 x 5.5 x 3cm closed.  16.5 x 5.5 x 3cm open.    position="0 -0.05 -0.3" rotation="0 -90 -33"-->
                 <a-entity checkload 
                           id="compassface" 
@@ -187,16 +187,16 @@
     </a-scene>
     
     <div id="splash">
-      <img src="https://cdn.glitch.global/faddae4b-024b-4177-af7b-9e2db2934bce/WPSC_Logo.png?v=1653484630300" alt="West Point Simulation Center logo" height="20%">
+      <img src="https://cdn.glitch.global/0140ff64-dac6-408d-bf59-c093dd13ad3a/WPSC_Logo.png?v=1653531192760" alt="West Point Simulation Center logo" height="20%">
       <p>
         <div class="text">
           <h2>
             Observed Fire Trainer
           </h2>
-          C: toggle compass<br>
           B: toggle binoculars<br>
+          C: toggle compass<br>          
           G: toggle GPS<br>
-          WASD to walk<br>
+          WASD: walk<br>
         </div>
       </p><br>
       <progress id="progress-bar" value="0.21" max="1"></progress>
@@ -293,56 +293,6 @@
           setCamView('compass')
           console.log("Compass on");
         };
-      }
-      
-      function setCamView(cam) {
-        var mainCameraEl = document.querySelector('#camera1');
-        var binoCameraEl = document.querySelector('#camera2');
-        var compassCameraEl = document.querySelector('#camera3');
-        var compassEl = document.querySelector('#compass');
-        
-        switch(cam) {
-            case 'main':            
-              mainCameraEl.setAttribute('camera', 'active', true);                
-              binoCameraEl.setAttribute('camera', 'active', false);
-              binoCameraEl.setAttribute('visible', false);
-              compassCameraEl.setAttribute('camera', 'active', false);
-              compassEl.setAttribute('visible', false); 
-              console.log("switch to MAIN view");
-            break;
-            case 'bino':            
-              mainCameraEl.setAttribute('camera', 'active', false);                
-              binoCameraEl.setAttribute('camera', 'active', true);
-              binoCameraEl.setAttribute('visible', true);
-              compassCameraEl.setAttribute('camera', 'active', false);
-              compassEl.setAttribute('visible', false); 
-              console.log("switch to BINO view");
-            break;
-            case 'compass':            
-              mainCameraEl.setAttribute('camera', 'active', true);                
-              binoCameraEl.setAttribute('camera', 'active', false);
-              binoCameraEl.setAttribute('visible', false);
-              compassCameraEl.setAttribute('camera', 'active', false);
-              compassEl.setAttribute('visible', true); 
-              console.log("switch to COMPASS view");
-            break;
-            case 'compassdial':            
-              mainCameraEl.setAttribute('camera', 'active', false);                
-              binoCameraEl.setAttribute('camera', 'active', false);
-              binoCameraEl.setAttribute('visible', false);
-              compassCameraEl.setAttribute('camera', 'active', true);
-              compassEl.setAttribute('visible', true); 
-              console.log("switch to COMPASS DIAL view");
-            break;
-            default:            
-              mainCameraEl.setAttribute('camera', 'active', true);                
-              binoCameraEl.setAttribute('camera', 'active', false);
-              binoCameraEl.setAttribute('visible', false);
-              compassCameraEl.setAttribute('camera', 'active', false);
-              compassEl.setAttribute('visible', false); 
-              console.log("switch to DEFUALT (MAIN) view");
-            break;
-        };            
       }
     </script>
   </body>
