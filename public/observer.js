@@ -61,12 +61,7 @@ AFRAME.registerComponent('compassdial', {
 
 AFRAME.registerComponent('gps', {
 
-  init: function () {
-    const sceneEl = document.querySelector('a-scene');
-    const camViewEl = sceneEl.querySelector("#viewDirection");
-    console.log("GPS Loaded",camViewEl);
-    this.tick = AFRAME.utils.throttleTick(this.tick, 1000, this);   
-    
+  init: function () {    
     //add display to DOM
     const newGPSDiv = document.createElement('div');
     newGPSDiv.setAttribute("id", "gps-block");
@@ -76,6 +71,10 @@ AFRAME.registerComponent('gps', {
     newGPSDiv.appendChild(newGPSSpan);
     document.body.insertBefore(newGPSDiv,null); //before null = end of document
     newGPSDiv.style.visibility = 'hidden';
+    
+    //set refresh rate
+    this.tick = AFRAME.utils.throttleTick(this.tick, 1000, this);   
+    console.log("GPS Loaded");
   },
   tick: function () {
     const gpstextblock = document.getElementById('gps-text-block');
@@ -94,7 +93,6 @@ AFRAME.registerComponent('gps', {
       var gpsError2 = (Math.random() * 10)-5;
       var viewGpsE = Math.round(E + gpsError1);
       var viewGpsN = Math.round(N + gpsError2);
-      //console.log(gpsError1,gpsError2);
       var textToDisplay = opParts.zoneNumber.toString() + 
             opParts.zoneLetter.toString() +"\n" + opParts.hunK +
             "\n" + viewGpsE.toString() +"e\n"+ viewGpsN.toString() + "n";
