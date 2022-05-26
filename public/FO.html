@@ -11,6 +11,21 @@
     <script src="./mgrs.js"></script>
     <script src="./observer.js"></script>
     <style>
+      #gps-block {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        text-align: left;
+        text-color: black ;
+        font-size: 1rem;
+        font-family: 'Courier New', monospace;
+        font-weight: bold;
+        z-index: 100;
+        display:block;
+        background-color: #BBB393;
+        padding: 10px ;
+        border: 1px solid #5B594C ;
+      }
       #splash {
           position: absolute;
           
@@ -116,15 +131,7 @@
             >
         <!--TODO perhaps ground clamp to zero and put cameras at height 1.6 to accomodate the position tracking of headset -->
         <a-entity id="viewDirection" look-controls>
-            <a-entity id="camera1" camera="active:true" >              
-              <a-entity gps
-                 id="gps-text"
-                 visible="false";
-                 text="value: Acquiring \n Satellites; align: left" 
-                 position="-0.3 -0.7 -1"
-                 scale="0.6 0.6 0.6">
-                <a-plane color="#6e8072" height="0.3" width="0.3" position="-0.4 0 0" shader="flat"></a-plane>
-              </a-entity>
+            <a-entity id="camera1" camera="active:true" gps>
             </a-entity>
           
             <a-entity id="camera2" camera="zoom: 7;active:false" visible="false" render-order="HUD">
@@ -267,13 +274,13 @@
       }
       
       function toggleGPS() {
-        var gpsEl = document.querySelector('#gps-text');
-        if (gpsEl.getAttribute('visible')) {
-          gpsEl.setAttribute('visible', false);
-          console.log("GPS Off")
+        const gpstextblock = document.getElementById('gps-block');
+        if (gpstextblock.style.visibility == 'visible') {
+          gpstextblock.style.visibility = 'hidden';
+          console.log("GPS Off");
         } else {
-          gpsEl.setAttribute('visible', true);
-          console.log("GPS On")
+          gpstextblock.style.visibility = 'visible';
+          console.log("GPS On");
         };
       }
       

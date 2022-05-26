@@ -65,11 +65,21 @@ AFRAME.registerComponent('gps', {
     const sceneEl = document.querySelector('a-scene');
     const camViewEl = sceneEl.querySelector("#viewDirection");
     console.log("GPS Loaded",camViewEl);
-    this.tick = AFRAME.utils.throttleTick(this.tick, 1000, this);
+    this.tick = AFRAME.utils.throttleTick(this.tick, 1000, this);   
     
+    //add display to DOM
+    const newGPSDiv = document.createElement('div');
+    newGPSDiv.setAttribute("id", "gps-block");
+    const newGPSSpan = document.createElement('span');
+    newGPSSpan.setAttribute("id", "gps-text-block");
+    newGPSSpan.innerText = "Acquiring \n Satalites";
+    newGPSDiv.appendChild(newGPSSpan);
+    document.body.insertBefore(newGPSDiv,null); //before null = end of document
+    newGPSDiv.style.visibility = 'hidden';
   },
   tick: function () {
-    if (this.el.object3D.visible) {
+    const gpstextblock = document.getElementById('gps-text-block');
+    if (gpstextblock.style.visibility == 'visible') {
       const sceneEl = document.querySelector('a-scene');
       const cameraRigEl = sceneEl.querySelector('#camera-rig');
       const camViewEl = sceneEl.querySelector("#viewDirection");
@@ -84,11 +94,13 @@ AFRAME.registerComponent('gps', {
       var gpsError2 = (Math.random() * 10)-5;
       var viewGpsE = Math.round(E + gpsError1);
       var viewGpsN = Math.round(N + gpsError2);
-      this.el.setAttribute('text','value',opParts.zoneNumber.toString() + 
+      //console.log(gpsError1,gpsError2);
+      var textToDisplay = opParts.zoneNumber.toString() + 
             opParts.zoneLetter.toString() +"\n" + opParts.hunK +
-            "\n" + viewGpsE.toString() +"e\n"+ viewGpsN.toString() + "n");   
+            "\n" + viewGpsE.toString() +"e\n"+ viewGpsN.toString() + "n";
+      gpstextblock.innerText = textToDisplay;
     };
-  }        
+  }       
 });//end component 
 
 AFRAME.registerComponent('ground-clamp', {
