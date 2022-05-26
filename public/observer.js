@@ -150,6 +150,41 @@ AFRAME.registerComponent('groundcheck', {
     }
   }); //end component 
 
+AFRAME.registerComponent('loadscreen', {
+  
+  init: function () {
+        this.rendercount=0;
+        this.loadcomplete=false;
+    },
+
+    tock: function () {
+      if (this.loadcomplete) {return};
+      let a = document.querySelector("#ground").object3D.children.length;
+      if (a>0 && this.rendercount>a+1) { 
+        // Done loading. Hide splash screen
+        console.log("LOADER: Done loading",a);        
+        this.loadcomplete=true;
+        document.querySelector('#splash').style.display = 'none';
+        document.getElementById("progress-bar").value = 1;
+      } else if (a>0 && this.rendercount>a) {
+        // Done with terrain, hide compass
+        this.rendercount +=1;
+        let ok = setCamView('main');
+        document.getElementById("progress-bar").value = 0.99;
+        console.log("LOADER: hide compass");        
+      } else if (a>0 && this.rendercount<=a ) {
+        // Terrain tiles loaded, wait while they move to correct location
+        this.rendercount +=1;
+        document.getElementById("progress-bar").value = 0.45 + (0.5*(this.rendercount/a));
+        console.log("LOADER: loading ground " + this.rendercount + " of " + a);
+      }else {
+        // Terrain tiles not loaded. Wait.
+        console.log("LOADER: Awaiting ground info",a);
+        document.getElementById("progress-bar").value = 0.4;
+      };
+    }
+  }); //end component
+
 // Allow logging to console from inside A-Frame
 AFRAME.registerComponent("log", {
   schema: { type: "string" },
@@ -567,4 +602,55 @@ function handleReset () {
        console.log(els2);
       }
   };
+}
+
+function setCamView(cam) {
+        var mainCameraEl = document.querySelector('#camera1');
+        var binoCameraEl = document.querySelector('#camera2');
+        var compassCameraEl = document.querySelector('#camera3');
+        var compassEl = document.querySelector('#compass');
+        
+        switch(cam) {
+            case 'main':            
+              mainCameraEl.setAttribute('camera', 'active', true);                
+              binoCameraEl.setAttribute('camera', 'active', false);
+              binoCameraEl.setAttribute('visible', false);
+              compassCameraEl.setAttribute('camera', 'active', false);
+              compassEl.setAttribute('visible', false); 
+              console.log("switch to MAIN view");
+            break;
+            case 'bino':            
+              mainCameraEl.setAttribute('camera', 'active', false);                
+              binoCameraEl.setAttribute('camera', 'active', true);
+              binoCameraEl.setAttribute('visible', true);
+              compassCameraEl.setAttribute('camera', 'active', false);
+              compassEl.setAttribute('visible', false); 
+              console.log("switch to BINO view");
+            break;
+            case 'compass':            
+              mainCameraEl.setAttribute('camera', 'active', true);                
+              binoCameraEl.setAttribute('camera', 'active', false);
+              binoCameraEl.setAttribute('visible', false);
+              compassCameraEl.setAttribute('camera', 'active', false);
+              compassEl.setAttribute('visible', true); 
+              console.log("switch to COMPASS view");
+            break;
+            case 'compassdial':            
+              mainCameraEl.setAttribute('camera', 'active', false);                
+              binoCameraEl.setAttribute('camera', 'active', false);
+              binoCameraEl.setAttribute('visible', false);
+              compassCameraEl.setAttribute('camera', 'active', true);
+              compassEl.setAttribute('visible', true); 
+              console.log("switch to COMPASS DIAL view");
+            break;
+            default:            
+              mainCameraEl.setAttribute('camera', 'active', true);                
+              binoCameraEl.setAttribute('camera', 'active', false);
+              binoCameraEl.setAttribute('visible', false);
+              compassCameraEl.setAttribute('camera', 'active', false);
+              compassEl.setAttribute('visible', false); 
+              console.log("switch to DEFUALT (MAIN) view");
+            break;
+        };
+  return true;
 }
