@@ -15,14 +15,11 @@ set up/add targets for fdc
 
 HIT includes a target type/number/id
 
-GPS always in view-- worked out putting on the HTNML overlay.
-DAGR image as background?
-Revamp code for the aframe component/entity. Maybe add the DOM HTML elementduring init?
-start hidden.
-Other text to display?
+GPS: DAGR image as background?
+GPS: Other text to display?
 
 Mobile view port sze
 
-Instruction pop up at start.
+set emission for models and check models CDN links to THIS project assets
 
 Look at: https://github.com/squarefeet/ShaderParticleEngine/issues/72  to fix emitter and size on particiles with zoom
