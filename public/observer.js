@@ -78,7 +78,7 @@ AFRAME.registerComponent('gps', {
   },
   tick: function () {
     const gpstextblock = document.getElementById('gps-text-block');
-    if (gpstextblock.style.visibility == 'visible') {
+    if (document.getElementById('gps-block').style.visibility == 'visible') {
       const sceneEl = document.querySelector('a-scene');
       const cameraRigEl = sceneEl.querySelector('#camera-rig');
       const camViewEl = sceneEl.querySelector("#viewDirection");
