@@ -147,7 +147,7 @@ AFRAME.registerComponent('groundcheck', {
         var point = intersects[0].point; // a three value point XYZ in world coord
         var Y = point.y + this.data.height;
         this.el.object3D.position.y=Y;  //set onto ground
-        console.log(this.el.components.type.data);
+        //console.log(this.el.components.type.data);
         if (this.el.components.type.data=="tank") {
           var normal = intersects[0].face.normal;
           var normal2 = new THREE.Vector3(normal.z, normal.y, normal.x).normalize();  
@@ -488,7 +488,18 @@ function getGroundLevel(X, Z) {
   };
 }
 
+
 function createIDF(X, Z, agl=0) {
+  let sprite = true;
+  if(sprite) {
+    
+    
+  } else {
+    
+  }
+}
+
+function createIDFsprite(X, Z, agl=0) {
   var groundLevel = getGroundLevel(X, Z);
   var position = groundLevel.point;
   position.y = position.y + agl;
@@ -506,6 +517,79 @@ function createIDF(X, Z, agl=0) {
   entityEl.appendChild(entitySmoke2);
   entityEl.appendChild(entityFire1);
   entityEl.appendChild(entityFire2);
+  sceneEl.appendChild(entityEl);
+
+  setTimeout(function() {
+    entityEl.parentNode.removeChild(entityEl);
+  }, 300000); //delay is in milliseconds
+  
+    return position;
+}
+
+function createIDFparticle(X, Z, agl=0) {
+  var groundLevel = getGroundLevel(X, Z);
+  var position = groundLevel.point;
+  position.y = position.y + agl;
+
+  var sceneEl = document.querySelector("a-scene");
+  var entityEl = document.createElement("a-entity");
+  entityEl.setAttribute("position", position);
+  entityEl.setAttribute("class", "IDF");
+  var entityChunk1 = document.createElement("a-dodecahedron");
+  var entityChunk2 = document.createElement("a-entity");
+  var entityFire = document.createElement("a-entity");
+  var entityCloud1 = document.createElement("a-entity");
+  var entityCloud2 = document.createElement("a-entity");
+  var entityTrails1 = document.createElement("a-entity");
+  var entityTrails2 = document.createElement("a-entity");
+  var entityTrails3 = document.createElement("a-entity");
+  var entityTrails4 = document.createElement("a-entity");
+  var entityTrails5 = document.createElement("a-entity");
+  var entityTrails6 = document.createElement("a-entity");
+  
+  //entityChunk1.setAttribute("id", "rock");
+  entityChunk1.setAttribute("color", "#5a4f3e");
+  entityChunk1.setAttribute("radius", "1");
+  entityChunk1.setAttribute("mesh-particles", "radialType: sphere; radialVelocity: 15..20; acceleration: 0 -10 0; duration: 1; lifeTime: 3; rotation: 0 0 0,0 180 0; spawnRate: 50; spawnType: burst;");
+  
+  entityChunk2.setAttribute("particle-system", "type: 2; blending: 1; color: #5a4f3e; dragValue: 3; duration: 1; maxParticleCount: 10000; opacity: 0.8 0.4; velocityValue: 0 25 0; velocitySpread: 15 4 15; particleCount: 300; size: 2; sizeSpread: 2; texture: https://cdn.glitch.global/faddae4b-024b-4177-af7b-9e2db2934bce/fog.png;");
+  entityFire.setAttribute("particle-system", "accelerationValue: 0, 2, 0; accelerationSpread: 0 2 0; blending: 1; color: #FFFF70,#FF9D2F,#C25B1B; duration: 3; maxAge: 1; opacity: 1,0; particleCount: 150; positionSpread: 6 4 6; size: 16,32; sizeSpread: 8; velocityValue: .4 .1 0; velocitySpread: .4 0 .4; texture: https://cdn.glitch.global/faddae4b-024b-4177-af7b-9e2db2934bce/explosion.png?v=1653327532440;");
+  entityCloud1.setAttribute("particle-system", "type: 2; blending: 1; color: #5D4B3D; accelerationValue: 0 -0.1 0; accelerationSpread: 0.1 0.1 0.1; dragValue: 1; duration: 60; opacity: 0.4 0.1; positionSpread: 20 20 20; velocityValue: 0 0 0; velocitySpread: 0 0 0; particleCount: 300; size: 8; sizeSpread: 5; texture: https://cdn.glitch.global/faddae4b-024b-4177-af7b-9e2db2934bce/fog.png;");
+  entityCloud2.setAttribute("particle-system", "type: 2; blending: 1; color: #ded5ce; accelerationValue: 0 0.5 0; accelerationSpread: 1 0.4 1; dragValue: 1; duration: 30; maxAge: 10; opacity: 0.4 0.1; positionSpread: 10 10 10; velocityValue: 0 0 0; velocitySpread: 0 0 0; particleCount: 300; size: 8; sizeSpread: 5; texture: https://cdn.glitch.global/faddae4b-024b-4177-af7b-9e2db2934bce/fog.png;");
+  entityCloud2.setAttribute("position","0 15 0");
+                             
+  entityTrails1.setAttribute("particle-system", "type: 2; blending: 1; color: #332419,#a88e79; dragValue: 3; duration: 1; maxParticleCount: 10000; opacity: 0.8 0.4; velocityValue: 10 20 0; velocitySpread: 1 1 1; particleCount: 300; size: 0.2; sizeSpread: 2; texture: https://cdn.glitch.global/faddae4b-024b-4177-af7b-9e2db2934bce/fog.png;");
+  entityTrails2.setAttribute("particle-system", "type: 2; blending: 1; color: #332419,#a88e79; dragValue: 3; duration: 1; maxParticleCount: 10000; opacity: 0.8 0.4; velocityValue: 10 20 0; velocitySpread: 1 1 1; particleCount: 300; size: 0.2; sizeSpread: 2; texture: https://cdn.glitch.global/faddae4b-024b-4177-af7b-9e2db2934bce/fog.png;");
+  entityTrails3.setAttribute("particle-system", "type: 2; blending: 1; color: #332419,#a88e79; dragValue: 3; duration: 1; maxParticleCount: 10000; opacity: 0.8 0.4; velocityValue: -10 20 0; velocitySpread: 1 1 1; particleCount: 300; size: 0.2; sizeSpread: 2; texture: https://cdn.glitch.global/faddae4b-024b-4177-af7b-9e2db2934bce/fog.png;");
+  entityTrails4.setAttribute("particle-system", "type: 2; blending: 1; color: #332419,#a88e79; dragValue: 3; duration: 1; maxParticleCount: 10000; opacity: 0.8 0.4; velocityValue: 5 20 5; velocitySpread: 1 1 1; particleCount: 300; size: 0.2; sizeSpread: 2; texture: https://cdn.glitch.global/faddae4b-024b-4177-af7b-9e2db2934bce/fog.png;");
+  entityTrails5.setAttribute("particle-system", "type: 2; blending: 1; color: #332419,#a88e79; dragValue: 3; duration: 1; maxParticleCount: 10000; opacity: 0.8 0.4; velocityValue: 5 20 -5; velocitySpread: 1 1 1; particleCount: 300; size: 0.2; sizeSpread: 2; texture: https://cdn.glitch.global/faddae4b-024b-4177-af7b-9e2db2934bce/fog.png;");
+  entityTrails6.setAttribute("particle-system", "type: 2; blending: 1; color: #332419,#5a4f3e; dragValue: 3; duration: 1; maxParticleCount: 10000; opacity: 0.8 0.4; velocityValue: 0 10 15; velocitySpread: 1 1 1; particleCount: 300; size: 0.2; sizeSpread: 2; texture: https://cdn.glitch.global/faddae4b-024b-4177-af7b-9e2db2934bce/fog.png;");
+  
+  entityChunk1.setAttribute("particle-controller","");
+  entityChunk2.setAttribute("particle-controller","");
+  entityFire.setAttribute("particle-controller","");
+  entityCloud1.setAttribute("particle-controller","");
+  entityCloud2.setAttribute("particle-controller","");
+  entityCloud2.setAttribute("particle-controller","");                             
+  entityTrails1.setAttribute("particle-controller","");
+  entityTrails2.setAttribute("particle-controller","");
+  entityTrails3.setAttribute("particle-controller","");
+  entityTrails4.setAttribute("particle-controller","");
+  entityTrails5.setAttribute("particle-controller","");
+  entityTrails6.setAttribute("particle-controller","");
+  
+  entityEl.appendChild(entityChunk1);
+  entityEl.appendChild(entityChunk2);
+  entityEl.appendChild(entityFire);
+  entityEl.appendChild(entityCloud1);
+  entityEl.appendChild(entityCloud2);
+  entityEl.appendChild(entityTrails1);
+  entityEl.appendChild(entityTrails2);
+  entityEl.appendChild(entityTrails3);
+  entityEl.appendChild(entityTrails4);
+  entityEl.appendChild(entityTrails5);
+  entityEl.appendChild(entityTrails6);  
+  
   sceneEl.appendChild(entityEl);
 
   setTimeout(function() {
