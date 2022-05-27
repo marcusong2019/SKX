@@ -147,7 +147,7 @@ AFRAME.registerComponent('groundcheck', {
         var point = intersects[0].point; // a three value point XYZ in world coord
         var Y = point.y + this.data.height;
         this.el.object3D.position.y=Y;  //set onto ground
-        console.log(this.el.components.type.data);
+        //console.log(this.el.components.type.data);
         if (this.el.components.type.data=="tank") {
           var normal = intersects[0].face.normal;
           var normal2 = new THREE.Vector3(normal.z, normal.y, normal.x).normalize();  
