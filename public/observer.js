@@ -492,11 +492,11 @@ function getGroundLevel(X, Z) {
 function createIDF(X, Z, agl=0) {
   let sprite = true;
   if(sprite) {
-    
-    
+    // sprite based IDF marker
+    createIDFsprite(X, Z, agl);    
   } else {
-    
-  }
+    createIDFparticle(X, Z, agl);
+  };
 }
 
 function createIDFsprite(X, Z, agl=0) {
@@ -666,6 +666,17 @@ function createSmokeEl(Rot = 0) {
   return entityE2;
 }
 
+/*function createHit(position) {
+  let sprite = true;
+  if(sprite) {
+    // sprite based IDF marker
+    createHitsprite (position);    
+  } else {
+    createHitparticle (position);
+  };
+}*/
+
+
 function createHit (position) {
   var sceneEl = document.querySelector("a-scene");
   var entityEl = document.createElement("a-entity");
@@ -678,6 +689,24 @@ function createHit (position) {
   entityEl.appendChild(entityFire2);
   sceneEl.appendChild(entityEl);
 }
+
+/*function createHitparticle (position) { //creates a burning hit at the position. particle based.
+  var sceneEl = document.querySelector("a-scene");
+  var entityEl = document.createElement("a-entity");
+  entityEl.setAttribute("position", position);
+  entityEl.setAttribute("class", "IDF");
+  entityEl.setAttribute('ground-clamp','');
+  var entityFire = document.createElement("a-entity");
+  var entitySmoke = document.createElement("a-entity");
+  
+  entityFire.setAttribute('particle-system','accelerationValue: 0, 2, 0; accelerationSpread: 0 2 0; blending: 2; color: #FFFF70,#FF9D2F,#C25B1B; maxAge: 1; opacity: 1,0; particleCount: 150; positionSpread: 3 2 3; size: 16,32; sizeSpread: 4; velocityValue: .4 .1 0; velocitySpread: .4 0 .4; texture: https://cdn.glitch.global/faddae4b-024b-4177-af7b-9e2db2934bce/explosion.png?v=1653327532440;');
+  entitySmoke.setAttribute('position','0 2 0');
+  entitySmoke.setAttribute('particle-system','accelerationValue: 1, 0, 0; accelerationSpread: 0.5 0 0.5; blending: 1; color: #444,#999; maxAge: 4; opacity: 0,0.5,1,0; opacitySpread: 0.5; particleCount: 400; positionSpread: 2 1 2; size: 20,32; sizeSpread: 4,10; velocityValue: 1 15 0; velocitySpread: 1.4 5 1.4; texture: https://cdn.glitch.global/faddae4b-024b-4177-af7b-9e2db2934bce/fog.png;');
+  
+  entityEl.appendChild(entityFire);
+  entityEl.appendChild(entitySmoke);
+  sceneEl.appendChild(entityEl);
+} */
 
 function handleReset () {
   console.log("ResetIDF");
