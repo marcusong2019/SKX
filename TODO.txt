@@ -1,5 +1,4 @@
-Done - need to check - on mobile - click system through views since no c key
-Done - set/change OP location from FDC (coded need implement)
+Done - set/change OP location from FDC (coded, need merge)
 add G-M angle to scenarios and compass calc and fire calc
 Number of users connected visible from FDC
 HIT includes a target type/number/id
