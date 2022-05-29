@@ -8,7 +8,7 @@ on mobile - click system through views since no c key
 Calc distance from OP to grid and warn FDC if danger close (<600m)
 
 set/change OP location from FDC
-Number of users connected visible frodm FDC
+Number of users connected visible from FDC
 
 set up/add targets for fdc
 
