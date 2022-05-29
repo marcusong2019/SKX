@@ -56,11 +56,12 @@ fireForEffectBtn.addEventListener('click', fireForEffect);
 gameCodeInput.addEventListener("keypress", function(event) {
   if (event.key === "Enter") {
     event.preventDefault();
-    document.getElementById("joinGameBtn").click();
+    joinGame();
+    //document.getElementById("joinGameBtn").click();
   }
 });
 
-/*gridEasting.addEventListener("keypress", submitBtnOnEnter(event));
+gridEasting.addEventListener("keypress", event => submitBtnOnEnter(event));
 gridNorthing.addEventListener("keypress", submitBtnOnEnter(event));
 polarDirection.addEventListener("keypress", submitBtnOnEnter(event));
 polarDistance.addEventListener("keypress", submitBtnOnEnter(event));
@@ -70,11 +71,13 @@ shiftDeviation.addEventListener("keypress", submitBtnOnEnter(event));
 
 function submitBtnOnEnter (event) {
     if (event.key === "Enter") {
+      alert("enter")
     event.preventDefault();
-    document.getElementById("sendFireMissionBtn").click();
+    sendFireMission();
+    //document.getElementById("sendFireMissionBtn").click();
   }
 }
-*/
+
 
 function handleHit () {
   gameHitDisplay.innerText = "..Hit!..";
