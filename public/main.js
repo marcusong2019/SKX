@@ -57,24 +57,21 @@ gameCodeInput.addEventListener("keypress", function(event) {
   if (event.key === "Enter") {
     event.preventDefault();
     joinGame();
-    //document.getElementById("joinGameBtn").click();
   }
 });
 
 gridEasting.addEventListener("keypress", event => submitBtnOnEnter(event));
-gridNorthing.addEventListener("keypress", submitBtnOnEnter(event));
-polarDirection.addEventListener("keypress", submitBtnOnEnter(event));
-polarDistance.addEventListener("keypress", submitBtnOnEnter(event));
-shiftDirection.addEventListener("keypress", submitBtnOnEnter(event));
-shiftRange.addEventListener("keypress", submitBtnOnEnter(event));
-shiftDeviation.addEventListener("keypress", submitBtnOnEnter(event));
+gridNorthing.addEventListener("keypress", event => submitBtnOnEnter(event));
+polarDirection.addEventListener("keypress", event => submitBtnOnEnter(event));
+polarDistance.addEventListener("keypress", event => submitBtnOnEnter(event));
+shiftDirection.addEventListener("keypress", event => submitBtnOnEnter(event));
+shiftRange.addEventListener("keypress", event => submitBtnOnEnter(event));
+shiftDeviation.addEventListener("keypress", event => submitBtnOnEnter(event));
 
 function submitBtnOnEnter (event) {
     if (event.key === "Enter") {
-      alert("enter")
     event.preventDefault();
     sendFireMission();
-    //document.getElementById("sendFireMissionBtn").click();
   }
 }
 

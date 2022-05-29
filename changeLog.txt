@@ -1,3 +1,7 @@
+28 MAY 2022
+Enter key in input boxes of fire commands will submit fire mission
+Enter key in input box box for game code will join mission
+
 25 MAY 2022
 Add loading splash screen, with instructions and progress bar (add loadscreen AFRAM component)
   moved setCamView(cam) to observer.js file (used by the splash screen)

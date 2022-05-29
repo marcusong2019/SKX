@@ -5,8 +5,7 @@ particle smoke/fire and dust
 why compass load so slow?  smaller model?
 on mobile - click system through views since no c key
 
-hit enter will submit fire mission
-hit enter in code box will join as obserever
+Calc distance from OP to grid and warn FDC if danger close (<600m)
 
 set/change OP location from FDC
 Number of users connected visible frodm FDC
