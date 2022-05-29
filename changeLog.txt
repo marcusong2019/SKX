@@ -1,6 +1,7 @@
 28 MAY 2022
 Enter key in input boxes of fire commands will submit fire mission
 Enter key in input box box for game code will join mission
+Change padGrid() to return null if bad grid, and changed sendFireMission() and fireForEffect() to error check if grid is null and not send fire mission to server
 
 25 MAY 2022
 Add loading splash screen, with instructions and progress bar (add loadscreen AFRAM component)

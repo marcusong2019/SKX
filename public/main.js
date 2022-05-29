@@ -117,6 +117,11 @@ function sendFireMission() {
   const round = roundType.value;
   gridE = padGrid(gridE);
   gridN = padGrid(gridN);
+  if ( (!gridE && gridE!=0) || (!gridN && gridN!=0) ) {
+    // catch error if bad grid
+    console.log("grid error",gridE,gridN);
+    return
+  }
   console.log("request", gridE, gridN, round);
   errorE = Math.floor(shotError());
   errorN = Math.floor(shotError());
@@ -137,8 +142,12 @@ function fireForEffect() {
       gridN = lastFireMission[1] + adjNorth;   
       gridE = padGrid(gridE);
       gridN = padGrid(gridN);
-      console.log("Fire For Effect: ", gridE, gridN);
-      socket.emit('firemissionG',gridE, gridN, round);
+      if ( (gridE || gridE==0) && (gridN || gridN==0) ) {
+        console.log("Fire For Effect: ", gridE, gridN);
+        socket.emit('firemissionG',gridE, gridN, round);
+      } else {
+        console.log("grid error",gridE,gridN);
+      };
     }, Math.floor(Math.random() * 1500));
   };
 }
@@ -156,6 +165,7 @@ function padGrid(ening) {
   } else {
     console.log("Bad grid");
     alert("Grid must be in 6, 8, or 10 digit format")
+    Xin = null;
   }
   return Xin;
 }
