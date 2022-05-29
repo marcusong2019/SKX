@@ -47,11 +47,34 @@ var scenario = {};
 var target=[];
 
 newGameBtn.addEventListener('click', scenarioPicker);
-gameCodeInput .addEventListener("keypress", forceKeyPressUppercase, false);
+gameCodeInput.addEventListener("keypress", forceKeyPressUppercase, false);
 joinGameBtn.addEventListener('click', joinGame);
 sendFireMissionBtn.addEventListener('click', sendFireMission);
 resetBtn.addEventListener('click', requestReset);
 fireForEffectBtn.addEventListener('click', fireForEffect);
+
+gameCodeInput.addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    document.getElementById("joinGameBtn").click();
+  }
+});
+
+/*gridEasting.addEventListener("keypress", submitBtnOnEnter(event));
+gridNorthing.addEventListener("keypress", submitBtnOnEnter(event));
+polarDirection.addEventListener("keypress", submitBtnOnEnter(event));
+polarDistance.addEventListener("keypress", submitBtnOnEnter(event));
+shiftDirection.addEventListener("keypress", submitBtnOnEnter(event));
+shiftRange.addEventListener("keypress", submitBtnOnEnter(event));
+shiftDeviation.addEventListener("keypress", submitBtnOnEnter(event));
+
+function submitBtnOnEnter (event) {
+    if (event.key === "Enter") {
+    event.preventDefault();
+    document.getElementById("sendFireMissionBtn").click();
+  }
+}
+*/
 
 function handleHit () {
   gameHitDisplay.innerText = "..Hit!..";
