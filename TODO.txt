@@ -1,7 +1,8 @@
 Done - set/change OP location from FDC (coded, need merge)
-add G-M angle to scenarios and compass calc and fire calc
+Done - add G-M angle to scenarios and compass calc and fire calc (coded, need merge, server, observer, main, index.html)
 Number of users connected visible from FDC
 HIT includes a target type/number/id
+Server aware of hit targets to inform new joins. Last few IDF?
 
 handle disconnects- message to user
 PID on compass spin so it damps down
@@ -18,6 +19,7 @@ why compass load so slow?  smaller model?
 particle smoke/fire and dust
 Look at: https://github.com/squarefeet/ShaderParticleEngine/issues/72  to fix emitter and size on particiles with zoom
 Emmitters are making sim slow down when used a lot. May need to skip?
+Clean up console logging
 
 
 ////////////////////////////////////////////////////////////////
