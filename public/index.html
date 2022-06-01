@@ -246,6 +246,7 @@ body {font-family: Arial;}
             <button class="tablinks" onclick="openAdjustFire(event, 'gridTab')" id="defaultOpen">Grid</button>
             <button class="tablinks" onclick="openAdjustFire(event, 'polarTab')">Polar</button>
             <button class="tablinks" onclick="openAdjustFire(event, 'correctionTab')">Correction</button>
+            <button class="tablinks" onclick="openAdjustFire(event, 'settingsTab')">Settings</button>
           </div>
           
           <div id="gridTab" class="tabcontent">
@@ -311,6 +312,24 @@ body {font-family: Arial;}
               </table>
             </div>
           </div>
+          <div id="settingsTab" class="tabcontent">
+            <div class="form-group">
+              <label>OP Location: </label>
+                <span id="gameGridDesignatorDisplay2"></span> 
+                <input type="number" min="0" max="99999" placeholder="Easting" id="opEastingInput"/>
+                <input type="number" min="0" max="99999" placeholder="Northing" id="opNorthingInput"/>
+                <!-- maxlength="5" only works for text input type  -->
+                <button type="submit" class="btn btn-success" id="setOpButton" > Set </button>
+            </div>
+            <div class="form-group">
+              <label>G-M Angle (mils): </label>
+              <span id="gmAngleDisplay"></span> &nbsp; &nbsp;
+              <select id="selectGmActive" onchange="updateCompassGM()">
+                <option value="magnetic">Magnetic North Compass</option>
+                <option value="grid">Grid North Compass</option>
+              </select>
+            </div>
+          </div>
           
           <div>
             <select id="roundTypeInput">
@@ -329,6 +348,9 @@ body {font-family: Arial;}
           
           <div>
             <h2 style="background-color:red;color:white"><span id="gameHitDisplay"></span></h2>
+          </div>
+          <div style="bg-info">
+            <span id="sysMessageDisplay"></span>
           </div>
           
           <div class="py-3">

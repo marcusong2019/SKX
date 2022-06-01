@@ -9,13 +9,14 @@ socket.on('initFO', handleInitFO);
 socket.on('gameCode', handleGameCode);
 socket.on('hit', handleHit);
 socket.on('unknownCode', handleUnknownCode);
-socket.on('newClient', data => {
+socket.on('newClientCount', data => {
   console.log(data);
   handleNewClient(data);
 });
 
 var opLocation = [50000,50000];
 var lastFireMission=[0,0];
+var gmAngle = 0; //default
 
 
 const gameScreen = document.getElementById('gameScreen');
@@ -26,7 +27,8 @@ const joinGameBtn = document.getElementById('joinGameButton');
 const gameCodeInput = document.getElementById('gameCodeInput');
 const gameCodeDisplay = document.getElementById('gameCodeDisplay');
 const linkURL = document.getElementById('linkURL');
-const numConnectionsDisplay = document.getElementById('numConnectionsDisplay');
+//const numConnectionsDisplay = document.getElementById('numConnectionsDisplay');
+const sysMessageDisplay = document.getElementById('sysMessageDisplay');
 const sendFireMissionBtn = document.getElementById('sendFireMission');
 const gameHitDisplay = document.getElementById('gameHitDisplay');
 const resetBtn = document.getElementById('resetButton');
@@ -42,6 +44,10 @@ const shiftDeviation = document.getElementById('shiftDeviationInput');
 const shiftRight = document.getElementById('correctDevRight');
 const roundType = document.getElementById('roundTypeInput');
 const splashMesage = document.getElementById('splashMesage');
+const opEastingInput = document.getElementById('opEastingInput');
+const opNorthingInput = document.getElementById('opNorthingInput');
+const setOpBtn = document.getElementById('setOpButton');
+const gmAngleDisplay = document.getElementById('gmAngleDisplay');
 
 var scenario = {};
 var target=[];
@@ -52,6 +58,7 @@ joinGameBtn.addEventListener('click', joinGame);
 sendFireMissionBtn.addEventListener('click', sendFireMission);
 resetBtn.addEventListener('click', requestReset);
 fireForEffectBtn.addEventListener('click', fireForEffect);
+setOpBtn.addEventListener('click', changeOpLocation);
 
 gameCodeInput.addEventListener("keypress", function(event) {
   if (event.key === "Enter") {
@@ -81,6 +88,34 @@ function handleHit () {
   console.log("set hit display");
 }
 
+function changeOpLocation() {
+  //get values from form
+  var newOpEast = opEastingInput.value;
+  var newOpNorth = opNorthingInput.value;
+  //make sure correct digits, if less
+  newOpEast = padGrid(newOpEast);
+  newOpNorth = padGrid(newOpNorth);
+  if ( (!newOpEast && newOpEast!=0) || (!newOpNorth && newOpNorth!=0) ) {
+    console.log("grid error: OP Location NOT changed",newOpEast,newOpNorth);
+    alert("OP Location Error: No change made");
+    return
+  };
+  // TODO Should we move the red benchmark also??
+  opLocation = [+newOpEast, +newOpNorth];  
+  console.log("OP Location Changed",opLocation);
+}
+
+function updateCompassGM () {
+  const gmActive = document.getElementById('selectGmActive').value;
+  console.log("Change Compass Setting: ", gmActive);
+  if (gmActive == "magnetic") {
+    socket.emit('changeGmAngle',gmAngle);
+  } else {
+    socket.emit('changeGmAngle',0);
+  }
+  
+}
+
 function sendFireMission() {
   console.log("FIRE MISSION!")  
   gameHitDisplay.innerText = ""; //reset
@@ -88,6 +123,7 @@ function sendFireMission() {
   var gridTabEl = document.getElementById('gridTab').style.display;
   var polarTabEl = document.getElementById('polarTab').style.display;
   var correctionTabEl = document.getElementById('correctionTab').style.display;
+  var settingsTabEl = document.getElementById('settingsTab').style.display;
   var gridE;
   var gridN;
   if (polarTabEl == "block") {
@@ -110,9 +146,11 @@ function sendFireMission() {
     
   } else if (gridTabEl =="block") {
     console.log("Adjust Fire, grid");  
-    console.log(gridEasting.value);
     gridE = gridEasting.value;
     gridN = gridNorthing.value;
+    
+  } else if (settingsTabEl =="block") {
+    console.log("Submit on settings: do nothing");
   }
   const round = roundType.value;
   gridE = padGrid(gridE);
@@ -238,6 +276,7 @@ function setScenario(scenarioID) {
     case 0:
       scenario.Name='West Point OP McNair';
       scenario.designator = 'WL';
+      scenario.gmAngle = -250,
       scenario.lat = 41.36289858633997;
       scenario.lon = -74.01923243991936;
       scenario.az = 165;
@@ -273,6 +312,7 @@ function setScenario(scenarioID) {
       scenario = {
         Name: 'West Point Test',
         designator: 'WL',
+        gmAngle: -250,
         lat: 41.3499529,
         lon: -74.0195403,
         az: 328
@@ -355,6 +395,7 @@ function setScenario(scenarioID) {
       scenario = {
         Name: 'Tower 4 Ridge',
         designator: 'ND',
+        gmAngle: 74,
         lat: 34.6826690,
         lon: -98.4699191,        
         az: 270
@@ -390,6 +431,7 @@ function setScenario(scenarioID) {
       scenario = {
         Name: 'Ft Sill OB 11',
         designator: 'ND',
+        gmAngle: 74,
         lat: 34.6661786,
         lon: -98.4542747,
         az: 315
@@ -423,10 +465,13 @@ function setScenario(scenarioID) {
   }  
   
   opLocation = convertLatLon2Grid(scenario.lat,scenario.lon);
+  gmAngle = scenario.gmAngle;
   
   console.log(scenario);
   gameScenarioDisplay.innerText = scenario.Name;
   gameGridDesignatorDisplay.innerText = scenario.designator;
+  gameGridDesignatorDisplay2.innerText = scenario.designator;
+  gmAngleDisplay.innerText = gmAngle;
   socket.emit('newGame',JSON.stringify(scenario),JSON.stringify(target));
   init();
 }
@@ -484,7 +529,8 @@ function reset() {
 
 function handleNewClient(numClients) {
   console.log("Client count change: "+numClients);
-  numConnectionsDisplay.innerText = numClients;
+  //numConnectionsDisplay.innerText = numClients;
+  sysMessageDisplay.innerText = "FO Count: " + numClients.toString();
 }
 
 //from:   https://davidshimjs.github.io/qrcodejs/ 

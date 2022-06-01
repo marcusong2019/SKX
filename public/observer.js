@@ -6,6 +6,7 @@ var opParts = [];
 var opEasting = [];
 var opNorthing = [];
 var hitDistSq = 2500; //50m squared (using the squared distance vector)
+var gmAngle = 0;
 
 AFRAME.registerComponent('checkload', {
   init: function () {
@@ -41,10 +42,8 @@ AFRAME.registerComponent('compassdial', {
     const sceneEl = document.querySelector('a-scene');
     const camViewEl = sceneEl.querySelector("#viewDirection");
     console.log(camViewEl);
-    //this.tick = AFRAME.utils.throttleTick(this.tick, 300, this); 
     this.el.addEventListener('loaded', function (event) {
   console.log('Loaded', event);
-      //this.previousError = 0;
     });
   },
   tick: function (time,delta) {
@@ -54,8 +53,9 @@ AFRAME.registerComponent('compassdial', {
     var camRigRot = cameraRigEl.getAttribute('rotation').y;
     var rotationRaw = camViewEl.getAttribute('rotation').y;
     var rotation = parseFloat(camRigRot) + parseFloat(rotationRaw);
-    var error = Math.sin(time/300);//(Math.random() * 3)-1.5;         
-    this.el.object3D.rotation.y= (error-rotation)*0.01745329251994329576923690768489;  //convert degree to radians, and right to left hand
+    var error = Math.sin(time/300);// sin oscolation around value  
+    var gmAngleDeg = gmAngle*0.05625; //convert mils to degrees
+    this.el.object3D.rotation.y= (error-rotation-gmAngleDeg)*0.01745329251994329576923690768489;  //convert degree to radians, and right to left hand
   }
 });//end component 
 
@@ -165,6 +165,18 @@ AFRAME.registerComponent('loadscreen', {
   init: function () {
         this.rendercount=0;
         this.loadcomplete=false;
+        var isMobile = AFRAME.utils.device.isMobile();
+        const  instructionTextDesk = document.getElementById('instructionTextDesk');
+        const  instructionTextMobile = document.getElementById('instructionTextMobile');
+        if (isMobile) {
+          console.log('Mobile');
+          instructionTextDesk.style.display = "none";
+          instructionTextMobile.style.display = "block";
+        } else {
+          console.log('Not Mobile');
+          instructionTextDesk.style.display = "block";
+          instructionTextMobile.style.display = "none";
+        };
     },
 
     tock: function () {
@@ -247,6 +259,8 @@ socket.on('scenarioInfo', (scenarioJSON,targetsJSON)=>{
     setCamera(az);  
     initializeOpLocation(scenario.lat,scenario.lon,scenario.az);
     initializeTargets(targets);
+    gmAngle = scenario.gmAngle;
+    console.log("Initial GM Angle: " + gmAngle);
   });
 
 // react to incoming messages
@@ -256,6 +270,11 @@ socket.on("reply", data => {
 
 socket.on("target", data => {
   handleNewTarget(data);
+});
+
+socket.on("changeGmAngle", data => {
+  gmAngle = data;
+  console.log("New G-M Angle for compass: " + gmAngle);
 });
 
 socket.on("firemissionG", (data1, data2, data3) => {
