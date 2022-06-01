@@ -1,3 +1,10 @@
+31 MAY 2022
+Added settings tab with ability to update the observer location
+Added magnetic north to compass and ability to urn on/off in settings
+FDC gets a count of FO's
+updated package.JSON
+renamed server side index.js to server.js
+
 28 MAY 2022
 Enter key in input boxes of fire commands will submit fire mission
 Enter key in input box box for game code will join mission

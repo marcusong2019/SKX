@@ -1,64 +1,26 @@
-Done - set/change OP location from FDC (coded, need merge)
-Done - add G-M angle to scenarios and compass calc and fire calc (coded, need merge, server, observer, main, index.html)
-Number of users connected visible from FDC
 HIT includes a target type/number/id
 Server aware of hit targets to inform new joins. Last few IDF?
 
 handle disconnects- message to user
+   -FO knows when FDC shutsdown
+   -log reasons for disconnects on clients  https://socket.io/docs/v4/client-socket-instance/
+   notify user if relevent- reconnect attempt?
 PID on compass spin so it damps down
+FO location shows current as the default instead of easting/northing text
 
 Calc distance from OP to grid and warn FDC if danger close (<600m)
 set up/add targets for fdc
 
 Mobile view port size
+Load screen instructions change for mobile users
 set emission for models and check models CDN links to THIS project assets
 GPS: DAGR image as background?
 GPS: Other text to display?
 why compass load so slow?  smaller model?
+FO inform FDC when done loading - FDC have count of connections and ready
 
 particle smoke/fire and dust
 Look at: https://github.com/squarefeet/ShaderParticleEngine/issues/72  to fix emitter and size on particiles with zoom
 Emmitters are making sim slow down when used a lot. May need to skip?
 Clean up console logging
-
-
-////////////////////////////////////////////////////////////////
-///// Allow changing the OP Location //////////////////
-//
-// Change to index.html
-  <div id="settingsTab" class="tabcontent">
-    <div class="form-group">
-        <label>OP Location: </label>
-        <span id="gameGridDesignatorDisplay2"></span> 
-        <input type="number" min="0" max="99999" placeholder="Easting" id="opEastingInput"/>
-        <input type="number" min="0" max="99999" placeholder="Northing" id="opNorthingInput"/>
-        <!-- maxlength="5" only works for text input type  -->
-        <button type="submit" class="btn btn-success" id="setOpButton" > Set </button>
-    </div>
-  </div>
-
-/// Change to main.js /////////
-
-// NEW FOR SETTING OP LOCATION
-const opEastingInput = document.getElementById('opEastingInput');
-const opNorthingInput = document.getElementById('opNorthingInput');
-const setOpBtn = document.getElementById('setOpButton');
-setOpBtn.addEventListener('click', changeOpLocation);
-
-// NEW - ALSO NEED FUNCTION CHANGEOPLOCATION
-function changeOpLocation() {
-  //get values from form
-  var newOpEast = opEastingInput.value;
-  var newOpNorth = opNorthingInput.value;
-  //make sure correct digits, if less
-  newOpEast = padGrid(newOpEast);
-  newOpNorth = padGrid(newOpNorth);
-  if ( (!newOpEast && newOpEast!=0) || (!newOpNorth && newOpNorth!=0) ) {
-    console.log("grid error: OP Location NOT changed",newOpEast,newOpNorth);
-    alert("OP Location Error: No change made");
-    return
-  };
-  // TODO Should we move the red benchmark also??
-  opLocation = [+newOpEast, +newOpNorth];  
-  console.log("OP Location Changed",opLocation);
-}
+Server logging - put in roomName on all messages

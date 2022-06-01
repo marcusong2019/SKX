@@ -1,19 +1,23 @@
 {
-  "name": "socketio-chat",
-  "version": "0.1.0",
-  "description": "A node js chat app",
-  "main": "index.js",
+  "name": "observed-fire-simulator",
+  "version": "0.2.0",
+  "description": "A node js app for communicating between clients in a military oberved fire simulation.",
+  "keywords": [
+    "artillery",
+    "observed fire",
+    "military simulation",
+    "call for fire"
+  ],
+  "bugs": {
+    "email": "gordon.cooke@westpoint.edu"
+  },
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.17.1",
     "socket.io": "*"
   },
-  "keywords": [
-    "node",
-    "express",
-    "chat"
-  ],
-  "license": "MIT"
+  "author": "Gordon Cooke <gordon.cooke@westpoint.edu> (https://www.westpoint.edu/department-military-instruction/profile/gordon_cooke)"
 }

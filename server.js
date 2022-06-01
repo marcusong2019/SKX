@@ -24,9 +24,26 @@ io.on('connection', client => {
   client.on('test', handleTest);
   client.on('target', (data) => {handleNewTarget(data)});
   client.on('firemissionG', (dataA, dataB, dataC) => {handleFireMission(dataA, dataB, dataC)});
-  client.on('disconnect', handleDisconnect);
+  client.on('disconnect', (data) => handleDisconnect(data));
   client.on('hit',handleHit);
   client.on('requestReset',handleReset);
+  client.on('changeGmAngle',(data) => {handleChangeGmAngle(data)});
+  
+  function handleChangeGmAngle(gmAngle) {
+    const roomName = clientRooms[client.id];
+    console.log('Change GM Angle: ' + gmAngle);
+    if (!roomName) {
+      console.log('Error: no room name on Hit')
+      return;
+    }
+      io.sockets.in(roomName)
+    .emit('changeGmAngle',gmAngle);
+    
+    var tempScenario = JSON.parse(io.sockets.adapter.rooms[roomName].scenario);
+    tempScenario.gmAngle = gmAngle;
+    io.sockets.adapter.rooms[roomName].scenario = JSON.stringify(tempScenario)
+    console.log('Change GM Angle in scenario: ' + io.sockets.adapter.rooms[roomName].scenario);
+  }
   
   function handleReset() {
     const roomName = clientRooms[client.id];
@@ -51,8 +68,22 @@ io.on('connection', client => {
     .emit('hit');
   }
       
-  function handleDisconnect() {
-    console.log('A user disconnected');
+  function handleDisconnect(reason) {
+    const roomName = clientRooms[client.id];
+    console.log('A user disconnected from', roomName);
+    if (!roomName) {
+      console.log('Error: no room name on disconnect')
+      return;
+    }
+    let room = io.sockets.adapter.rooms[roomName]; //todo is there a better io way to get count?
+    if (!room) {
+      console.log('room empty', roomName);
+      return;
+    }
+    let numClients = room.length -1; //todo is there a better io way to get count?
+    io.sockets.in(roomName)
+    .emit('newClientCount',numClients);
+     console.log(numClients);
   }
   
   function handleTest() {
@@ -108,8 +139,8 @@ console.log("join game " + roomName);
     
     client.emit('initFO', 2);
     
-    io.sockets.in(room)
-    .emit('newClient',numClients);
+    io.sockets.in(roomName)
+    .emit('newClientCount',numClients);
     console.log(numClients);
     
     client.emit('reply','Room Joined '+roomName);
