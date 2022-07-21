@@ -7,16 +7,23 @@ var socket = io(urlOrigin);//'https://observed-fire-simulator.glitch.me/');
   
 socket.on('initFO', handleInitFO);
 socket.on('gameCode', handleGameCode);
-socket.on('hit', handleHit);
+socket.on('hit', (dataA, dataB) => handleHit(dataA,dataB));
 socket.on('unknownCode', handleUnknownCode);
 socket.on('newClientCount', data => {
   console.log(data);
   handleNewClient(data);
 });
+socket.on('newClientReady',handleClientReady);
 
+//let canvas, ctx;
+let playerNumber;
+let gameActive = false;
 var opLocation = [50000,50000];
 var lastFireMission=[0,0];
 var gmAngle = 0; //default
+var dangerCloseFlag = false;
+var fireRequestText = "";
+var readyCount = 0;
 
 
 const gameScreen = document.getElementById('gameScreen');
@@ -31,6 +38,7 @@ const linkURL = document.getElementById('linkURL');
 const sysMessageDisplay = document.getElementById('sysMessageDisplay');
 const sendFireMissionBtn = document.getElementById('sendFireMission');
 const gameHitDisplay = document.getElementById('gameHitDisplay');
+const gameWarningDisplay = document.getElementById('gameWarningDisplay');
 const resetBtn = document.getElementById('resetButton');
 const fireForEffectBtn = document.getElementById('fireForEffectButton');
 const gridEasting = document.getElementById('gridEastingInput');
@@ -48,6 +56,10 @@ const opEastingInput = document.getElementById('opEastingInput');
 const opNorthingInput = document.getElementById('opNorthingInput');
 const setOpBtn = document.getElementById('setOpButton');
 const gmAngleDisplay = document.getElementById('gmAngleDisplay');
+const fdcLogDisplay = document.getElementById('fdcLogDisplay');
+const setMgrsGridBtn = document.getElementById('setMgrsGridButton');
+const gridInput = document.getElementById('gridInput');
+const lookDirectionInput = document.getElementById('lookDirectionInput');
 
 var scenario = {};
 var target=[];
@@ -59,6 +71,8 @@ sendFireMissionBtn.addEventListener('click', sendFireMission);
 resetBtn.addEventListener('click', requestReset);
 fireForEffectBtn.addEventListener('click', fireForEffect);
 setOpBtn.addEventListener('click', changeOpLocation);
+setMgrsGridBtn.addEventListener('click', setCustomMGRS);
+gridInput.addEventListener("keypress", forceKeyPressUppercase, false);
 
 gameCodeInput.addEventListener("keypress", function(event) {
   if (event.key === "Enter") {
@@ -83,8 +97,11 @@ function submitBtnOnEnter (event) {
 }
 
 
-function handleHit () {
+function handleHit (targetId,targetType) {
   gameHitDisplay.innerText = "..Hit!..";
+  fdcLogDisplay.value += "Hit: "+targetId + " "+targetType +"\n";
+  fdcLogDisplay.focus();
+  sysMessageDisplay.innerText = targetId + " "+targetType;
   console.log("set hit display");
 }
 
@@ -103,6 +120,14 @@ function changeOpLocation() {
   // TODO Should we move the red benchmark also??
   opLocation = [+newOpEast, +newOpNorth];  
   console.log("OP Location Changed",opLocation);
+  fdcLogDisplay.value += "OP location updated: " + opLocation + "\n";
+  fdcLogDisplay.focus();
+  // store new current location in placeholder for future reference
+  opEastingInput.placeholder = newOpEast;
+  opNorthingInput.placeholder = newOpNorth;
+  // remove the input text (placeholder will show) and help indicate the change
+  opEastingInput.value = null;
+  opNorthingInput.value = null;
 }
 
 function updateCompassGM () {
@@ -110,8 +135,12 @@ function updateCompassGM () {
   console.log("Change Compass Setting: ", gmActive);
   if (gmActive == "magnetic") {
     socket.emit('changeGmAngle',gmAngle);
+    fdcLogDisplay.value += "Compass changed to magnetic north: FO must use GM Angle \n";
+    fdcLogDisplay.focus();
   } else {
     socket.emit('changeGmAngle',0);
+    fdcLogDisplay.value += "Compass changed to grid north \n";
+    fdcLogDisplay.focus();
   }
   
 }
@@ -119,6 +148,8 @@ function updateCompassGM () {
 function sendFireMission() {
   console.log("FIRE MISSION!")  
   gameHitDisplay.innerText = ""; //reset
+  gameWarningDisplay.innerText = ""; //reset
+  sysMessageDisplay.innerText = ""; //reset
   
   var gridTabEl = document.getElementById('gridTab').style.display;
   var polarTabEl = document.getElementById('polarTab').style.display;
@@ -131,23 +162,37 @@ function sendFireMission() {
     let direction = polarDirection.value;
     shiftDirection.value = direction;
     let distance = polarDistance.value;
+    fireRequestText = "Direction: "+direction+" Distance: "+distance;
     [gridE, gridN] = calcPolar2Grid(direction, distance, opLocation);//TODO add FO location- need way to send/track
+    
     
   } else if (correctionTabEl =="block"){
     console.log("correct fire");    
     console.log(shiftAddDrop.checked,shiftRange.value,shiftRight.checked,shiftDeviation.value);
     polarDirection.value = shiftDirection.value;
+    if (shiftRight.checked == true) {
+      fireRequestText = "Right "+shiftDeviation.value
+    } else {
+      fireRequestText = "Left "+shiftDeviation.value
+    } 
+    if (shiftAddDrop.checked==true) {
+      fireRequestText += " Add " + shiftRange.value;
+    } else {
+      fireRequestText += " Drop " + shiftRange.value;
+    }
+    
     
     let [x,y] = getAdjustFireShift();
     let [adjEast,adjNorth] = calcAdjustFireShift(shiftDirection.value,x,y);
     gridE = lastFireMission[0] + adjEast;
     gridN = lastFireMission[1] + adjNorth;    
-    console.log(x,y,adjEast,adjNorth);
+    console.log(x,y,adjEast,adjNorth);    
     
   } else if (gridTabEl =="block") {
     console.log("Adjust Fire, grid");  
     gridE = gridEasting.value;
     gridN = gridNorthing.value;
+    fireRequestText = scenario.designator+gridE+gridN;
     
   } else if (settingsTabEl =="block") {
     console.log("Submit on settings: do nothing");
@@ -161,17 +206,44 @@ function sendFireMission() {
     return
   }
   console.log("request", gridE, gridN, round);
-  errorE = Math.floor(shotError());
-  errorN = Math.floor(shotError());
-  gridE = gridE + errorE;
-  gridN = gridN + errorN;
-  console.log("shot", gridE, gridN);
-  socket.emit('firemissionG',gridE, gridN, round);
-  lastFireMission=[gridE,gridN]; //store for future
+  let dangerClose = checkDangerClose(gridE,gridN);
+  if (dangerClose && !dangerCloseFlag) {
+    gameWarningDisplay.innerText = "..CONFIRM DANGER CLOSE..";
+    sysMessageDisplay.innerText = "Submit again to confirm and fire";
+    fdcLogDisplay.value += "Alert: danger close \n";
+    fdcLogDisplay.focus();
+    dangerCloseFlag = true;
+    console.log("CHECK FIRE. Set warning display: Danger Close");
+  } else {
+    dangerCloseFlag = false;
+    errorE = Math.floor(shotError());
+    errorN = Math.floor(shotError());
+    gridE = gridE + errorE;
+    gridN = gridN + errorN;
+    console.log("shot", gridE, gridN);
+    socket.emit('firemissionG',gridE, gridN, round);
+    lastFireMission=[gridE,gridN]; //store for future
+    fdcLogDisplay.value += "Fire Mission: "+fireRequestText+"\n";
+    fdcLogDisplay.focus();
+    shiftRange.value = ""; //reset
+    shiftDeviation.value=""; //reset
+  }
+}
+
+function checkDangerClose (gridE, gridN) {
+  let X = ((gridE-opLocation[0])**2) + ((gridN-opLocation[1])**2);
+  if (X<360000) {
+    console.log("DANGER CLOSE")
+    return true
+  } else {
+    return false
+  }
 }
 
 function fireForEffect() {
   const round = roundType.value;
+  fdcLogDisplay.value += "Fire for Effect \n";
+  fdcLogDisplay.focus();
   for (let i = 0; i < 5; i++) {
     setTimeout(() => {  
       adjEast = Math.floor(Math.random() * 101) -50;
@@ -253,22 +325,125 @@ function requestReset() {
   console.log("send reset request");
   socket.emit('requestReset');
   gameHitDisplay.innerText = ""; //reset
-
+  gameWarningDisplay.innerText = ""; //reset
+  sysMessageDisplay.innerText = ""; //reset
+  fdcLogDisplay.value += "RESET\n";
+  fdcLogDisplay.focus();
 }
 
 function joinGame() {
   const code = gameCodeInput.value;
   socket.emit('joinGame', code);
+  fdcLogDisplay.value += "Join game code: " + code + "\n";
+  fdcLogDisplay.focus();
 }
-
-let canvas, ctx;
-let playerNumber;
-let gameActive = false;
 
 function scenarioPicker() {
   initialScreen.style.display = "none";
   scenarioScreen.style.display = "block";
   gameScreen.style.display = "none";
+}
+
+function setCustomMGRS() {
+  var mgrsStr = gridInput.value;
+  var lookDir = lookDirectionInput.value;
+  var opLocation = setScenarioMgrs(mgrsStr,lookDir);
+  console.log("A: ",opLocation);
+  var targetList = setRandomTargets(opLocation,lookDir);
+  setScenarioInfoDisplay(scenario,targetList);
+}
+
+function setRandomTargets (opLoc,lookDir,tgtCount = 8) {
+  console.log('setup targets');
+  var targets=[];
+  for (let i = 0; i < tgtCount; i++) {
+    targets[i] = createRandomTarget(opLoc,lookDir);
+  }  
+  console.log(targets);
+  return targets;
+}
+
+function createRandomTarget(opLoc,lookDir) {
+  // random integer +/- 1000 (dir is mils):
+  var dirOffset = Math.floor(Math.random() * 2000) -1000;
+  var direction = +lookDir + dirOffset;
+  // random integer from 500 to 2000:
+  var distance = Math.floor(Math.random() * 1501) + 500;
+  let [gridE, gridN] = calcPolar2Grid(direction, distance, opLoc);
+  console.log("new tgt: ",lookDir,dirOffset,direction,distance,gridE,gridN);
+  
+  let roll = Math.random();
+  let type = "squad";
+  if ( roll > 0.6 ) {
+    type = "squad";
+  } else if (roll > 0.3) {
+    type = "#T90Tank";
+  } else {
+    type = "#BTR80";
+  };
+  
+  let tgtDir = (lookDir*(360/6400)) - 180;
+  
+  target = {
+        "e": +gridE,
+        "n": +gridN,
+        "model": type,
+        "az":  +tgtDir};
+  console.log("target created: ", target);
+  return target;
+}
+
+function setScenarioMgrs(mgrsStr,lookDir=0){
+  console.log("grid: "+mgrsStr.toUpperCase());
+  // TODO add error checking
+  var point = mgrs.toPoint(mgrsStr);
+  console.log("Lat/Lon: ",point);
+  var lat = +point[1];
+  var lon = +point[0];
+  
+  var opParts = mgrs.decode(mgrsStr);
+  var opHunK = opParts.hunK.toString();
+  var opEasting = opParts.easting.toString().slice(-5);
+  var opNorthing = opParts.northing.toString().slice(-5);
+  var opLocation = [+opEasting,+opNorthing];
+  
+  let tgtDir = (lookDir*(360/6400))
+  
+  scenario = {
+        Name: 'Custom ' + mgrsStr,
+        designator: opHunK,
+        gmAngle: 0,
+        lat: lat,
+        lon: lon,
+        az: 328 //TODO
+      };   
+  console.log(scenario);
+  lookupMag(lat,lon);
+  console.log("declination (mils): "+scenario.gmAngle);
+  return opLocation;  
+}
+
+// setdecl and lookupMag from:
+// https://stackoverflow.com/questions/6641159/magnetic-declination-in-javascript-google-maps
+//
+function setdecl(v){
+ console.log("declination found (deg): "+v);
+ scenario.gmAngle= Math.round(v * (6400/360));
+  gmAngleDisplay.innerText = scenario.gmAngle;
+  console.log('scenario gmAngle set');
+  console.log("declination (mils): "+scenario.gmAngle);
+  //return scenario.gmAngle;
+}
+
+function lookupMag(lat, lon) {
+   var url=
+"https://www.ngdc.noaa.gov/geomag-web/calculators/calculateIgrfgrid?lat1="+lat+"&lat2="+lat+"&lon1="+lon+"&lon2="+lon+
+"&latStepSize=0.1&lonStepSize=0.1&magneticComponent=d&resultFormat=xml";
+   $.get(url, function(xml, status){
+     console.log(xml);
+        setdecl( $(xml).find('declination').text());
+   });
+  return true
 }
 
 function setScenario(scenarioID) {
@@ -462,9 +637,15 @@ function setScenario(scenarioID) {
         "model": "#T90Tank",
         "az": 39 }      
       break; 
-  }  
+  }
+  setScenarioInfoDisplay(scenario,target);
+ }
+
+function setScenarioInfoDisplay (scenario,target) {
   
   opLocation = convertLatLon2Grid(scenario.lat,scenario.lon);
+  opEastingInput.placeholder = opLocation[0];
+  opNorthingInput.placeholder = opLocation[1];
   gmAngle = scenario.gmAngle;
   
   console.log(scenario);
@@ -493,6 +674,8 @@ function init() {
   scenarioScreen.style.display = "none";
   gameScreen.style.display = "block";
   gameActive = true;
+  fdcLogDisplay.value += "\nFDC ready: Waiting for observers \n";
+  fdcLogDisplay.focus();
 }
 
 function handleInit(number) {
@@ -531,6 +714,14 @@ function handleNewClient(numClients) {
   console.log("Client count change: "+numClients);
   //numConnectionsDisplay.innerText = numClients;
   sysMessageDisplay.innerText = "FO Count: " + numClients.toString();
+  fdcLogDisplay.value += "FO Count: " + numClients.toString() +"\n";
+  fdcLogDisplay.focus();
+}
+
+function handleClientReady() {
+  readyCount +=1;
+  fdcLogDisplay.value += "FO Ready: "+readyCount+"\n";
+  fdcLogDisplay.focus();
 }
 
 //from:   https://davidshimjs.github.io/qrcodejs/ 
@@ -598,7 +789,7 @@ function randomApproxNormal (v = 5) {
   return r/v;  
 }
 
-function shotError (cep = 30) {
+function shotError (cep = 15) { //was 30 drop to 15
   var a = 0.5 - randomApproxNormal(5); //random normal from -0.5 to +0.5 with mean zero
   var b = cep/0.125; // multiplier based on CEP, 66% should be within 'CEP'
   var c = b*a;
