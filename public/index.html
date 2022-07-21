@@ -225,12 +225,23 @@ body {font-family: Arial;}
               <img src="https://cdn.glitch.com/ff04fad4-579c-40f2-b2d7-d1a5cf0a03be%2FMapSegment.png?v=1628971820083" class="card-img-top" alt="West Point Thumbnail" height="200" width="200">
               <div class="card-body">
                 <h5 class="card-title">Custom Location</h5>
-                <p class="card-text"> Enter MGRS grid (include grid zone designator) <br> <p style="color: red; font-weight:bold">Inactive placeholder</p>      
+                <p class="card-text"> Enter MGRS grid (include grid zone designator) <br>    
                     <div class="form-group">
-                      <input type="text" placeholder="18TWL81647945" id="gridInput"/> 
+                      <input type="text" placeholder="18TWL81647945" id="gridInput" onkeyup="this.value = this.value.toUpperCase();"/> 
+                      <label for="lookDirectionInput">Primary Direction:</label>
+                      <select name="lookDirectionInput" id="lookDirectionInput">
+                        <option value=0 selected>N</option>
+                        <option value=800>NE</option>
+                        <option value=1600>E</option>
+                        <option value=2400>SE</option>
+                        <option value=3200>S</option>
+                        <option value=4000>SW</option>
+                        <option value=4800>W</option>
+                        <option value=5600>NW</option>
+                      </select>
                     </div>
                 </p>
-                <button disabled class="btn btn-primary" id="sendMgrsGrid">Submit</button>
+                <button class="btn btn-primary" id="setMgrsGridButton">Submit</button>
               </div>
             </div>
           </div>
@@ -253,7 +264,7 @@ body {font-family: Arial;}
             <button class="tablinks" onclick="openAdjustFire(event, 'correctionTab')">Correction</button>
             <button class="tablinks" onclick="openAdjustFire(event, 'settingsTab')">Settings</button>
           </div>
-          
+
           <div id="gridTab" class="tabcontent">
             <div class="form-group">
                 <span id="gameGridDesignatorDisplay"></span> <input type="number" min="0" max="99999" placeholder="Easting" id="gridEastingInput"/>
@@ -335,6 +346,7 @@ body {font-family: Arial;}
               </select>
             </div>
           </div>
+
           
           <div>
             <select id="roundTypeInput">
@@ -353,6 +365,7 @@ body {font-family: Arial;}
           
           <div>
             <h2 style="background-color:red;color:white"><span id="gameHitDisplay"></span></h2>
+            <h2 style="background-color:yellow;color:black"><span id="gameWarningDisplay"></span></h2>
           </div>
           <div style="bg-info">
             <span id="sysMessageDisplay"></span>
@@ -381,7 +394,11 @@ body {font-family: Arial;}
             >
               Exit
             </button>
-          </div>          
+          </div>   
+          <div class="form-group">
+            <label for="fdcLogDisplay">Event Log:</label>
+            <textarea id="fdcLogDisplay" rows="4" cols="50" readonly class="form-control">New Game</textarea>
+          </div>
         </div>
       </div>
     </div>
