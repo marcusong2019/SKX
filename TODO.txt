@@ -1,4 +1,4 @@
-HIT includes a target type/number/id
+BUG: Compass on GM angle not working when boot custom scenario
 Server aware of hit targets to inform new joins. Last few IDF?
 
 handle disconnects- message to user
@@ -6,21 +6,17 @@ handle disconnects- message to user
    -log reasons for disconnects on clients  https://socket.io/docs/v4/client-socket-instance/
    notify user if relevent- reconnect attempt?
 PID on compass spin so it damps down
-FO location shows current as the default instead of easting/northing text
 
-Calc distance from OP to grid and warn FDC if danger close (<600m)
 set up/add targets for fdc
 
 Mobile view port size
-Load screen instructions change for mobile users
 set emission for models and check models CDN links to THIS project assets
 GPS: DAGR image as background?
 GPS: Other text to display?
 why compass load so slow?  smaller model?
-FO inform FDC when done loading - FDC have count of connections and ready
+FDC have count of connections and ready (partial)
 
 particle smoke/fire and dust
 Look at: https://github.com/squarefeet/ShaderParticleEngine/issues/72  to fix emitter and size on particiles with zoom
 Emmitters are making sim slow down when used a lot. May need to skip?
 Clean up console logging
-Server logging - put in roomName on all messages
