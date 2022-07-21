@@ -25,13 +25,21 @@ io.on('connection', client => {
   client.on('target', (data) => {handleNewTarget(data)});
   client.on('firemissionG', (dataA, dataB, dataC) => {handleFireMission(dataA, dataB, dataC)});
   client.on('disconnect', (data) => handleDisconnect(data));
-  client.on('hit',handleHit);
+  client.on('hit',(dataA, dataB) => {handleHit(dataA, dataB)});
   client.on('requestReset',handleReset);
   client.on('changeGmAngle',(data) => {handleChangeGmAngle(data)});
+  client.on('clientReady',handleClientReady);
+  
+  function handleClientReady() {
+    const roomName = clientRooms[client.id];
+    io.sockets.in(roomName)
+    .emit('newClientReady',client.id);
+    console.log(roomName + ": FO Ready: "+client.id);
+  }
   
   function handleChangeGmAngle(gmAngle) {
     const roomName = clientRooms[client.id];
-    console.log('Change GM Angle: ' + gmAngle);
+    console.log(roomName+': Change GM Angle: ' + gmAngle);
     if (!roomName) {
       console.log('Error: no room name on Hit')
       return;
@@ -42,7 +50,7 @@ io.on('connection', client => {
     var tempScenario = JSON.parse(io.sockets.adapter.rooms[roomName].scenario);
     tempScenario.gmAngle = gmAngle;
     io.sockets.adapter.rooms[roomName].scenario = JSON.stringify(tempScenario)
-    console.log('Change GM Angle in scenario: ' + io.sockets.adapter.rooms[roomName].scenario);
+    console.log(roomName+': Change GM Angle in scenario: ' + io.sockets.adapter.rooms[roomName].scenario);
   }
   
   function handleReset() {
@@ -57,20 +65,20 @@ io.on('connection', client => {
     console.log('Reset ' + roomName);
   }
   
-  function handleHit() {    
+  function handleHit(targetId,targetType) {    
     const roomName = clientRooms[client.id];
-    console.log('hit ' + roomName);
+    console.log(roomName+': hit');
     if (!roomName) {
       console.log('Error: no room name on Hit')
       return;
     }
       io.sockets.in(roomName)
-    .emit('hit');
+    .emit('hit',targetId,targetType);
   }
       
   function handleDisconnect(reason) {
     const roomName = clientRooms[client.id];
-    console.log('A user disconnected from', roomName);
+    console.log(roomName+': A user disconnected from room');
     if (!roomName) {
       console.log('Error: no room name on disconnect')
       return;
@@ -83,7 +91,7 @@ io.on('connection', client => {
     let numClients = room.length -1; //todo is there a better io way to get count?
     io.sockets.in(roomName)
     .emit('newClientCount',numClients);
-     console.log(numClients);
+     console.log(roomName+': client count: '+numClients);
   }
   
   function handleTest() {
@@ -100,7 +108,7 @@ io.on('connection', client => {
       io.sockets.in(roomName)
     .emit('target',tgtNum);
       io.sockets.adapter.rooms[roomName].targetArray[tgtNum]=true;
-      console.log("targets: ", io.sockets.adapter.rooms[roomName].targetArray);
+      console.log(roomName+": targets: ", io.sockets.adapter.rooms[roomName].targetArray);
   }
   
       function handleFireMission(gridE, gridN, round) {
@@ -109,7 +117,7 @@ io.on('connection', client => {
       console.log('Error: New fire mission but roomname does not exits');
       return;
     }
-        console.log('Fire Mission ' + roomName);
+        console.log(roomName+': Fire Mission');
       io.sockets.in(roomName)
     .emit('firemissionG',gridE, gridN, round);
   }
@@ -141,7 +149,7 @@ console.log("join game " + roomName);
     
     io.sockets.in(roomName)
     .emit('newClientCount',numClients);
-    console.log(numClients);
+    console.log(roomName+': client count: '+numClients);
     
     client.emit('reply','Room Joined '+roomName);
     
@@ -152,7 +160,7 @@ console.log("join game " + roomName);
     let roomName = makeid(5);
     clientRooms[client.id] = roomName;
     client.emit('gameCode', roomName);
-    console.log('New Game ' + roomName + ' ' + scenario);
+    console.log('New Game ' + roomName + ' ' + scenario + targets);
 
     client.join(roomName);
     client.number = 1;

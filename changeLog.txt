@@ -1,3 +1,13 @@
+20 JUL 2022
+Added creating custom scenario with random targets
+Added check for danger close and warn FDC
+Added event log for FDC
+Settings shows current OP Location as placeholder
+Send target info in Hit message
+FO client sends message when ready
+Mobile users get different instruction screen
+Improved server logging with roomName
+
 31 MAY 2022
 Added settings tab with ability to update the observer location
 Added magnetic north to compass and ability to urn on/off in settings
