@@ -207,6 +207,7 @@
               WASD: walk<br>
             </div>
             <div id='instructionTextMobile' style="display:none">
+              Mobile device instructions<br>
               Click to change view:<br>
               Eye &rarr; Compass &rarr; Dial &rarr; Bino &rarr; Eye<br>          
               Swipe to rotate<br>
@@ -226,6 +227,8 @@
       if (isMobile) {
         console.log("mobile");
         document.addEventListener("click", swapCameras);
+        instructionTextDesk.style.display = "none";
+        instructionTextMobile.style.display = "block";
       }
       
       document.addEventListener("keypress", function(e){
