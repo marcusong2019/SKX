@@ -3,6 +3,7 @@ Added creating custom scenario with random targets
 Added check for danger close and warn FDC
 Added event log for FDC
 Settings shows current OP Location as placeholder
+Shift fire (ad/drop) now resets after fired
 Send target info in Hit message
 FO client sends message when ready
 Mobile users get different instruction screen
