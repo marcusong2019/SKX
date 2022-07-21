@@ -407,7 +407,7 @@ function setScenarioMgrs(mgrsStr,lookDir=0){
   var opNorthing = opParts.northing.toString().slice(-5);
   var opLocation = [+opEasting,+opNorthing];
   
-  let tgtDir = (lookDir*(360/6400))
+  let azDir = (lookDir*(360/6400)) //convert mils to degrees
   
   scenario = {
         Name: 'Custom ' + mgrsStr,
@@ -415,7 +415,7 @@ function setScenarioMgrs(mgrsStr,lookDir=0){
         gmAngle: 0,
         lat: lat,
         lon: lon,
-        az: 328 //TODO
+        az: azDir
       };   
   console.log(scenario);
   lookupMag(lat,lon);
@@ -432,7 +432,6 @@ function setdecl(v){
   gmAngleDisplay.innerText = scenario.gmAngle;
   console.log('scenario gmAngle set');
   console.log("declination (mils): "+scenario.gmAngle);
-  //return scenario.gmAngle;
 }
 
 function lookupMag(lat, lon) {

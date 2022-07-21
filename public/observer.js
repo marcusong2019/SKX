@@ -184,7 +184,8 @@ AFRAME.registerComponent('loadscreen', {
       let a = document.querySelector("#ground").object3D.children.length;
       if (a>0 && this.rendercount>a+1) { 
         // Done loading. Hide splash screen
-        console.log("LOADER: Done loading",a);        
+        console.log("LOADER: Done loading",a);  
+        socket.emit('clientReady');
         this.loadcomplete=true;
         document.querySelector('#splash').style.display = 'none';
         document.getElementById("progress-bar").value = 1;
@@ -325,7 +326,7 @@ function initializeTargets(targets) {
   targets.forEach(parseTarget);  
 }
 
-function parseTarget(item){
+function parseTarget(item,index){
   if (item){
     console.log(item);
     var gridE = item.e;
@@ -334,17 +335,17 @@ function parseTarget(item){
     var Az = item.az;
     if (Model=="squad") {
       console.log("squad at: " + gridE + " " + gridN);
-      createSquad(gridE, gridN, Az);
+      createSquad(gridE, gridN, Az, index);
     } else {
       console.log("target at: " + gridE + " " + gridN);
-      createTarget(gridE, gridN, Model, Az);
+      createTarget(gridE, gridN, Model, Az, index);
     }    
   } else {
     console.log("target item null");
   }
 }
   
-function createSquad(gridE, gridN, Az = 0){
+function createSquad(gridE, gridN, Az = 0, index = 99){
   console.log("building squad");
   const azRad = (Az)*(0.01745329251994329576923690768489); //Az in degrees, convert to radians
   console.log("squad az", Az,azRad);
@@ -366,18 +367,18 @@ function createSquad(gridE, gridN, Az = 0){
   const e7 = Math.round( 24*Math.sin(azRad+2.85));
   const e8 = Math.round( 33*Math.sin(azRad+2.7));
   
-  createTarget(gridE, gridN, "#soldier", (-135-Az)); //Squad Leader in center
-  createTarget(gridE+e1, gridN+n1, "#soldier", (-135-Az));
-  createTarget(gridE+e2, gridN+n2, "#soldier", (-135-Az));
-  createTarget(gridE+e3, gridN+n3, "#soldier", (-90-Az));
-  createTarget(gridE+e4, gridN+n4, "#soldier", (-135-Az));
-  createTarget(gridE+e5, gridN+n5, "#soldier", (-135-Az));
-  createTarget(gridE+e6, gridN+n6, "#soldier", (-115-Az));
-  createTarget(gridE+e7, gridN+n7, "#soldier", (-135-Az));
-  createTarget(gridE+e8, gridN+n8, "#soldier", (-90-Az));
+  createTarget(gridE, gridN, "#soldier", (-135-Az), index+"SL"); //Squad Leader in center
+  createTarget(gridE+e1, gridN+n1, "#soldier", (-135-Az), index+"A");
+  createTarget(gridE+e2, gridN+n2, "#soldier", (-135-Az), index+"B");
+  createTarget(gridE+e3, gridN+n3, "#soldier", (-90-Az), index+"C");
+  createTarget(gridE+e4, gridN+n4, "#soldier", (-135-Az), index+"D");
+  createTarget(gridE+e5, gridN+n5, "#soldier", (-135-Az), index+"E");
+  createTarget(gridE+e6, gridN+n6, "#soldier", (-115-Az), index+"F");
+  createTarget(gridE+e7, gridN+n7, "#soldier", (-135-Az), index+"G");
+  createTarget(gridE+e8, gridN+n8, "#soldier", (-90-Az), index+"H");
 }
 
-function createTarget(gridE, gridN, Model = "#T90Tank", Az = 0) {
+function createTarget(gridE, gridN, Model = "#T90Tank", Az = 0, index=99) {
   var [X,Z] = convertGrid(gridE,gridN);
   var position = new THREE.Vector3(X, 0, Z);
 
@@ -386,6 +387,7 @@ function createTarget(gridE, gridN, Model = "#T90Tank", Az = 0) {
   entityEl.setAttribute("position", position);
   entityEl.setAttribute("groundcheck", "");
   entityEl.setAttribute("class", "target");
+  entityEl.setAttribute("ID", "Target_"+index);
   if (Model=="#soldier"){
     entityEl.setAttribute("type", "pax");
   }else{
@@ -401,7 +403,7 @@ function createTarget(gridE, gridN, Model = "#T90Tank", Az = 0) {
   // append entities to build up scene
   entityEl.appendChild(entityE2);
   sceneEl.appendChild(entityEl);
-  console.log("Target Created at ", position);
+  console.log("Target Created at ", position, index);
 }
 
 function rot2bearing (rot) {
@@ -469,11 +471,14 @@ function checkTargetHit (impactPosition) {
       console.log("HIT ",els[i]);
       if (els[i].components.type.data=="tank"){
         createHit(tgtPosition);
+        targetType = "vehicle";
       }     
       if (els[i].components.type.data=="pax"){
         createKillSoldier(els[i]);
+        targetType = "pax";
       }
-      socket.emit('hit');// TODO send target num      
+      targetId = els[i].getAttribute('ID');
+      socket.emit('hit',targetId,targetType);    
     }
   };
 }
