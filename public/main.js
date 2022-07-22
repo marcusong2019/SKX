@@ -12,8 +12,17 @@ socket.on('unknownCode', handleUnknownCode);
 socket.on('newClientCount', data => {
   console.log(data);
   handleNewClient(data);
-});
+});//to inform new join
 socket.on('newClientReady',handleClientReady);
+socket.on('disconnect', (reason)=> {
+  console.log('socket disconnect: '+reason);
+  alert('Connection lost. Attempting to reconnect.');  
+});
+socket.on('reconnect', handleReconnect);
+socket.on('reconnect_failed', () => { // default reconnectionAttempts is infinate
+   console.log('socket reconnect failed');
+  alert('Unable to reconnect. Max attempts reached.');
+});
 
 //let canvas, ctx;
 let playerNumber;
@@ -428,10 +437,12 @@ function setScenarioMgrs(mgrsStr,lookDir=0){
 //
 function setdecl(v){
  console.log("declination found (deg): "+v);
- scenario.gmAngle= Math.round(v * (6400/360));
-  gmAngleDisplay.innerText = scenario.gmAngle;
+  gmAngle = Math.round(v * (6400/360));
+ scenario.gmAngle = gmAngle;
+  gmAngleDisplay.innerText = gmAngle;
   console.log('scenario gmAngle set');
   console.log("declination (mils): "+scenario.gmAngle);
+  socket.emit('changeGmAngle',gmAngle);
 }
 
 function lookupMag(lat, lon) {
@@ -688,8 +699,10 @@ function handleInitFO(number) {
 }
 
 function handleGameCode(gameCode) {
+  scenario.gameCode = gameCode;
   gameCodeDisplay.innerText = gameCode;
-  makeCode(gameCode);
+  makeQrCode(gameCode);
+  console.log('Game Code received: '+gameCode);
 }
 
 function handleUnknownCode() {
@@ -725,7 +738,7 @@ function handleClientReady() {
 
 //from:   https://davidshimjs.github.io/qrcodejs/ 
 //MIT license
-function makeCode (code) {
+function makeQrCode (code) {
   var qrcode = new QRCode("qrcodeDisplay");
 	var elText = urlOrigin+'/FO.html?game=' + code;
 	
@@ -795,3 +808,27 @@ function shotError (cep = 15) { //was 30 drop to 15
   console.log("calc shot error", c);
   return c;  
 }
+
+function handleReconnect () {
+ if (scenario.gameCode) {
+   socket.emit('reconnectFDC',scenario.gameCode, (response) => {
+     switch(response){
+       case 'OK':
+         console.log('reconnected: resume game '+scenario.gameCode);
+         alert('Reconnected: resume game '+scenario.gameCode);
+         fdcLogDisplay.value += "Reconnected to server. Resume FDC.";
+         fdcLogDisplay.focus();
+         break;
+       case 'ROOM EMPTY':
+         console.log('reconnected: room empty');
+         alert('Reconnected to server. Game no longer active. Resetting.');
+         fdcLogDisplay.value += "GAME CODE DOES NOT EXIST ON SERVER. Click Exit.";
+         fdcLogDisplay.focus();
+         gameHitDisplay.innerText = "..EXIT GAME..";
+         break;
+     }
+   });
+ } else {
+   console.log('No Code to reconnect');
+ }
+};

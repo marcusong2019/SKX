@@ -7,6 +7,7 @@ var opEasting = [];
 var opNorthing = [];
 var hitDistSq = 2500; //50m squared (using the squared distance vector)
 var gmAngle = 0;
+var targetsHitArray=[];
 
 AFRAME.registerComponent('checkload', {
   init: function () {
@@ -194,7 +195,9 @@ AFRAME.registerComponent('loadscreen', {
         this.rendercount +=1;
         let ok = setCamView('main');
         document.getElementById("progress-bar").value = 0.99;
-        console.log("LOADER: hide compass");        
+        console.log("LOADER: hide compass");  
+        //check dead units
+        checkTargetInitDead(targetsHitArray);
       } else if (a>0 && this.rendercount<=a ) {
         // Terrain tiles loaded, wait while they move to correct location
         this.rendercount +=1;
@@ -244,13 +247,15 @@ socket.once("connect", () => {
 });
 
 // Receive and parse the scenario info, including targets
-socket.on('scenarioInfo', (scenarioJSON,targetsJSON)=>{
+socket.on('scenarioInfo', (scenarioJSON,targetsJSON,targetsHitArrayIn)=>{
     console.log(scenarioJSON);
     console.log(targetsJSON);
     const scenario = JSON.parse(scenarioJSON);
     const targets = JSON.parse(targetsJSON);
     console.log(scenario);
     console.log(targets);
+  targetsHitArray = targetsHitArrayIn;
+    console.log(targetsHitArray);
   
     lat = scenario.lat;
     lon = scenario.lon;
@@ -260,6 +265,7 @@ socket.on('scenarioInfo', (scenarioJSON,targetsJSON)=>{
     setCamera(az);  
     initializeOpLocation(scenario.lat,scenario.lon,scenario.az);
     initializeTargets(targets);
+    //checkTargetInitDead(targetsHitArray);
     gmAngle = scenario.gmAngle;
     console.log("Initial GM Angle: " + gmAngle);
   });
@@ -285,6 +291,26 @@ socket.on("firemissionG", (data1, data2, data3) => {
 socket.on('unknownCode',handleUnknownCode);
 
 socket.on('reset',handleReset);
+
+socket.on('disconnect', (reason)=> {
+  console.log('socket disconnect: '+reason);
+  alert('Connection lost. Attempting to reconnect.');  
+});
+
+socket.on('fdcDisconnect', ()=> {
+  console.log('FDC disconnect');
+  alert('FDC disconnected from server.');  
+});
+
+socket.on('fdcReconnected', ()=> {
+  console.log('FDC reconnect');
+  alert('FDC has reconnected to game.');  
+});
+
+socket.on('hit', (targetId,targetType) => {
+  targetsHitArray.push(targetId);
+  console.log('received hit from server. added to array '+targetId);
+});
 
 function createTerrain (lat,lon) {
     var sceneEl = document.querySelector("a-scene");
@@ -479,6 +505,28 @@ function checkTargetHit (impactPosition) {
       }
       targetId = els[i].getAttribute('ID');
       socket.emit('hit',targetId,targetType);    
+    }
+  };
+}
+
+function checkTargetInitDead (targetsHitArray) {
+  console.log("checktargets against server array");
+  var sceneEl = document.querySelector("a-scene");
+  var els = sceneEl.querySelectorAll(".target");
+  for (var i = 0; i < els.length; i++) {
+    var tgtId = els[i].getAttribute('ID');
+    var tgtType = els[i].getAttribute("type");
+    console.log(tgtType);
+    var tgtPosition = els[i].getAttribute('position');
+    console.log(i,tgtId);
+    if (targetsHitArray.includes(tgtId)) {
+      console.log("HIT ",els[i].components.type.data);
+      if (els[i].components.type.data=="tank"){
+        createHit(tgtPosition);
+      }     
+      if (els[i].components.type.data=="pax"){
+        createKillSoldier(els[i]);
+      }
     }
   };
 }

@@ -1,10 +1,5 @@
-BUG: Compass on GM angle not working when boot custom scenario
-Server aware of hit targets to inform new joins. Last few IDF?
+Server aware of last few IDF to inform new joins?
 
-handle disconnects- message to user
-   -FO knows when FDC shutsdown
-   -log reasons for disconnects on clients  https://socket.io/docs/v4/client-socket-instance/
-   notify user if relevent- reconnect attempt?
 PID on compass spin so it damps down
 
 set up/add targets for fdc

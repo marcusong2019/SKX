@@ -1,3 +1,10 @@
+22 JUL 2022
+Clients alert user if socket connection is lost.
+FDC attempts to resume same game on reconnect. Server checks if users still in room.
+Bug fix for compass bearing in custom scenarios.
+Server stores target hits. New FO join informed of target states and sets hits on startup.
+
+
 20 JUL 2022
 Added creating custom scenario with random targets
 Added check for danger close and warn FDC

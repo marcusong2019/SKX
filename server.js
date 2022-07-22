@@ -29,6 +29,30 @@ io.on('connection', client => {
   client.on('requestReset',handleReset);
   client.on('changeGmAngle',(data) => {handleChangeGmAngle(data)});
   client.on('clientReady',handleClientReady);
+  client.on('reconnectFDC', (roomName,callback)=>{
+    console.log(roomName+": attempt to reconnect game");    
+    const room = io.sockets.adapter.rooms[roomName];
+    let allUsers;
+    let numClients = 0;
+    if (room) { allUsers = room.sockets; }
+    if (allUsers) { numClients = Object.keys(allUsers).length; }
+    if (numClients === 0) { //TODO Should this be >0?
+      callback('ROOM EMPTY');
+      console.log(roomName+': Room Empty. Close game.');
+      return;
+    }
+    //reconnect FDC to the room
+    clientRooms[client.id] = roomName;
+    client.number = 1; //only FDC for this event
+    client.join(roomName);    
+    //inform room that FDC is online
+    io.sockets.in(roomName)
+    .emit('fdcReconnected');
+    io.sockets.in(roomName)
+    .emit('newClientCount',(numClients-1));
+    console.log(roomName+': FDC reconnected to room');
+    callback('OK');
+  });
   
   function handleClientReady() {
     const roomName = clientRooms[client.id];
@@ -74,11 +98,12 @@ io.on('connection', client => {
     }
       io.sockets.in(roomName)
     .emit('hit',targetId,targetType);
+    io.sockets.adapter.rooms[roomName].targetArray.push(targetId);
   }
       
   function handleDisconnect(reason) {
     const roomName = clientRooms[client.id];
-    console.log(roomName+': A user disconnected from room');
+    console.log(roomName+': A user disconnected from room: '+reason);
     if (!roomName) {
       console.log('Error: no room name on disconnect')
       return;
@@ -88,10 +113,19 @@ io.on('connection', client => {
       console.log('room empty', roomName);
       return;
     }
-    let numClients = room.length -1; //todo is there a better io way to get count?
-    io.sockets.in(roomName)
-    .emit('newClientCount',numClients);
-     console.log(roomName+': client count: '+numClients);
+    
+    if (client.number == 1) {
+      //FDC disconnect
+      console.log(roomName+': FDC disconnected');
+      io.sockets.in(roomName)
+      .emit('fdcDisconnect');
+    } else if (client.number == 2) {
+      //FO disconnect
+      let numClients = room.length -1; //todo is there a better io way to get count?
+      io.sockets.in(roomName)
+      .emit('newClientCount',numClients);
+      console.log(roomName+': FO disconnected. FO count: '+numClients);
+    }
   }
   
   function handleTest() {
@@ -142,6 +176,7 @@ console.log("join game " + roomName);
     } 
     
     clientRooms[client.id] = roomName;
+    client.number = 2;
 
     client.join(roomName);
     
@@ -153,7 +188,7 @@ console.log("join game " + roomName);
     
     client.emit('reply','Room Joined '+roomName);
     
-    client.emit('scenarioInfo', io.sockets.adapter.rooms[roomName].scenario, io.sockets.adapter.rooms[roomName].targetList);
+    client.emit('scenarioInfo', io.sockets.adapter.rooms[roomName].scenario, io.sockets.adapter.rooms[roomName].targetList, io.sockets.adapter.rooms[roomName].targetArray);
   }
 
   function handleNewGame(scenario,targets) {
@@ -163,8 +198,9 @@ console.log("join game " + roomName);
     console.log('New Game ' + roomName + ' ' + scenario + targets);
 
     client.join(roomName);
-    client.number = 1;
-    io.sockets.adapter.rooms[roomName].targetArray=[false,false,false,false,false];
+    client.number = 1; 
+
+    io.sockets.adapter.rooms[roomName].targetArray=[];
     io.sockets.adapter.rooms[roomName].targetList=targets;
     io.sockets.adapter.rooms[roomName].scenario=scenario;
   }
