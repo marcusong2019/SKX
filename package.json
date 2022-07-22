@@ -1,6 +1,6 @@
 {
   "name": "observed-fire-simulator",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A node js app for communicating between clients in a military oberved fire simulation.",
   "keywords": [
     "artillery",
