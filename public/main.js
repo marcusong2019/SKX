@@ -647,6 +647,91 @@ function setScenario(scenarioID) {
         "model": "#T90Tank",
         "az": 39 }      
       break; 
+      
+      case 4:
+      scenario = {
+        Name: 'Hill 876 East',
+        designator: 'NV',
+        gmAngle: 204,
+        lat:  35.353608, 
+        lon: -116.559363,
+        az: 105
+      };      
+      //11SNV40041234
+      
+      target[0] = {
+        "e": 43000,
+        "n": 12000,
+        "model": "#T90Tank",
+        "az": 247 }
+      
+      target[1] = {
+        "e": 43080,
+        "n": 11900,
+        "model": "#T90Tank",
+        "az": 245 }
+      
+      target[2] = {
+        "e": 43110,
+        "n": 12110,
+        "model": "#T90Tank",
+        "az": 260 }
+      
+      target[3] = {
+        "e": 43600,
+        "n": 11900,
+        "model": "squad",
+        "az": 180 }    
+      
+      target[4] = {
+        "e": 41500,
+        "n": 11700,
+        "model": "#T90Tank",
+        "az": 270 }
+      
+      target[5] = {
+        "e": 41550,
+        "n": 11550,
+        "model": "#T90Tank",
+        "az": 270 }
+      
+      target[6] = {
+        "e": 41600,
+        "n": 11400,
+        "model": "#T90Tank",
+        "az": 270 }
+      
+      target[7] = {
+        "e": 41640,
+        "n": 11250,
+        "model": "#T90Tank",
+        "az": 270 }
+      
+      target[8] = {
+        "e": 41450,
+        "n": 13000,
+        "model": "#BTR80",
+        "az": 270 }
+      
+      target[9] = {
+        "e": 41530,
+        "n": 13000,
+        "model": "#BTR80",
+        "az": 270 }
+      
+      target[10] = {
+        "e": 41605,
+        "n": 13000,
+        "model": "#BTR80",
+        "az": 270 }
+      
+      target[11] = {
+        "e": 41350,
+        "n": 13015,
+        "model": "#BTR80",
+        "az": 270 }
+      
+      break;
   }
   setScenarioInfoDisplay(scenario,target);
  }
