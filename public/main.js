@@ -495,7 +495,7 @@ function setScenario(scenarioID) {
       
     case 1:
       scenario = {
-        Name: 'West Point Test',
+        Name: 'West Point South',
         designator: 'WL',
         gmAngle: -250,
         lat: 41.3499529,
