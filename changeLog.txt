@@ -1,3 +1,6 @@
+24 JUL 2022
+Bug fix mobile screen layout was obscuring the tabs.
+
 22 JUL 2022
 Clients alert user if socket connection is lost.
 FDC attempts to resume same game on reconnect. Server checks if users still in room.
