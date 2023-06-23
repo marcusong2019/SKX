@@ -59,7 +59,7 @@ body {font-family: Arial;}
   <div class="alert alert-warning" role="alert">
   NOTICE: This is a prototype web app that is under active development. Expect changes to occur. You may encounter bugs. Send issues and suggestions to gordon dot cooke at westpoint dot edu.
   </div>
-  <div class="alert alert-info alert-dismissible" role="alert"> Update v0.4.0: New FOs aware of target hits when joining after start. Alerts if connection lost and improved attempts to reconnect. Bug fix on compass bearing.
+  <div class="alert alert-info alert-dismissible" role="alert"> Update v0.4.1: New FOs aware of target hits when joining after start. Alerts if connection lost and improved attempts to reconnect. Bug fix on compass bearing. Bug fix on mobile layout.
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -260,8 +260,8 @@ body {font-family: Arial;}
         </div>
       </div>
 
-      <div id="gameScreen" class="h-100">
-        <div class="d-flex flex-column align-items-center justify-content-center h-100">
+      <div id="gameScreen">
+        <div class="d-flex flex-column align-items-center justify-content-center">
 
           <div id="qrcodeDisplay"></div>
           <a href="#" id="linkURL" target="_blank">
