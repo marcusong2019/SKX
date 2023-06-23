@@ -323,13 +323,13 @@ function createTerrain (lat,lon) {
     entityEl.setAttribute("a-terrain", "fovpad:5;elevation:0;lod:14;latitude:"+lat+";longitude:"+lon+";");
     sceneEl.appendChild(entityEl);
   
-    var entityEl2 = document.createElement("a-entity");
-    entityEl2.setAttribute("id","ground2");
-    entityEl2.setAttribute("class","ground");
-    entityEl2.setAttribute("render-order","foreground2");
-    entityEl2.setAttribute("static-body","");
-    entityEl2.setAttribute("a-terrain", "fovpad:3;elevation:0;lod:17;latitude:"+lat+";longitude:"+lon+";");
-    sceneEl.appendChild(entityEl2);
+    //var entityEl2 = document.createElement("a-entity");
+    //entityEl2.setAttribute("id","ground2");
+    //entityEl2.setAttribute("class","ground");
+    //entityEl2.setAttribute("render-order","foreground2");
+    //entityEl2.setAttribute("static-body","");
+    //entityEl2.setAttribute("a-terrain", "fovpad:3;elevation:0;lod:17;latitude:"+lat+";longitude:"+lon+";");
+    //sceneEl.appendChild(entityEl2);
     // the A-Terrain system will then take its time to create and load the tiles
     // this is async and does not send an ack
     //  lod 14 fovpad 5; lod 17 fovpad 35-40; lod 15 fovpad 10
