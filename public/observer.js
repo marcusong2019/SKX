@@ -324,9 +324,9 @@ function createTerrain (lat,lon) {
     sceneEl.appendChild(entityEl);
   
     var entityEl2 = document.createElement("a-entity");
-    entityEl2.setAttribute("id","ground");
+    entityEl2.setAttribute("id","ground2");
     entityEl2.setAttribute("class","ground");
-    entityEl2.setAttribute("render-order","foreground");
+    entityEl2.setAttribute("render-order","foreground2");
     entityEl2.setAttribute("static-body","");
     entityEl2.setAttribute("a-terrain", "fovpad:3;elevation:0;lod:17;latitude:"+lat+";longitude:"+lon+";");
     sceneEl.appendChild(entityEl2);
