@@ -314,21 +314,21 @@ socket.on('hit', (targetId,targetType) => {
 
 function createTerrain (lat,lon) {
     var sceneEl = document.querySelector("a-scene");
-    var entityEl = document.createElement("a-entity");
-  var entityEl2 = document.createElement("a-entity");
+    var entityEl = document.createElement("a-entity");  
     entityEl.setAttribute("id","ground");
     entityEl.setAttribute("class","ground");
     entityEl.setAttribute("render-order","foreground");
     entityEl.setAttribute("static-body","");
     console.log("fovpad:5;elevation:0;lod:14;latitude:"+lat+";longitude:"+lon);
-    entityEl.setAttribute("a-terrain", "fovpad:2;elevation:0;lod:17;latitude:"+lat+";longitude:"+lon+";");
+    entityEl.setAttribute("a-terrain", "fovpad:5;elevation:0;lod:14;latitude:"+lat+";longitude:"+lon+";");
     sceneEl.appendChild(entityEl);
-    
-  entityEl2.setAttribute("id","ground2");
+  
+    var entityEl2 = document.createElement("a-entity");
+    entityEl2.setAttribute("id","ground");
     entityEl2.setAttribute("class","ground");
     entityEl2.setAttribute("render-order","foreground");
     entityEl2.setAttribute("static-body","");
-  entityEl2.setAttribute("a-terrain", "fovpad:5;elevation:0;lod:14;latitude:"+lat+";longitude:"+lon+";");
+    entityEl2.setAttribute("a-terrain", "fovpad:3;elevation:0;lod:17;latitude:"+lat+";longitude:"+lon+";");
     sceneEl.appendChild(entityEl2);
     // the A-Terrain system will then take its time to create and load the tiles
     // this is async and does not send an ack
