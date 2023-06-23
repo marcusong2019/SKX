@@ -320,7 +320,7 @@ function createTerrain (lat,lon) {
     entityEl.setAttribute("render-order","foreground");
     entityEl.setAttribute("static-body","");
     console.log("fovpad:5;elevation:0;lod:14;latitude:"+lat+";longitude:"+lon);
-    entityEl.setAttribute("a-terrain", "fovpad:5;elevation:0;lod:17;latitude:"+lat+";longitude:"+lon+";");
+    entityEl.setAttribute("a-terrain", "fovpad:5;elevation:0;lod:14;latitude:"+lat+";longitude:"+lon+";");
     sceneEl.appendChild(entityEl);
     // the A-Terrain system will then take its time to create and load the tiles
     // this is async and does not send an ack
