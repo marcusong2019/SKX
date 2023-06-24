@@ -33,6 +33,8 @@ var gmAngle = 0; //default
 var dangerCloseFlag = false;
 var fireRequestText = "";
 var readyCount = 0;
+let targetList = [];
+let TLE = [];
 
 
 const gameScreen = document.getElementById('gameScreen');
@@ -237,6 +239,18 @@ function sendFireMission() {
     shiftRange.value = ""; //reset
     shiftDeviation.value=""; //reset
   }
+  calcTLE(targetList,gridE,gridN);
+  console.log(TLE);
+}
+
+function calcTLE (targetList,gridE,gridN) {
+  targetList.forEach((target, index) => {    
+    a = gridE - target.e;
+    b = gridN - target.n;
+    TLE[index] = Math.round(Math.sqrt((a * a) + (b * b)));    
+    //fdcLogDisplay.value += "T"+index +": " + TLE[index] + " " + target.e.toString() + target.n.toString() + target.model +"\n";
+  });
+  fdcLogDisplay.value += "TLE of closest target: " + Math.min(...TLE) +"\n";
 }
 
 function checkDangerClose (gridE, gridN) {
@@ -749,6 +763,8 @@ function setScenarioInfoDisplay (scenario,target) {
   gameGridDesignatorDisplay2.innerText = scenario.designator;
   gmAngleDisplay.innerText = gmAngle;
   socket.emit('newGame',JSON.stringify(scenario),JSON.stringify(target));
+  targetList = target;
+  console.log(targetList);
   init();
 }
 
