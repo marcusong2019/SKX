@@ -868,7 +868,7 @@ function openAdjustFire(evt, fireMissionType) {
   for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
-  document.getElementById(fireMissionType).style.display = "block";
+  document.getElementById(fireMissionType).style.display = "flex";
   evt.currentTarget.className += " active";
   console.log(fireMissionType);
   console.log(document.getElementById('correctionTab').style.display);
