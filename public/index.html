@@ -263,11 +263,15 @@ body {font-family: Arial;}
       <div id="gameScreen">
         <div class="d-flex flex-column align-items-center justify-content-center">
 
-          <div id="qrcodeDisplay"></div>
-          <a href="#" id="linkURL" target="_blank">
-            <h1>Your game code is: <span id="gameCodeDisplay"></span></h1>
-          </a>
           <h2>Scenario: <span id="gameScenarioDisplay"></span></h2>
+          <div>
+            <a href="#" id="linkURL" target="_blank">
+              <h2>Your game code is: <span id="gameCodeDisplay"></span></h2>
+            </a>           
+            <div class="collapse" id="collapseQR">
+              <div id="qrcodeDisplay" class="d-flex flex-column align-items-center justify-content-center"></div>
+            </div>            
+          </div>
           
           <div class="tab">
             <button class="tablinks" onclick="openAdjustFire(event, 'gridTab')" id="defaultOpen">Grid</button>
@@ -276,8 +280,9 @@ body {font-family: Arial;}
             <button class="tablinks" onclick="openAdjustFire(event, 'settingsTab')">Settings</button>
           </div>
 
-          <div id="gridTab" class="tabcontent">
-            <div class="form-group">
+          <div id="gridTab" class="tabcontent align-items-center justify-content-center">
+            <div class="form-group text-center">
+              <b>Target:</b>
                 <span id="gameGridDesignatorDisplay"></span> <input type="number" min="0" max="99999" placeholder="Easting" id="gridEastingInput"/>
                 <input type="number" min="0" max="99999" placeholder="Northing" id="gridNorthingInput"/>
                 <!-- maxlength="5" only works for text input type  -->
