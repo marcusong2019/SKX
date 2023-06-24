@@ -29,11 +29,12 @@ body {font-family: Arial;}
   background-color: inherit;
   float: left;
   border: none;
-  outline: none;
+  outline: 1px solid #ccc;
   cursor: pointer;
-  padding: 14px 16px;
+  padding: 14px 0px;
   transition: 0.3s;
-  font-size: 17px;
+  /*font-size: 17px;*/
+  width: 5.5rem;
 }
 
 /* Change background color of buttons on hover */
@@ -51,9 +52,52 @@ body {font-family: Arial;}
   display: none;
   padding: 6px 12px;
   border: 1px solid #ccc;
-  border-top: none;
+  border-top: 1px solid #ccc;
+  width: 24rem;
+  height: 120px; 
+}
+  
+  .center {
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
+  
+<style>
+    /* 
+    Extra small devices (portrait phones, less than 544px) 
+    No media query since this is the default in Bootstrap because it is "mobile first"
+    */
+    h1 {font-size:2rem;} /*1rem = 16px*/
+    h2 {font-size:1.5rem;}
+    /*
+    ####################################################
+    M E D I A  Q U E R I E S
+    ####################################################
+    */
+
+    /*
+    ::::::::::::::::::::::::::::::::::::::::::::::::::::
+    Bootstrap 4 breakpoints
+    */
+    /* Small devices (landscape phones, 544px and up) */
+
+
+    /* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+    @media (min-width: 768px) {  
+      h1 {font-size:2.5rem;} /*1rem = 16px*/
+      h2 {font-size:2rem;}
+    }
+
+    /* Large devices (desktops, 992px and up) */
+
+    /* Extra large devices (large desktops, 1200px and up) */
+    @media (min-width: 1200px) {  
+      h1 {font-size:3em;} /*1rem = 16px*/ 
+      h2 {font-size:2.25rem;}
+    }  
+</style>
+  
 </head>
 <body>
   <div class="alert alert-warning" role="alert">
@@ -341,46 +385,45 @@ body {font-family: Arial;}
                   <input type="number" min="-1000" max="1000" placeholder="meters" id="shiftRangeInput" style="width: 10ch"/>
                   </td>
                 </tr>
-                <!br>  
+              </table>
+            </div>
+          </div>
+          <div id="settingsTab" class="tabcontent align-items-center justify-content-center">
+            <!div class="form-group">
+              <table class="center">
                 <tr>
                   <th>
-                <label for="shiftDeviationInput">Deviation</label>
-                    </th><td>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="correctDevLeftRight" id="correctDevLeft" value="left">
-                  <label class="form-check-label" for="correctDevLeft">Left</label>
-                </div>
-                  </td><td>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="correctDevLeftRight" id="correctDevRight" value="right" checked>
-                  <label class="form-check-label" for="correctDevRight">Right</label>
-                </div>
-                  </td><td>
-                <input type="number" min="0" max="1000" placeholder="meters" id="shiftDeviationInput" style="width: 10ch"/>
+                    OP Location:
+                  </th>
+                  <td>
+                    <span id="gameGridDesignatorDisplay2"></span> 
+                    <input type="number" min="0" max="99999" placeholder="Easting" id="opEastingInput" style="width: 8ch"/>
+                    <input type="number" min="0" max="99999" placeholder="Northing" id="opNorthingInput" style="width: 8ch"/>
+                    <!-- maxlength="5" only works for text input type  -->
+                    <button type="submit" class="btn btn-success" id="setOpButton" > Set </button>
+                 </td>
+                </tr>
+                <tr>
+                  <th>
+                    G-M Angle:
+                  </th>
+                  <td>
+                    <span id="gmAngleDisplay"></span> mils
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    Compass:
+                  </th>
+                  <td>
+                    <select id="selectGmActive" onchange="updateCompassGM()">
+                      <option value="magnetic">Magnetic North Compass</option>
+                      <option value="grid">Grid North Compass</option>
+                    </select>
                   </td>
                 </tr>
               </table>
             </div>
-          </div>
-          <div id="settingsTab" class="tabcontent">
-            <div class="form-group">
-              <label>OP Location: </label>
-                <span id="gameGridDesignatorDisplay2"></span> 
-                <input type="number" min="0" max="99999" placeholder="Easting" id="opEastingInput"/>
-                <input type="number" min="0" max="99999" placeholder="Northing" id="opNorthingInput"/>
-                <!-- maxlength="5" only works for text input type  -->
-                <button type="submit" class="btn btn-success" id="setOpButton" > Set </button>
-            </div>
-            <div class="form-group">
-              <label>G-M Angle (mils): </label>
-              <span id="gmAngleDisplay"></span> &nbsp; &nbsp;
-              <select id="selectGmActive" onchange="updateCompassGM()">
-                <option value="magnetic">Magnetic North Compass</option>
-                <option value="grid">Grid North Compass</option>
-              </select>
-            </div>
-          </div>
-
           
           <div>
             <select id="roundTypeInput">

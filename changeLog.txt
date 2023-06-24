@@ -1,3 +1,7 @@
+23 JUN 2023
+Improved layout and styling
+Added Collapsable QR code
+
 24 JUL 2022
 Bug fix mobile screen layout was obscuring the tabs.
 
