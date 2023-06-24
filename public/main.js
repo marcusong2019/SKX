@@ -166,7 +166,7 @@ function sendFireMission() {
   var settingsTabEl = document.getElementById('settingsTab').style.display;
   var gridE;
   var gridN;
-  if (polarTabEl == "block") {
+  if (polarTabEl == "flex") {
     console.log("Adjust fire, polar");
     let direction = polarDirection.value;
     shiftDirection.value = direction;
@@ -175,7 +175,7 @@ function sendFireMission() {
     [gridE, gridN] = calcPolar2Grid(direction, distance, opLocation);//TODO add FO location- need way to send/track
     
     
-  } else if (correctionTabEl =="block"){
+  } else if (correctionTabEl =="flex"){
     console.log("correct fire");    
     console.log(shiftAddDrop.checked,shiftRange.value,shiftRight.checked,shiftDeviation.value);
     polarDirection.value = shiftDirection.value;
@@ -197,13 +197,13 @@ function sendFireMission() {
     gridN = lastFireMission[1] + adjNorth;    
     console.log(x,y,adjEast,adjNorth);    
     
-  } else if (gridTabEl =="block") {
+  } else if (gridTabEl =="flex") {
     console.log("Adjust Fire, grid");  
     gridE = gridEasting.value;
     gridN = gridNorthing.value;
     fireRequestText = scenario.designator+gridE+gridN;
     
-  } else if (settingsTabEl =="block") {
+  } else if (settingsTabEl =="flex") {
     console.log("Submit on settings: do nothing");
   }
   const round = roundType.value;
