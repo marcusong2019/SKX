@@ -288,17 +288,17 @@ body {font-family: Arial;}
                 <!-- maxlength="5" only works for text input type  -->
             </div>
           </div>
-          <div id="polarTab" class="tabcontent">
-            <div class="form-group">
-                <label for="polarDirectionInput">Direction</label>
+          <div id="polarTab" class="tabcontent align-items-center justify-content-center">
+            <div class="form-group text-center">
+                <label for="polarDirectionInput" class="font-weight-bold">Direction</label>
                 <input type="number" min="0" max="6400" placeholder="mils" id="polarDirectionInput"/>
-                <label for="polarDistanceInput">Distance</label>
+                <label for="polarDistanceInput" class="font-weight-bold">Distance</label>
                 <input type="number" min="0" max="10000" placeholder="meters" id="polarDistanceInput"/>
             </div>
           </div>
-          <div id="correctionTab" class="tabcontent">
+          <div id="correctionTab" class="tabcontent align-items-center justify-content-center">
             <div class="form-group">
-              <table>
+              <table class="center">
                 <tr>
                   <th>
                     <label for="shiftDirectionInput">Direction</label>
@@ -306,6 +306,24 @@ body {font-family: Arial;}
                     <input type="number" min="0" max="6400" placeholder="mils" id="shiftDirectionInput"/>
                   </td>
                 </tr>
+                <tr>
+                  <th>
+                <label for="shiftDeviationInput">Deviation</label>
+                    </th><td>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="correctDevLeftRight" id="correctDevLeft" value="left">
+                  <label class="form-check-label" for="correctDevLeft">Left</label>
+                </div>
+                  </td><td>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="correctDevLeftRight" id="correctDevRight" value="right" checked>
+                  <label class="form-check-label" for="correctDevRight">Right</label>
+                </div>
+                  </td><td>
+                <input type="number" min="0" max="1000" placeholder="meters" id="shiftDeviationInput" style="width: 10ch"/>
+                  </td>
+                </tr>
+                <!br>
                 <tr>
                   <th>
                   <label for="shiftRangeInput">Range</label>
@@ -320,7 +338,7 @@ body {font-family: Arial;}
                     <label class="form-check-label" for="correctRangeDrop">Drop</label>
                   </div>
                   </td><td>
-                  <input type="number" min="-1000" max="1000" placeholder="meters" id="shiftRangeInput"/>
+                  <input type="number" min="-1000" max="1000" placeholder="meters" id="shiftRangeInput" style="width: 10ch"/>
                   </td>
                 </tr>
                 <!br>  
@@ -338,7 +356,7 @@ body {font-family: Arial;}
                   <label class="form-check-label" for="correctDevRight">Right</label>
                 </div>
                   </td><td>
-                <input type="number" min="0" max="1000" placeholder="meters" id="shiftDeviationInput"/>
+                <input type="number" min="0" max="1000" placeholder="meters" id="shiftDeviationInput" style="width: 10ch"/>
                   </td>
                 </tr>
               </table>
