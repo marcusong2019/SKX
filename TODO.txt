@@ -15,3 +15,8 @@ particle smoke/fire and dust
 Look at: https://github.com/squarefeet/ShaderParticleEngine/issues/72  to fix emitter and size on particiles with zoom
 Emmitters are making sim slow down when used a lot. May need to skip?
 Clean up console logging
+
+VR mode for mobile
+-- clipping plane is closer and looses some of view/targets
+-- bino is regular zoom camera- VR can change zoom??
+-- if switch to VR can we force into bino view? but no compass?
