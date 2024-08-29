@@ -1,5 +1,5 @@
 29 AUG 2024
-changed cdn links from .global to .com  (.global was being blocked)
+changed cdn links from .global to .com  (.global was being blocked by filters)
 added a filter to target list to handle NaN values
 
 23 JUN 2023
