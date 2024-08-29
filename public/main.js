@@ -244,13 +244,17 @@ function sendFireMission() {
 }
 
 function calcTLE (targetList,gridE,gridN) {
+  console.log(targetList);
   targetList.forEach((target, index) => {    
     a = gridE - target.e;
     b = gridN - target.n;
-    TLE[index] = Math.round(Math.sqrt((a * a) + (b * b)));    
-    //fdcLogDisplay.value += "T"+index +": " + TLE[index] + " " + target.e.toString() + target.n.toString() + target.model +"\n";
+    TLE[index] = Math.round(Math.sqrt((a * a) + (b * b)));  
+    console.log(a+","+b);
+    fdcLogDisplay.value += "T"+index +": " + TLE[index] + " " + target.e.toString() + target.n.toString() + target.model +"\n";
   });
-  fdcLogDisplay.value += "TLE of closest target: " + Math.min(TLE) +"\n";
+  console.log(TLE);
+  console.log(Math.min(TLE));
+  fdcLogDisplay.value += "TLE of closest target: " + Math.min(...TLE) +"\n";
 }
 
 function checkDangerClose (gridE, gridN) {
