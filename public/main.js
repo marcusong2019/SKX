@@ -244,16 +244,12 @@ function sendFireMission() {
 }
 
 function calcTLE (targetList,gridE,gridN) {
-  console.log(targetList);
   targetList.forEach((target, index) => {    
     a = gridE - target.e;
     b = gridN - target.n;
     TLE[index] = Math.round(Math.sqrt((a * a) + (b * b)));  
-    console.log(a+","+b);
-    fdcLogDisplay.value += "T"+index +": " + TLE[index] + " " + target.e.toString() + target.n.toString() + target.model +"\n";
+    //fdcLogDisplay.value += "T"+index +": " + TLE[index] + " " + target.e.toString() + target.n.toString() + target.model +"\n";
   });
-  console.log(TLE);
-  console.log(Math.min(TLE));
   fdcLogDisplay.value += "TLE of closest target: " + Math.min(...TLE) +"\n";
 }
 
@@ -485,13 +481,13 @@ function setScenario(scenarioID) {
       scenario.az = 165;
       //18T WL 82030 79507
       
-      target[1] = {
+      target[0] = {
         "e": 81900,
         "n": 78750,
         "model": "squad",
         "az": 40 }
       
-      target[7] = {
+      target[1] = {
         "e": 82100,
         "n": 78050,
         "model": "#T90Tank",
@@ -751,7 +747,8 @@ function setScenario(scenarioID) {
       
       break;
   }
-  //target = target.filter(function(n) { return !isNaN(n); });
+  // filter out any NaN values from skipping indexes
+  target = target.filter(function(n) { return isNaN(n); });
   setScenarioInfoDisplay(scenario,target);
  }
 
