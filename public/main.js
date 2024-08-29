@@ -250,7 +250,7 @@ function calcTLE (targetList,gridE,gridN) {
     TLE[index] = Math.round(Math.sqrt((a * a) + (b * b)));    
     //fdcLogDisplay.value += "T"+index +": " + TLE[index] + " " + target.e.toString() + target.n.toString() + target.model +"\n";
   });
-  fdcLogDisplay.value += "TLE of closest target: " + Math.min(...TLE) +"\n";
+  fdcLogDisplay.value += "TLE of closest target: " + Math.min(TLE) +"\n";
 }
 
 function checkDangerClose (gridE, gridN) {
