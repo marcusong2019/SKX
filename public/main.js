@@ -491,19 +491,19 @@ function setScenario(scenarioID) {
         "model": "squad",
         "az": 40 }
       
-      target[2] = {
+      target[7] = {
         "e": 82100,
         "n": 78050,
         "model": "#T90Tank",
         "az": 0 }
       
-      target[3] = {
+      target[2] = {
         "e": 81800,
         "n": 78100,
         "model": "#BTR80",
         "az": 90 }
       
-      target[4] = {
+      target[3] = {
         "e": 81850,
         "n": 78150,
         "model": "#T90Tank",
@@ -751,6 +751,7 @@ function setScenario(scenarioID) {
       
       break;
   }
+  //target = target.filter(function(n) { return !isNaN(n); });
   setScenarioInfoDisplay(scenario,target);
  }
 
