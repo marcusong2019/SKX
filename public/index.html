@@ -10,18 +10,41 @@
 <style>
 #gameScreen {
   display: none;
+  background-image: url('https://cdn.glitch.global/f4511557-6ea9-4e6e-b98d-48e84a713d89/157834-abstract-white-background-design.jpg?v=1741560881041'); /* Replace with your image path */
+  background-repeat: repeat; /* Repeats the image */
+  background-size: auto; /* Keeps original size of the image */
+  background-position: top left; /* Starts repeating from the top left */
+  width: 100vw;
+  height: 100vh;
 }
 #scenarioScreen {
   display: none;
+  background-image: url('https://cdn.glitch.global/f4511557-6ea9-4e6e-b98d-48e84a713d89/157834-abstract-white-background-design.jpg?v=1741560881041'); /* Replace with your image path */
+  background-repeat: repeat; /* Repeats the image */
+  background-size: auto; /* Keeps original size of the image */
+  background-position: top left; /* Starts repeating from the top left */
+  width: 100vw;
+  height: 100vh;
 }  
   
-body {font-family: Arial;}
+  
+  body {
+    background-image: url('https://cdn.glitch.global/f4511557-6ea9-4e6e-b98d-48e84a713d89/157834-abstract-white-background-design.jpg?v=1741560881041');
+    background-size: cover; /* Ensures the image covers the entire page */
+    background-position: center;
+    background-repeat: repeat; /* Allows the image to repeat */
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    font-family: Arial;
+}
 
 /* Style the tab */
 .tab {
   overflow: hidden;
   border: 1px solid #ccc;
-  background-color: #f1f1f1;
+  background-color: #ffffff;
 }
 
 /* Style the buttons inside the tab */
@@ -110,8 +133,10 @@ body {font-family: Arial;}
   <section class="vh-100">
     <div class="container h-100">
 
-      <div id="initialScreen" class="h-100">
-        <div class="d-flex flex-column align-items-center justify-content-center h-100">
+      <div id="initialScreen" class="h-100" >
+        
+       <div class="overlay-content d-flex flex-column align-items-center justify-content-center">
+            <img src="https://cdn.glitch.global/f4511557-6ea9-4e6e-b98d-48e84a713d89/Singapore_Artillery_logo.png?v=1741560873418" alt="Fire Icon" class="foreground-image">
             <h1>Observed Fire Simulator</h1>
             <button
               type="submit"
