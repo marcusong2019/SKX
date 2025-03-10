@@ -473,7 +473,7 @@ function lookupMag(lat, lon) {
 function setScenario(scenarioID) {
   switch(scenarioID){
     case 0:
-      scenario.Name='West Point OP McNair';
+      scenario.Name='Artillery on Range Terrain';
       scenario.designator = 'WL';
       scenario.gmAngle = -250,
       scenario.lat = 41.36289858633997;
@@ -592,7 +592,7 @@ function setScenario(scenarioID) {
     
     case 2:
       scenario = {
-        Name: 'Tower 4 Ridge',
+        Name: 'Artillery on Flat Terrain',
         designator: 'ND',
         gmAngle: 74,
         lat: 34.6826690,
