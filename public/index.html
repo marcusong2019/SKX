@@ -115,7 +115,16 @@
 
     /* Extra large devices (large desktops, 1200px and up) */
     @media (min-width: 1200px) {  
-      h1 {font-size:3em;} /*1rem = 16px*/ 
+      h1 {
+        font-size:3em;
+         text-align: center; /* Centers text horizontally */
+        display: flex;
+        justify-content: center; /* Centers content horizontally */
+        align-items: center; /* Centers content vertically */
+        height: 100vh; /* Makes the element take full viewport height */
+        margin: 0; /* Removes default margins */
+      
+      } /*1rem = 16px*/ 
       h2 {font-size:2.25rem;}
     }  
 </style>
@@ -133,7 +142,7 @@
         
        <div class="overlay-content d-flex flex-column align-items-center justify-content-center">
             <img src="https://cdn.glitch.global/f4511557-6ea9-4e6e-b98d-48e84a713d89/Singapore_Artillery_logo.png?v=1741560873418" alt="Fire Icon" class="foreground-image">
-            <h1>Observed Fire Simulator</h1>
+            <h1>Singapore Artillery LVS </h1>
             <button
               type="submit"
               class="btn btn-success"
@@ -225,85 +234,28 @@
           
           <div class="col">        
             <div class="card" style="width: 18rem;">
-              <img src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a%2FU.S._Military_Academy_Coat_of_Arms.svg.png?v=1626658887348" class="card-img-top" alt="West Point Thumbnail" height="200" width="200">
+              <img src="https://cdn.glitch.global/f4511557-6ea9-4e6e-b98d-48e84a713d89/Singapore_Artillery_logo.png?v=1741560873418" class="card-img-top" alt="West Point Thumbnail" height="200" width="200">
               <div class="card-body">
-                <h5 class="card-title">West Point OP McNair</h5>
-                <p class="card-text">Example scenario on West Point's artillery range terrain. <!--a href="https://cdn.glitch.global/0140ff64-dac6-408d-bf59-c093dd13ad3a/Map%20Extract.pdf?v=1652931424676">Download Map Sheet</a--></p>
+                <h5 class="card-title">Artillery on Range Terrain</h5>
+                <p class="card-text">Example scenario on artillery range terrain. <!--a href="https://cdn.glitch.global/0140ff64-dac6-408d-bf59-c093dd13ad3a/Map%20Extract.pdf?v=1652931424676">Download Map Sheet</a--></p>
                 <button class="btn btn-primary" onclick="setScenario(0)">Select</button>
               </div>
             </div>
           </div>
           
           <div class="col">
-            <div class="card" style="width: 18rem;">
-              <center><img src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a/USMA_SSI.png?v=1652970035647" class="card-img-top mh-100" alt="USMA Patch Thumbnail" style="width: 200px; height: 200px;"></center>
-              <div class="card-body">
-                <h5 class="card-title">West Point South</h5>
-                <p class="card-text">This is a target rich environment with mounted and dismounted targets. OP located on the west slope of Cranberry Mountain at West Point. (18TWL8202178070)</p>
-                <button class="btn btn-primary" onclick="setScenario(1)">Select</button>
-              </div>
-            </div>
-          </div>
-        
-          <div class="col">
               <div class="card" style="width: 18rem;">
-                <center><img src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a/FA_School.png?v=1652968250533" class="card-img-top mh-100" alt="FA School Patch Thumbnail" style="width: 200px; height: 200px;"></center>
+                <center><img src="https://cdn.glitch.global/f4511557-6ea9-4e6e-b98d-48e84a713d89/Singapore_Artillery_logo.png?v=1741560873418" class="card-img-top mh-100" alt="FA School Patch Thumbnail" style="width: 200px; height: 200px;"></center>
                 <div class="card-body">
-                  <h5 class="card-title">Ft Sill Tower 4 Ridge</h5>
-                  <p class="card-text">OP located on Tower 4 Ridge, inside the artillery range. Tanks and dismounts to the front.</p>
+                  <h5 class="card-title">Artillery on Flat Terrain</h5>
+                  <p class="card-text">It's located on disclosed location, inside the artillery range. Tanks and dismounts to the front. Your task is to fire them all</p>
                   <button class="btn btn-primary" onclick="setScenario(2)">Select</button>
                 </div>
               </div>
           </div>
   
-          <div class="col">
-              <div class="card" style="width: 18rem;">
-                <center><img src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a/FA_School.png?v=1652968250533" class="card-img-top mh-100" alt="FA School Patch Thumbnail" style="width: 200px; height: 200px;"></center>
-                <div class="card-body">
-                  <h5 class="card-title">Ft Sill OB 11</h5>
-                  <p class="card-text">OP is locted at Ft Sill's Observation Bunker 11 looking onto the artillery range. Several tank targets in the distance.</p>
-                  <button class="btn btn-primary" onclick="setScenario(3)">Select</button>
-                </div>
-              </div>
-          </div>
+
   
-            <div class="col">
-              <div class="card" style="width: 18rem;">
-                <center><img src="https://cdn.glitch.com/0140ff64-dac6-408d-bf59-c093dd13ad3a/11ACR-200x200.png?v=1658499496961" class="card-img-top mh-100" alt="Blackhorse Patch Thumbnail" style="width: 200px; height: 200px;"></center>
-                <div class="card-body">
-                  <h5 class="card-title">Ft Irwin Hill 876</h5>
-                  <p class="card-text">OP is locted on Hill 876 looking East. Three tank/motor platoons approaching.</p>
-                  <button class="btn btn-primary" onclick="setScenario(4)">Select</button>
-                </div>
-              </div>
-          </div>
-  
-          <div class="col">        
-            <div class="card" style="width: 18rem;">
-              <img src="https://cdn.glitch.com/ff04fad4-579c-40f2-b2d7-d1a5cf0a03be%2FMapSegment.png?v=1628971820083" class="card-img-top" alt="West Point Thumbnail" height="200" width="200">
-              <div class="card-body">
-                <h5 class="card-title">Custom Location</h5>
-                <p class="card-text"> Enter MGRS grid (include grid zone designator) <br>    
-                    <div class="form-group">
-                      <input type="text" placeholder="18TWL81647945" id="gridInput" onkeyup="this.value = this.value.toUpperCase();"/> 
-                      <label for="lookDirectionInput">Primary Direction:</label>
-                      <select name="lookDirectionInput" id="lookDirectionInput">
-                        <option value=0 selected>N</option>
-                        <option value=800>NE</option>
-                        <option value=1600>E</option>
-                        <option value=2400>SE</option>
-                        <option value=3200>S</option>
-                        <option value=4000>SW</option>
-                        <option value=4800>W</option>
-                        <option value=5600>NW</option>
-                      </select>
-                    </div>
-                </p>
-                <button class="btn btn-primary" id="setMgrsGridButton">Submit</button>
-              </div>
-            </div>
-          </div>
-          
         </div>
       </div>
 
@@ -321,9 +273,7 @@
           <br>
           <div class="tab">
             <button class="tablinks" onclick="openAdjustFire(event, 'gridTab')" id="defaultOpen">Grid</button>
-            <button class="tablinks" onclick="openAdjustFire(event, 'polarTab')">Polar</button>
-            <button class="tablinks" onclick="openAdjustFire(event, 'correctionTab')">Correction</button>
-            <button class="tablinks" onclick="openAdjustFire(event, 'settingsTab')">Settings</button>
+           
           </div>
 
           <div id="gridTab" class="tabcontent align-items-center justify-content-center">
