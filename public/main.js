@@ -109,7 +109,7 @@ function submitBtnOnEnter (event) {
 
 
 function handleHit (targetId,targetType) {
-  gameHitDisplay.innerText = "..Hit!..";
+  gameHitDisplay.innerText = "Hit Confirm!";
   fdcLogDisplay.value += "Hit: "+targetId + " "+targetType +"\n";
   fdcLogDisplay.focus();
   sysMessageDisplay.innerText = targetId + " "+targetType;
@@ -219,7 +219,7 @@ function sendFireMission() {
   console.log("request", gridE, gridN, round);
   let dangerClose = checkDangerClose(gridE,gridN);
   if (dangerClose && !dangerCloseFlag) {
-    gameWarningDisplay.innerText = "..CONFIRM DANGER CLOSE..";
+    gameWarningDisplay.innerText = "YOU ARE IN DANGER ZONE!";
     sysMessageDisplay.innerText = "Submit again to confirm and fire";
     fdcLogDisplay.value += "Alert: danger close \n";
     fdcLogDisplay.focus();
