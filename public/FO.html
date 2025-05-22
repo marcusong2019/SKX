@@ -257,17 +257,21 @@
         if(compassEl.getAttribute('visible') && compassCameraEl.getAttribute('camera').active) {
           // Compass is on, zoomed on dial
           setCamView('bino'); 
+           toggleGPS();
           console.log("swap cameras 1");
         } else if (compassEl.getAttribute('visible') && !compassCameraEl.getAttribute('camera').active) {
           // compass is on, wide view
           setCamView('compassdial'); 
+           toggleGPS();
         } else if (binoCameraEl.getAttribute('camera').active) {
           // binos are on
           setCamView('main'); 
+           toggleGPS();
           console.log("swap cameras 2");
         } else {
           // compass is off, then turn on compass
           setCamView('compass');
+           toggleGPS();
           console.log("swap cameras 3");
         };  
       }
