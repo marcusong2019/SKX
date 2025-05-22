@@ -691,6 +691,7 @@ function setCamView(cam) {
         var binoCameraEl = document.querySelector('#camera2');
         var compassCameraEl = document.querySelector('#camera3');
         var compassEl = document.querySelector('#compass');
+        var GPS = document.querySelector("#GPS");
         
         switch(cam) {
             case 'main':            
@@ -699,6 +700,7 @@ function setCamView(cam) {
               binoCameraEl.setAttribute('visible', false);
               compassCameraEl.setAttribute('camera', 'active', false);
               compassEl.setAttribute('visible', false); 
+              GPS.setAttribute('visible', true);
               console.log("switch to MAIN view");
             break;
             case 'bino':            
@@ -725,6 +727,8 @@ function setCamView(cam) {
               compassEl.setAttribute('visible', true); 
               console.log("switch to COMPASS DIAL view");
             break;
+            
+             
             default:            
               mainCameraEl.setAttribute('camera', 'active', true);                
               binoCameraEl.setAttribute('camera', 'active', false);
