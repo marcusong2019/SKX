@@ -19,5 +19,8 @@
     "express": "^4.17.1",
     "socket.io": "*"
   },
-  "author": "Gordon Cooke <gordon.cooke@westpoint.edu> (https://www.westpoint.edu/department-military-instruction/profile/gordon_cooke)"
+  "author": "Gordon Cooke <gordon.cooke@westpoint.edu> (https://www.westpoint.edu/department-military-instruction/profile/gordon_cooke)",
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.7.10"
+  }
 }
